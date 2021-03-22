@@ -1156,6 +1156,13 @@ body .to-top.active {
 #viewProducts .fa-trash-alt {
   color: #DC3545;
 }
+#viewProducts .deleteForm {
+  display: inline;
+}
+#viewProducts .deleteBtn {
+  border: none;
+  outline: none;
+}
 
 @media (max-width: 1199.98px) {
   body {

@@ -1,5 +1,5 @@
 const layout = require('../layout');
-const title = 'Add Product'
+const title = 'Add Product';
 
 module.exports = () => {
     return layout({

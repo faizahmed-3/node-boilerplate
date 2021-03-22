@@ -1158,6 +1158,15 @@ body {
   .fa-trash-alt{
     color: $red;
   }
+
+  .deleteForm{
+    display: inline;
+  }
+
+  .deleteBtn{
+    border: none;
+    outline: none;
+  }
 }
 
 
