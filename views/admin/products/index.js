@@ -6,7 +6,8 @@ module.exports = ({products}) => {
 
     const renderedProducts = products.map(
         product => {
-            return `<tr>
+            return `
+<tr>
     <td>${product.productName}</td>
     <td>${displayDate(product.dateCreated)}</td>
     <td>${product.quantity}</td>
@@ -22,9 +23,11 @@ module.exports = ({products}) => {
     </td>
     <td >
         <a href="/admin/products/edit/${product._id}"><i class="far fa-edit"></i></a>
-<!--        <form method="POST" action="/admin/products/delete/:id" enctype="application/x-www-form-urlencoded">-->
-        <i class="far fa-trash-alt ms-4"></i>
-<!--        </form>-->
+        <form method="POST" action="/admin/products/delete/${product._id}" class="deleteForm ms-4">
+            <button type="submit" value="submit" class="deleteBtn">
+            <i class="far fa-trash-alt "></i>
+            </button>
+        </form>
     </td>
 </tr>
            `;

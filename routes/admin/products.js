@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const {urlencodedParser} = require('../../middlewares/middlewares');
 const {Product, validate} = require('../../models/products');
 const addProductTemplate = require('../../views/admin/products/new');
 const viewProductsTemplate = require('../../views/admin/products/index');
@@ -16,7 +15,7 @@ router.get('/new', (req, res) => {
     res.send(addProductTemplate());
 });
 
-router.post('/', urlencodedParser, async (req, res) => {
+router.post('/', async (req, res) => {
     const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -76,14 +75,12 @@ router.post('/edit/:id', async (req, res) => {
 });
 
 router.post('/delete/:id', async (req, res) => {
-    // res.send(req.body);
-    // const product = await Product.findById(req.params.id);
-    //
-    // if (!product) return res.status(404).send('Product with that ID was not found');
-    //
-    // res.send(product);
 
-    // res.redirect('/admin/products');
+    const product = await Product.findByIdAndDelete(req.params.id);
+
+    if (!product) return res.status(404).send('Product with that ID was not found');
+
+    res.redirect('/admin/products');
 })
 
 module.exports = router;
