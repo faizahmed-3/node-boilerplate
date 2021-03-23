@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {Product, validate} = require('../../models/products');
+const {Product, validate} = require('../../models/admin/products');
 const addProductTemplate = require('../../views/admin/products/new');
 const viewProductsTemplate = require('../../views/admin/products/index');
 const editProductTemplate = require('../../views/admin/products/edit')
@@ -75,6 +75,8 @@ router.post('/edit/:id', async (req, res) => {
 });
 
 router.post('/delete/:id', async (req, res) => {
+    const valid = mongoose.isValidObjectId(req.params.id);
+    if (!valid) return res.status(400).send('Invalid ID passed');
 
     const product = await Product.findByIdAndDelete(req.params.id);
 
