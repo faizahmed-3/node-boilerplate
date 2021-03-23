@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     const categories = await Category.find().sort('categoryName');
     res.send(viewCategoriesTemplate({categories}));
-})
+});
 
 router.get('/new', (req, res) => {
     res.send(addCategoryTemplate());
@@ -36,6 +36,31 @@ router.get('/edit/:id', async (req, res) => {
     if (!category) return res.status(400).send(`Sorry, that category doesn't exist`);
 
     res.send(editCategoryTemplate({category}));
+});
+
+router.post('/edit/:id', async (req, res) => {
+    const valid = mongoose.isValidObjectId(req.params.id);
+    if (!valid) return res.status(400).send('Invalid ID passed');
+
+    const {error} = validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const category = await Category.findByIdAndUpdate(req.params.id, {
+        categoryName: req.body.name
+    }, {new: true});
+    if (!category) return res.status(400).send(`Sorry, that category doesn't exist`);
+
+    res.redirect('/admin/categories');
+});
+
+router.post('/delete/:id', async (req, res) => {
+    const valid = mongoose.isValidObjectId(req.params.id);
+    if (!valid) return res.status(400).send('Invalid ID passed');
+
+    const category = await Category.findByIdAndDelete(req.params.id);
+    if (!category) return res.status(400).send(`Sorry, that category doesn't exist`);
+
+    res.redirect('/admin/categories');
 })
 
 module.exports = router;

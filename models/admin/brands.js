@@ -1,8 +1,8 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
-const categoriesSchema = new mongoose.Schema({
-    categoryName: {
+const brandsSchema = new mongoose.Schema({
+    brandName: {
         type: String,
         required: true,
         unique: true,
@@ -39,17 +39,17 @@ const categoriesSchema = new mongoose.Schema({
     }
 });
 
-const Category = mongoose.model('Category', categoriesSchema);
+const Brand = mongoose.model('Brand', brandsSchema);
 
 
-function validate(category) {
+function validate(brand) {
     const schema = Joi.object({
         name: Joi.string().required().min(3).max(255)
     });
-    return schema.validate(category);
+    return schema.validate(brand);
 }
 
 
-exports.Category = Category;
+exports.Brand = Brand;
 exports.validate = validate;
 

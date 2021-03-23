@@ -33,6 +33,7 @@ router.post('/', async (req, res) => {
         }
     );
 
+
     await product.save();
 
     res.redirect('/admin/products');
@@ -67,8 +68,7 @@ router.post('/edit/:id', async (req, res) => {
         discountEnd: req.body.discountEnd,
         status: req.body.status
     }, {new: true});
-
-    if (!product) return res.status(404).send('Product with that id was not found');
+    if (!product) return res.status(404).send(`Sorry, that product doesn't exist`);
 
 
     res.redirect('/admin/products');
@@ -79,8 +79,7 @@ router.post('/delete/:id', async (req, res) => {
     if (!valid) return res.status(400).send('Invalid ID passed');
 
     const product = await Product.findByIdAndDelete(req.params.id);
-
-    if (!product) return res.status(404).send('Product with that ID was not found');
+    if (!product) return res.status(404).send(`Sorry, that product doesn't exist`);
 
     res.redirect('/admin/products');
 })
