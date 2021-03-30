@@ -1,20 +1,18 @@
 const layout = require('../layout');
-const title = 'Edit Brand';
+const title = 'Add SpecialCategories';
 
-module.exports = ({specialcategory}) => {
+module.exports = () => {
     return layout({
         title: title,
-        content: `
-
-        <div id="add-product" class="container card my-5">
+        content: `<div id="add-product" class="container card my-5">
     <div class="card-header">
         Brand Information
     </div>
     <div class="card-body">
-        <form method="POST" action="/admin/brands/edit/${specialcategory.id}">
+        <form method="POST" action="/admin/specialCategories">
             <div class="mb-3 form-group">
-                <label for="name" class="form-label">Brand Name</label>
-                <input name="name" value="${specialcategory.specialCategoriesName}" type="text" class="form-control" id="name" aria-describedby="Brand name">
+                <label for="name" class="form-label">specialCategory Name</label>
+                <input name="specialCategoriesName" type="text" class="form-control" id="specialCategoriesName" aria-describedby="product name">
             </div>
             <div class="my-3 d-flex justify-content-evenly">
                 <button class="btn btn-success save" type="submit" value="submit">SAVE</button>
@@ -22,6 +20,5 @@ module.exports = ({specialcategory}) => {
             </div>
         </form>
     </div>
-</div>
-        `})
+</div>`})
 }
