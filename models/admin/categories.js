@@ -23,7 +23,7 @@ const categoriesSchema = new mongoose.Schema({
         min: 0,
         default: 0
     },
-    quantity: {
+    types: {
         type: Number,
         min: 0,
         default: 0

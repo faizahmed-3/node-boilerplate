@@ -1,15 +1,13 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi);
-
 
 const productSchema = new mongoose.Schema({
     product_name: {
         type: String,
         required: true,
-        minlength: 3,
         maxlength: 255,
-        trim: true
+        trim: true,
+        // unique: true
     },
     categoryID: {
         type: mongoose.Schema.Types.ObjectId,
@@ -19,61 +17,60 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Brand'
     },
-    specialCategoryID: {
+    subBrandID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Brand'
+    },
+    specialID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'SpecialCategory'
     },
     colour: {
         type: String,
-        minlength: 3,
         maxlength: 255,
         trim: true
     },
     material: {
         type: String,
-        minlength: 3,
         maxlength: 255,
         trim: true
     },
     description: {
         type: String,
-        minlength: 3,
-        maxlength: 255,
         trim: true
     },
     inBox: {
         type: String,
-        minlength: 3,
-        maxlength: 255,
         trim: true
     },
     quantity: {
         type: Number,
         min: 0,
+        required:true
+    },
+    shop_price: {
+        type: Number,
+        min: 0,
+        required:true
     },
     price: {
         type: Number,
         min: 0,
-        // required:true
+        required:true
     },
-    discountPrice: {
+    discount_price: {
         type: Number,
         min: 0,
     },
-    discountStart:{
-        type: Date
-    },
-    discountEnd: {
-        type: Date
-    },
-    images: {
-        data: Buffer,
-        contentType: String
-    },
     status: {
         type: Boolean,
-        default: false
+        default: true
     },
+    product_images: [{
+        filename: String,
+        destination: String,
+        size: Number
+    }],
     dateCreated: {
         type: Date,
         default: Date.now
@@ -90,23 +87,25 @@ const productSchema = new mongoose.Schema({
     }
 });
 
-
 const Product = mongoose.model('Product', productSchema);
 
 function validate(product) {
     const schema =Joi.object({
         product_name: Joi.string().min(3).max(255).required(),
-        colour: Joi.string().min(3).max(255).required(),
-        Material: Joi.string().min(3).max(255),
-        Description: Joi.string().min(3).max(255),
-        InBox: Joi.string().min(3).max(255),
-        Quantity: Joi.number(),
-        Price: Joi.number(),
-        DiscountPrice: Joi.number(),
-        DiscountStart: Joi.date(),
-        DiscountEnd: Joi.date(),
-        Status: Joi.boolean()
-    });
+        categoryID: Joi.string().min(3).max(255),
+        brandID: Joi.string().min(3).max(255),
+        specialID: Joi.string().min(3).max(255),
+        colour: Joi.string().optional().allow('').min(3).max(255),
+        material: Joi.string().optional().allow('').min(3).max(255),
+        description: Joi.string().optional().allow(''),
+        inBox: Joi.string().optional().allow(''),
+        quantity: Joi.number().required(),
+        shop_price: Joi.number().required(),
+        price: Joi.number().required(),
+        discount_price: Joi.number().optional().allow(''),
+        status: Joi.boolean()
+
+    }).unknown(true);;
 
     const options = {
         errors: {
@@ -118,7 +117,6 @@ function validate(product) {
 
     return schema.validate(product, options);
 }
-
 
 exports.Product = Product;
 exports.validate = validate;

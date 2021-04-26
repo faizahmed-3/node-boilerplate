@@ -13,30 +13,27 @@ module.exports = () =>{
             <form method="POST" action="/register">
                 <div class="mb-2 form-group">
                     <label for="fullName" class="form-label" required>Full Name</label>
-                    <input name="fullName" type="text" class="form-control" id="fullName" aria-describedby="name" placeholder="Name">
+                    <input name="fullName" type="text" class="form-control" id="fullName" aria-describedby="name" >
                 </div>
                 <div class="row">
                     <div class="mb-2 col-md-6 form-group">
                         <label for="email" class="form-label" required>Email Address</label>
-                        <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp"
-                               placeholder="someone@email.com">
+                        <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp">
                     </div>
                     <div class="mb-2 col-md-6 form-group">
                         <label for="phone" class="form-label" required>Phone Number</label>
                         <input name="phone" type="number" class="form-control" id="phone"
-                               aria-describedby="phone number" placeholder="0712345678">
+                               aria-describedby="phone number" >
                     </div>
                 </div>
                 <div class="row">
                     <div class="mb-2 col-md-6 form-group">
                         <label for="password" class="form-label" required>Password</label>
-                        <input name="password" type="password" class="form-control" id="password"
-                               placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+                        <input name="password" type="password" class="form-control" id="password">
                     </div>
                     <div class="mb-2 col-md-6 form-group">
                         <label for="passwordRepeat" class="form-label" required>Confirm Password</label>
-                        <input name="passwordRepeat" type="password" class="form-control" id="passwordRepeat"
-                               placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+                        <input name="passwordRepeat" type="password" class="form-control" id="passwordRepeat">
                     </div>
                 </div>
                 <div class="form-group">

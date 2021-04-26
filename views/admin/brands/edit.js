@@ -38,7 +38,7 @@ function loopSubBrands(brand) {
     return brand.subBrands.map(subBrand => {
         return `
             <li class="d-flex justify-content-evenly">
-                <input type="text" class="form-control mb-2 subBrandItem border border-warning" name="${subBrand._id}" value="${subBrand.subBrandName}">
+                <input type="text" class="form-control mb-2 subBrandItem border border-warning" name="${subBrand._id}" value="${subBrand.subBrandName}" >
                 <i class="fas fa-trash-alt subBrandDelete"></i>
             </li>
         `
@@ -56,8 +56,8 @@ module.exports = ({brand, error}) => {
     <div class="card-body">
         <form method="POST" action="/admin/brands/edit/${brand.id}">
             <div class="mb-3 form-group">
-                <label for="name" class="form-label">Brand Name</label>
-                <input name="brand_name" type="text" class="form-control" id="brand_name" aria-describedby="brand_name" value="${getInput(brand, 'brand_name')}">
+                <label for="name" class="form-label" required>Brand Name</label>
+                <input name="brand_name" type="text" class="form-control" id="brand_name" aria-describedby="brand_name" value="${getInput(brand, 'brand_name')}" required>
                 <div class="inputError">${getError(error, 'brand_name')}</div>
             </div>
             <div class="mb-3 form-group">

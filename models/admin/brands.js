@@ -11,14 +11,13 @@ const brandsSchema = new mongoose.Schema({
         trim: true
     },
     subBrands: [{
-        // subBrandID: mongoose.Types.ObjectId,
         subBrandName: String,
         unitsSold: {
             type: Number,
             min: 0,
             default: 0
         },
-        quantity: {
+        types: {
             type: Number,
             min: 0,
             default: 0
@@ -42,7 +41,7 @@ const brandsSchema = new mongoose.Schema({
         min: 0,
         default: 0
     },
-    quantity: {
+    types: {
         type: Number,
         min: 0,
         default: 0

@@ -12,8 +12,8 @@ module.exports = ({input, error}) => {
     <div class="card-body">
         <form method="POST" >
             <div class="mb-3 form-group">
-                <label for="brand_name" class="form-label">Brand Name</label>
-                <input name="brand_name" type="text" class="form-control" id="brand_name" aria-describedby="brand_name" value="${getInput(input, 'brand_name')}">
+                <label for="brand_name" class="form-label" required>Brand Name</label>
+                <input name="brand_name" type="text" class="form-control" id="brand_name" aria-describedby="brand_name" value="${getInput(input, 'brand_name')}" required>
                 <div class="inputError">${getError(error, 'brand_name')}</div>
             </div>
             <div class="mb-3 form-group">

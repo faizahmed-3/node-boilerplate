@@ -105,7 +105,7 @@
 
 
 @mixin required {
-  label[required]:after {
+  label[required]:after, th[required]:after {
     content: ' *';
     color: $red;
   }

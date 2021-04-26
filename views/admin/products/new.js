@@ -2,7 +2,6 @@ const layout = require('../layout');
 const title = 'Add Product';
 const {getInput, getError} = require('../../../middlewares/otherFunctions')
 
-
 module.exports = ({categories, brands, specials, input, error}) => {
     const renderedCategories = categories.map(
         category => {
@@ -17,7 +16,7 @@ module.exports = ({categories, brands, specials, input, error}) => {
             if (brand.subBrands.length > 0) {
                 let subBrands = brand.subBrands.map(subBrand => {
                     return `
-                    <option class="subBrandOption"  value="${subBrand._id}">${subBrand.subBrandName}</option>
+                    <option class="subBrandOption" value="${brand._id}-${subBrand._id}">${subBrand.subBrandName}</option>
                 `
                 }).join('')
                 return `
@@ -27,7 +26,7 @@ module.exports = ({categories, brands, specials, input, error}) => {
             `
             } else {
                 return `
-                <option value="${brand._id}">${brand.brand_name}</option>
+                <option class="noSubBrand" value="${brand._id}">${brand.brand_name}</option>
             `
             }
         }
@@ -35,6 +34,10 @@ module.exports = ({categories, brands, specials, input, error}) => {
 
     const renderedSpecials = specials.map(
         special => {
+            if (special.special_name.toUpperCase() === 'new arrivals'.toUpperCase()){
+                return`
+                   <option value="${special._id}" selected>${special.special_name}</option> 
+                `}
             return `
                 <option value="${special._id}">${special.special_name}</option>
             `
@@ -44,136 +47,213 @@ module.exports = ({categories, brands, specials, input, error}) => {
 
     return layout({
         title: title,
-        content: `<div id="add-product" class="container card my-5">
+        content: `<div id="add-product" class="container card mt-3 mb-5">
     <div class="card-header">
         Product Information
     </div>
     <div class="card-body">
-        <form id="addProductsForm" method="POST" action="/admin/products">
+        <form id="addProductsForm" method="POST" enctype="multipart/form-data">
+        
             <div class="mb-3 form-group">
-                <label for="product_name" class="form-label">Product Name</label>
+                <label for="product_name" class="form-label" required>Product Name</label>
                 <input name="product_name" type="text" class="form-control" id="product_name"
-                       aria-describedby="product_name" value="${getInput(input, 'product_name')}">
+                       aria-describedby="product_name" value="${getInput(input, 'product_name')}" required>
+                <div class="form-text">use this format (product name for device), colour should be written in the colour input below</div>
                 <div class="inputError">${getError(error, 'product_name')}</div>
             </div>
-            <div class="mb-3 form-group">
-                <label for="colour" class="form-label">Colour</label>
-                <input name="colour" type="text" class="form-control" id="colour" aria-describedby="product name"
-                       value="${getInput(input, 'colour')}">
-                <div class="inputError">${getError(error, 'colour')}</div>
-            </div>
+
             <div class="row">
                 <div class="mb-3 col-md-4 form-group ">
-                    <label for="category" class="form-label">Category</label>
-                    <select class="form-select" aria-label="Select Category" id="category" name="categoryID">
+                    <label for="category" class="form-label" required>Category</label>
+                    <select class="form-select" aria-label="Select Category" id="category" name="categoryID"
+                            required>
+                        <option value="">-Select a category-</option>
                         ${renderedCategories}
                     </select>
+                    <div class="form-text">press the first letter repeatedly to scroll</div>
                 </div>
                 <div class="mb-3 col-md-4 form-group ">
-                    <label for="brand" class="form-label">Brand</label>
-                    <select class="form-select" aria-label="Select Brand" id="brand" name="brandID">
+                    <label for="brand" class="form-label" required>Brand</label>
+                    <select class="form-select" aria-label="Select Brand" id="brand" name="brandID" required>
+                        <option value="">-Select a brand or a sub brand-</option>
                         ${renderedBrands}
                     </select>
+                    <div class="form-text">press the first letter repeatedly to scroll</div>
                 </div>
                 <div class="mb-3 col-md-4 form-group ">
-                    <label for="special" class="form-label">Special Category</label>
-                    <select class="form-select" aria-label="Special Category" id="special" name="specialID">
+                    <label for="special" class="form-label" required>Special Category</label>
+                    <select class="form-select" aria-label="Special Category" id="special" name="specialID"
+                            required>
+                        <option value="">-Select a special category-</option>
                         ${renderedSpecials}
                     </select>
                 </div>
             </div>
-            <div>
-<!--                <div class="row">-->
-<!--                    <div class="mb-3 col-md-6 form-group ">-->
-<!--                        <label for="colour" class="form-label">Colour <span-->
-<!--                                class="optional">(optional)</span></label>-->
-<!--                        <input type="text" class="form-control" id="colour" aria-describedby="colour" name="colour"-->
-<!--                               placeholder="Black">-->
-<!--                    </div>-->
-<!--                    <div class="mb-3 col-md-6 form-group">-->
-<!--                        <label for="material" class="form-label">Material <span-->
-<!--                                class="optional">(optional)</span></label>-->
-<!--                        <input type="text" class="form-control" id="material" aria-describedby="material"-->
-<!--                               name="material"-->
-<!--                               placeholder="Leather">-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="mb-3 col form-group">-->
-<!--                    <div class="d-flex">-->
-<!--                        <label for="description" class="form-label">Description</label>-->
-<!--                        <button type="button" data-command="insertUnorderedList" class="ulButton">-->
-<!--                            <i class=' fas fa-list-ul'></i>-->
-<!--                        </button>-->
-<!--                    </div>-->
-<!--                    <div id="description" contenteditable="true" class="ulList border form-control">-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="mb-3 col form-group">-->
-<!--                    <div class="d-flex">-->
-<!--                        <label for="inBox" class="form-label">What's in the box</label>-->
-<!--                        <button type="button" data-command="insertUnorderedList" class="ulButton">-->
-<!--                            <i class=' fas fa-list-ul'></i>-->
-<!--                        </button>-->
-<!--                    </div>-->
-<!--                    <div id="inBox" contenteditable="true" class="ulList border form-control">-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="my-5 table-responsive-md">-->
-<!--                    <div class="subHeading">PRICING</div>-->
-<!--                    <table class="table table-bordered mt-3">-->
-<!--                        <thead>-->
-<!--                        <tr class="table-primary">-->
-<!--                            <th scope="col">Quantity</th>-->
-<!--                            <th scope="col">Price (ksh)</th>-->
-<!--                            <th scope="col">Discount Price (ksh)</th>-->
-<!--                            <th scope="col">Discount Start</th>-->
-<!--                            <th scope="col">Discount End</th>-->
-<!--                        </tr>-->
-<!--                        </thead>-->
-<!--                        <tbody>-->
-<!--                        <tr>-->
-<!--                            <td><input type="number" name="quantity"></td>-->
-<!--                            <td><input type="number" name="price"></td>-->
-<!--                            <td><input type="number" name="discountPrice"></td>-->
-<!--                            <td><input type="date" name="discountStart"></td>-->
-<!--                            <td><input type="date" name="discountEnd"></td>-->
-<!--                        </tr>-->
-<!--                        </tbody>-->
-<!--                    </table>-->
-<!--                </div>-->
-<!--                <div class="my-5">-->
-<!--                    <div class="subHeading">IMAGES</div>-->
-<!--                    <div class="row imgRow">-->
-<!--                        <div class="col-2 card imageCard">-->
-<!--                            <img src="..." class="imgCol">-->
-<!--                            <div class="card-body d-flex justify-content-between">-->
-<!--                                <div>Main</div>-->
-<!--                                <div>-->
-<!--                                    <i class="far fa-edit"></i>-->
-<!--                                    <i class="fas fa-plus addImage"></i>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+
+            <div class="row">
+                <div class="mb-3 col-md-6 form-group ">
+                    <label for="colour" class="form-label">Colour <span
+                            class="optional">(optional)</span></label>
+                    <input type="text" class="form-control" id="colour" aria-describedby="colour" name="colour"
+                           value="${getInput(input, 'colour')}">
+                    <div class="inputError">${getError(error, 'colour')}</div>
+                </div>
+                <div class="mb-3 col-md-6 form-group">
+                    <label for="material" class="form-label">Material <span
+                            class="optional">(optional)</span></label>
+                    <input type="text" class="form-control" id="material" aria-describedby="material"
+                           name="material"
+                           value="${getInput(input, 'material')}">
+                    <div class="inputError">${getError(error, 'material')}</div>
+                </div>
             </div>
+
+            <div class="mb-3 col form-group">
+
+
+                <div class="d-flex">
+                    <label for="description" class="form-label richTitle">Description</label>
+                    <ul class="tool-list">
+                        <li>
+                            <button type="button" class="descriptionBtn ulButton" data-command="insertOrderedList">
+                                <i class=' fas fa-list-ol'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="descriptionBtn ulButton"
+                                    data-command="insertUnorderedList">
+                                <i class=' fas fa-list-ul'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="descriptionBtn ulButton" data-command="bold">
+                                <i class=' fas fa-bold'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="descriptionBtn ulButton" data-command="italic">
+                                <i class=' fas fa-italic'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="descriptionBtn ulButton" data-command="underline">
+                                <i class=' fas fa-underline'></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <iframe name="descriptionFrame" class="ulList border form-control">
+                </iframe>
+
+                <input type="text" name="description" id="description" class="d-none">
+
+            </div>
+
+            <div class="mb-3 col form-group">
+                <div class="d-flex">
+                    <label for="inBox" class="form-label richTitle">What's in the box</label>
+                    <ul class="tool-list">
+                        <li>
+                            <button type="button" class="inBoxBtn ulButton" data-command="insertOrderedList">
+                                <i class=' fas fa-list-ol'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="inBoxBtn ulButton" data-command="insertUnorderedList">
+                                <i class=' fas fa-list-ul'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="inBoxBtn ulButton" data-command="bold">
+                                <i class=' fas fa-bold'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="inBoxBtn ulButton" data-command="italic">
+                                <i class=' fas fa-italic'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="inBoxBtn ulButton" data-command="underline">
+                                <i class=' fas fa-underline'></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <iframe name="inBoxFrame" class="ulList border form-control">
+                </iframe>
+
+                <input type="text" name="inBox" id="inBox" class="d-none">
+            </div>
+
+            <div class="my-5 table-responsive-md">
+                <div class="subHeading">PRICING</div>
+                <table class="table table-bordered mt-3">
+                    <thead>
+                    <tr class="table-primary">
+                        <th scope="col" required>Quantity</th>
+                        <th scope="col" required>Shop Price (ksh)</th>
+                        <th scope="col" required>Price (ksh)</th>
+                        <th scope="col">Discount Price (ksh)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input type="number" name="quantity" min="1" value="${getInput(input, 'quantity')}" required>
+                            <div class="inputError">${getError(error, 'quantity')}</div>
+                        </td>
+                        <td>
+                            <input type="number" name="shop_price" min="1" value="${getInput(input, 'shop_price')}" required>
+                            <div class="inputError">${getError(error, 'shop_price')}</div>
+                        </td>
+                        <td>
+                            <input type="number" name="price" min="1" value="${getInput(input, 'price')}" required>
+                            <div class="inputError">${getError(error, 'price')}</div>
+                        </td>
+                        <td>
+                            <input type="number" name="discount_price" min="1" value="${getInput(input, 'discount_price')}"
+                                   placeholder="optional">
+                            <div class="inputError">${getError(error, 'discount_price')}</div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="my-5">
+                <div class="subHeading">IMAGES</div>
+                <div class="row imgRow">
+                    <div class="col-2 card imageCard">
+                        <img src="..." class="imgCol">
+                        <div class="card-body d-flex justify-content-between">
+                            <div>Main</div>
+                            <div>
+                                <label for="image1"><i class="far fa-edit"></i></label>
+                                <input type="file" id="image1" name="image1" accept="image/*" hidden>
+
+                                <i class="fas fa-plus addImage"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="my-3 d-flex justify-content-evenly">
                 <div>
-                    <!--                    <span id="visibility" class="mt-3">Visibility</span>-->
-                    <!--                    <label class="switch">-->
-                    <!--                        <input type="checkbox" name="status" class="visibilitySwitch" checked>-->
-                    <!--                        <span class="slider round"></span>-->
-                    <!--                    </label>-->
+                    <span id="visibility" class="mt-3">Visibility</span>
+                    <label class="switch">
+                        <input type="checkbox" name="status" class="visibilitySwitch" checked>
+                        <span class="slider round"></span>
+                    </label>
                 </div>
-                <button class="btn btn-success save" type="submit" value="submit">SAVE</button>
+                <button class="btn btn-success save" type="submit" formaction="/admin/products">SAVE</button>
                 <button class="btn btn-warning save">SAVE AND CREATE COPY</button>
             </div>
         </form>
     </div>
-
-
 </div>
-</div>
-        `
-    });
+        `});
 };

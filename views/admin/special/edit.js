@@ -13,8 +13,8 @@ module.exports = ({special, error}) => {
     <div class="card-body">
         <form method="POST" action="/admin/special/edit/${special.id}">
             <div class="mb-3 form-group">
-                <label for="special_name" class="form-label">Special Category Name</label>
-                <input name="special_name" value="${special.special_name}" type="text" class="form-control" id="name" aria-describedby="special name">
+                <label for="special_name" class="form-label" required>Special Category Name</label>
+                <input name="special_name" value="${special.special_name}" type="text" class="form-control" id="name" aria-describedby="special name" required>
                 <div class="inputError">${getError(error, 'special_name')}</div>
             </div>
             <div class="my-3 d-flex justify-content-evenly">
