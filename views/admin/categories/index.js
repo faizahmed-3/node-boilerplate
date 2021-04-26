@@ -8,7 +8,7 @@ module.exports = ({categories}) => {
             return `<tr>
     <td class="view_table_name">${category.category_name}</td>
     <td>${displayDate(category.dateCreated)}</td>
-    <td>${category.quantity}</td>
+    <td>${category.types}</td>
     <td>${category.unitsSold}</td>
     <td>${category.income}</td>
     <td>${category.topPicks}</td>
@@ -35,7 +35,7 @@ module.exports = ({categories}) => {
             <tr class="table-dark">
                 <th scope="col" class="tableHeaderBig">Category Name</th>
                 <th scope="col" class="tableHeader">Date Created</th>
-                <th scope="col" class="tableHeader">Quantity</th>
+                <th scope="col" class="tableHeader">Types</th>
                 <th scope="col" class="tableHeader">Units Sold</th>
                 <th scope="col" class="tableHeader">Income</th>
                 <th scope="col" class="tableHeader">Top Picks</th>

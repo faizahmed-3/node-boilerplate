@@ -527,7 +527,7 @@ body .inputError {
   font-size: 1.2rem;
   font-weight: 700;
 }
-#checkout-body #checkout-main label[required]:after {
+#checkout-body #checkout-main label[required]:after, #checkout-body #checkout-main th[required]:after {
   content: " *";
   color: #DC3545;
 }
@@ -804,7 +804,7 @@ body .inputError {
   font-size: 1.3rem;
   text-align: center;
 }
-.register label[required]:after {
+.register label[required]:after, .register th[required]:after {
   content: " *";
   color: #DC3545;
 }
@@ -997,15 +997,22 @@ body .inputError {
   font-size: 1.5rem;
   font-weight: 700;
 }
-#add-product label[required]:after {
+#add-product label[required]:after, #add-product th[required]:after {
   content: " *";
   color: #DC3545;
+}
+#add-product label {
+  font-weight: 700;
+}
+#add-product .form-text {
+  font-size: 0.7rem;
 }
 #add-product select:hover {
   cursor: pointer;
 }
 #add-product .optional {
   font-size: 0.7rem;
+  font-weight: normal;
 }
 #add-product .ulButton {
   display: block;
@@ -1014,7 +1021,8 @@ body .inputError {
   margin-left: 1rem;
 }
 #add-product .ulList {
-  height: 150px;
+  min-height: 22rem;
+  height: auto;
   margin: 0.4rem;
   padding: 1rem;
 }
@@ -1136,6 +1144,20 @@ body .inputError {
 #add-product .subBrandOption {
   font-size: 0.9rem;
   font-weight: normal;
+}
+#add-product .noSubBrand {
+  font-weight: 700;
+}
+#add-product .richTitle {
+  margin-top: 0.3rem;
+}
+#add-product .tool-list {
+  display: flex;
+  flex-flow: row nowrap;
+  list-style: none;
+  padding: 0;
+  overflow: hidden;
+  font-size: 1.15rem;
 }
 
 #viewProducts {

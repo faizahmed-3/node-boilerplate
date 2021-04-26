@@ -21,7 +21,7 @@ function subBrandsPrint(brand) {
                         <tr  class="collapse" id="_${brand._id}">
                             <td class="subBrandsCollapse text-muted">${subBrand.subBrandName}</td>
                             <td></td>
-                            <td>${subBrand.quantity}</td>
+                            <td>${subBrand.types}</td>
                             <td>${subBrand.unitsSold}</td>
                             <td>${subBrand.income}</td>
                             <td></td>
@@ -43,7 +43,7 @@ module.exports = ({brands}) => {
     <tr>
     ${subCheck(brand)}
     <td>${displayDate(brand.dateCreated)}</td>
-    <td>${brand.quantity}</td>
+    <td>${brand.types}</td>
     <td>${brand.unitsSold}</td>
     <td>${brand.income}</td>
     <td>${brand.topPicks}</td>
@@ -71,7 +71,7 @@ module.exports = ({brands}) => {
             <tr class="table-dark">
                 <th scope="col" class="tableHeaderBig ">Brand Name</th>
                 <th scope="col" class="tableHeader">Date Created</th>
-                <th scope="col" class="tableHeader">Quantity</th>
+                <th scope="col" class="tableHeader">Types</th>
                 <th scope="col" class="tableHeader">Units Sold</th>
                 <th scope="col" class="tableHeader">Income</th>
                 <th scope="col" class="tableHeader">Top Picks</th>

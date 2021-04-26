@@ -1094,12 +1094,21 @@ body {
 
   @include required;
 
+  label{
+    font-weight: 700;
+  }
+
+  .form-text{
+    font-size: 0.7rem;
+  }
+
   select{
     @include pointer;
   }
 
   .optional {
     font-size: 0.7rem;
+    font-weight: normal;
   }
 
   .ulButton {
@@ -1110,7 +1119,8 @@ body {
   }
 
   .ulList {
-    height: 150px;
+    min-height: 22rem;
+    height: auto;
     margin: 0.4rem;
     padding: 1rem;
 
@@ -1192,6 +1202,23 @@ body {
   .subBrandOption{
     font-size: 0.9rem;
     font-weight: normal;
+  }
+
+  .noSubBrand{
+    font-weight: 700;
+  }
+
+  .richTitle{
+    margin-top: 0.3rem;
+  }
+
+  .tool-list{
+    display: flex;
+    flex-flow: row nowrap;
+    list-style: none;
+    padding: 0;
+    overflow: hidden;
+    font-size: 1.15rem;
   }
 
 }

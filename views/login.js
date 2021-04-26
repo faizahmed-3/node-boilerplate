@@ -14,12 +14,11 @@ module.exports = () => {
             <form method="post" action="/login">
                 <div class="mb-2 form-group">
                     <label for="email" class="form-label" required>Email Address</label>
-                    <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="someone@email.com">
+                    <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" >
                 </div>
                 <div class="mb-2 form-group">
                     <label for="password" class="form-label" required>Password</label>
-                    <input name="password" type="password" class="form-control" id="password"
-                           placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+                    <input name="password" type="password" class="form-control" id="password">
                 </div>
                 <div class="text-center">
                     <button type="submit" class="mt-1 btn btn-success">SUBMIT</button>

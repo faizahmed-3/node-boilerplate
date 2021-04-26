@@ -13,8 +13,8 @@ module.exports = ({category, error}) => {
     <div class="card-body">
         <form method="POST" action="/admin/categories/edit/${category.id}">
             <div class="mb-3 form-group">
-                <label for="name" class="form-label">Category Name</label>
-                <input name="category_name" value="${category.category_name}" type="text" class="form-control" id="name" aria-describedby="category name">
+                <label for="name" class="form-label" required>Category Name</label>
+                <input name="category_name" value="${category.category_name}" type="text" class="form-control" id="name" aria-describedby="category name" required>
                 <div class="inputError">${getError(error, 'category_name')}</div>
             </div>
             <div class="my-3 d-flex justify-content-center">

@@ -8,7 +8,7 @@ module.exports = ({specials}) => {
             return `<tr>
     <td class="view_table_name">${special.special_name}</td>
     <td>${displayDate(special.dateCreated)}</td>
-    <td>${special.quantity}</td>
+    <td>${special.types}</td>
     <td>${special.unitsSold}</td>
     <td>${special.income}</td>
     <td>${special.topPicks}</td>
@@ -35,7 +35,7 @@ module.exports = ({specials}) => {
             <tr class="table-dark">
                 <th scope="col" class="tableHeaderBig">Brand Name</th>
                 <th scope="col" class="tableHeader">Date Created</th>
-                <th scope="col" class="tableHeader">Quantity</th>
+                <th scope="col" class="tableHeader">Types</th>
                 <th scope="col" class="tableHeader">Units Sold</th>
                 <th scope="col" class="tableHeader">Income</th>
                 <th scope="col" class="tableHeader">Top Picks</th>

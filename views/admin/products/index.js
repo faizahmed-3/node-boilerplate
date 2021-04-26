@@ -1,24 +1,36 @@
-const {displayDate} = require('../../../middlewares/otherFunctions');
 const layout = require('../layout');
-const title = 'View Products'
+const title = 'All Products'
 
 module.exports = ({products}) => {
+
+    function visibility(status) {
+        if (status){
+          return `
+            <input type="checkbox" name="status" class="visibilitySwitch" value="status" checked>
+            <span class="slider round"></span>
+          `
+        } else {
+            return `
+            <input type="checkbox" name="status" class="visibilitySwitch" value="status">
+            <span class="slider round"></span>
+          `
+        }
+    }
 
     const renderedProducts = products.map(
         product => {
             return `
 <tr>
     <td>${product.product_name}</td>
-    <td>${displayDate(product.dateCreated)}</td>
     <td>${product.quantity}</td>
+    <td>${product.shop_price}</td>
     <td>${product.price}</td>
-    <td>${product.discountPrice}</td>
+    <td>${product.discount_price}</td>
     <td>${product.unitsSold}</td>
     <td>${product.income}</td>
-    <td>
+    <td>${product.status}
         <label class="switch">
-            <input type="checkbox" name="status" class="visibilitySwitch" value="${product.status}">
-            <span class="slider round"></span>
+            ${visibility(product.status)}
         </label>
     </td>
     <td >
@@ -42,9 +54,9 @@ module.exports = ({products}) => {
         <table class="table table-hover table-bordered border-dark">
             <thead>
             <tr class="table-dark">
-                <th scope="col" class="tableHeaderBig view_table_name">Name</th>
-                <th scope="col" class="tableHeader">Date Created</th>
+                <th scope="col" class="tableHeaderBig view_table_name">Product Name</th>
                 <th scope="col" class="tableHeader">Quantity</th>
+                <th scope="col" class="tableHeader">Shop Price</th>
                 <th scope="col" class="tableHeader">Price</th>
                 <th scope="col" class="tableHeader">Discount Price</th>
                 <th scope="col" class="tableHeader">Units Sold</th>

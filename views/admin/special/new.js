@@ -12,8 +12,8 @@ module.exports = ({input, error}) => {
     <div class="card-body">
         <form method="POST" >
             <div class="mb-3 form-group">
-                <label for="special_name" class="form-label">Special Category Name</label>
-                <input name="special_name" type="text" class="form-control" id="special_name" aria-describedby="special_name" value="${getInput(input, 'special_name')}">
+                <label for="special_name" class="form-label" required>Special Category Name</label>
+                <input name="special_name" type="text" class="form-control" id="special_name" aria-describedby="special_name" value="${getInput(input, 'special_name')}" required>
                 <div class="inputError">${getError(error, 'special_name')}</div>
             </div>
             <div class="my-3 d-flex justify-content-evenly">
