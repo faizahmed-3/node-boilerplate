@@ -3,16 +3,13 @@ const title = 'Add Product';
 const {getInput, getError} = require('../../../middlewares/otherFunctions')
 
 module.exports = ({categories, brands, specials, input, error}) => {
-    const renderedCategories = categories.map(
-        category => {
+    const renderedCategories = categories.map(category => {
             return `
                 <option value="${category._id}">${category.category_name}</option>
             `
-        }
-    ).join('');
+        }).join('');
 
-    const renderedBrands = brands.map(
-        brand => {
+    const renderedBrands = brands.map(brand => {
             if (brand.subBrands.length > 0) {
                 let subBrands = brand.subBrands.map(subBrand => {
                     return `
@@ -29,11 +26,9 @@ module.exports = ({categories, brands, specials, input, error}) => {
                 <option class="noSubBrand" value="${brand._id}">${brand.brand_name}</option>
             `
             }
-        }
-    ).join('');
+        }).join('');
 
-    const renderedSpecials = specials.map(
-        special => {
+    const renderedSpecials = specials.map(special => {
             if (special.special_name.toUpperCase() === 'new arrivals'.toUpperCase()){
                 return`
                    <option value="${special._id}" selected>${special.special_name}</option> 
@@ -41,9 +36,20 @@ module.exports = ({categories, brands, specials, input, error}) => {
             return `
                 <option value="${special._id}">${special.special_name}</option>
             `
-        }
-    ).join('');
+        }).join('');
 
+
+    function checkDescription(content) {
+        if (content){
+            return `${content.description}`
+        } else return null;
+    }
+
+    function checkinBox(content) {
+        if (content){
+            return `${content.inBox}`
+        } else return null;
+    }
 
     return layout({
         title: title,
@@ -58,11 +64,11 @@ module.exports = ({categories, brands, specials, input, error}) => {
                 <label for="product_name" class="form-label" required>Product Name</label>
                 <input name="product_name" type="text" class="form-control" id="product_name"
                        aria-describedby="product_name" value="${getInput(input, 'product_name')}" required>
-                <div class="form-text">use this format (product name for device), colour should be written in the colour input below</div>
+                <div class="form-text">use this format (colour : product name : for device) e.g Black nillkin frosted shield for iPhone 12</div>
                 <div class="inputError">${getError(error, 'product_name')}</div>
             </div>
 
-            <div class="row">
+            <div class="row mb-4">
                 <div class="mb-3 col-md-4 form-group ">
                     <label for="category" class="form-label" required>Category</label>
                     <select class="form-select" aria-label="Select Category" id="category" name="categoryID"
@@ -90,26 +96,7 @@ module.exports = ({categories, brands, specials, input, error}) => {
                 </div>
             </div>
 
-            <div class="row">
-                <div class="mb-3 col-md-6 form-group ">
-                    <label for="colour" class="form-label">Colour <span
-                            class="optional">(optional)</span></label>
-                    <input type="text" class="form-control" id="colour" aria-describedby="colour" name="colour"
-                           value="${getInput(input, 'colour')}">
-                    <div class="inputError">${getError(error, 'colour')}</div>
-                </div>
-                <div class="mb-3 col-md-6 form-group">
-                    <label for="material" class="form-label">Material <span
-                            class="optional">(optional)</span></label>
-                    <input type="text" class="form-control" id="material" aria-describedby="material"
-                           name="material"
-                           value="${getInput(input, 'material')}">
-                    <div class="inputError">${getError(error, 'material')}</div>
-                </div>
-            </div>
-
-            <div class="mb-3 col form-group">
-
+            <div class="mb-4 col form-group">
 
                 <div class="d-flex">
                     <label for="description" class="form-label richTitle">Description</label>
@@ -147,10 +134,12 @@ module.exports = ({categories, brands, specials, input, error}) => {
                 </iframe>
 
                 <input type="text" name="description" id="description" class="d-none">
+                
+                <div class="descriptionCopy d-none">${checkDescription(input)}</div>
 
             </div>
 
-            <div class="mb-3 col form-group">
+            <div class="mb-4 col form-group">
                 <div class="d-flex">
                     <label for="inBox" class="form-label richTitle">What's in the box</label>
                     <ul class="tool-list">
@@ -186,9 +175,11 @@ module.exports = ({categories, brands, specials, input, error}) => {
                 </iframe>
 
                 <input type="text" name="inBox" id="inBox" class="d-none">
+                
+                <div class="inBoxCopy d-none">${checkinBox(input)}</div>
             </div>
 
-            <div class="my-5 table-responsive-md">
+            <div class="mb-4 table-responsive-md">
                 <div class="subHeading">PRICING</div>
                 <table class="table table-bordered mt-3">
                     <thead>
@@ -223,7 +214,7 @@ module.exports = ({categories, brands, specials, input, error}) => {
                 </table>
             </div>
 
-            <div class="my-5">
+            <div class="mb-4">
                 <div class="subHeading">IMAGES</div>
                 <div class="row imgRow">
                     <div class="col-2 card imageCard">
@@ -241,7 +232,7 @@ module.exports = ({categories, brands, specials, input, error}) => {
                 </div>
             </div>
 
-            <div class="my-3 d-flex justify-content-evenly">
+            <div class="mb-4 d-flex justify-content-evenly">
                 <div>
                     <span id="visibility" class="mt-3">Visibility</span>
                     <label class="switch">
@@ -250,7 +241,7 @@ module.exports = ({categories, brands, specials, input, error}) => {
                     </label>
                 </div>
                 <button class="btn btn-success save" type="submit" formaction="/admin/products">SAVE</button>
-                <button class="btn btn-warning save">SAVE AND CREATE COPY</button>
+                <button class="btn btn-warning save" type="submit" formaction="/admin/products/copy">SAVE AND CREATE COPY</button>
             </div>
         </form>
     </div>

@@ -1,7 +1,153 @@
 const layout = require('../layout');
 const title = 'Edit Product'
+const {getInput, getError} = require('../../../middlewares/otherFunctions')
 
-module.exports = ({product}) => {
+module.exports = ({product, error, categories, brands, specials}) => {
+    const renderedCategories = categories.map(category => {
+            if (product.categoryID.toString() === category._id.toString()) {
+                return `
+                <option value="${category._id}" selected>${category.category_name}</option>
+            `
+            } else {
+                return `
+                <option value="${category._id}">${category.category_name}</option>
+            `
+            }
+        }).join('');
+
+    const renderedBrands = brands.map(brand => {
+        if (brand.subBrands.length > 0) {
+            let subBrands = brand.subBrands.map(subBrand => {
+                if (product.subBrandID){
+                    if (product.subBrandID.toString() === subBrand._id.toString()) {
+                        return `
+                    <option class="subBrandOption" value="${brand._id}-${subBrand._id}" selected>${subBrand.subBrandName}</option>
+                `
+                    } else {
+                        return `
+                    <option class="subBrandOption" value="${brand._id}-${subBrand._id}">${subBrand.subBrandName}</option>
+                `
+                    }
+                } else {
+                    return `
+                    <option class="subBrandOption" value="${brand._id}-${subBrand._id}">${subBrand.subBrandName}</option>
+                `
+                }
+
+
+
+            }).join('')
+            return `
+                <optgroup label="${brand.brand_name} &#9207;">
+                ${subBrands}
+                </optgroup>
+            `
+        } else {
+            if (product.brandID.toString() === brand._id.toString()) {
+                return `
+                <option class="noSubBrand" value="${brand._id}" selected>${brand.brand_name}</option>
+            `
+            } else {
+                return `
+                <option class="noSubBrand" value="${brand._id}">${brand.brand_name}</option>
+            `
+            }
+        }
+    }).join('');
+
+    const renderedSpecials = specials.map(special => {
+            if (product.specialID.toString() === special._id.toString()) {
+                return `
+                   <option value="${special._id}" selected>${special.special_name}</option> 
+                `
+            } else {
+                return `
+                <option value="${special._id}">${special.special_name}</option>
+            `
+            }
+
+        }).join('');
+
+    function checkDescription(content) {
+        if (content) {
+            return `${content.description}`
+        } else return null;
+    }
+
+    function checkinBox(content) {
+        if (content) {
+            return `${content.inBox}`
+        } else return null;
+    }
+
+    function printImages(imagesArray) {
+        if (imagesArray.length > 0){
+            let imageString = `
+                        <div class="col-2 card imageCard">
+                        <img src="/img/products/${product.product_images[0].filename}" class="imgCol">
+                        <input type="text" value="${product.product_images[0].filename}" name="existingImages" class="d-none">
+                        <div class="card-body d-flex justify-content-between">
+                            <div>Main</div>
+                            <div>
+                                <label for="image1"><i class="far fa-edit"></i></label>
+                                <input type="file" id="image1" name="image1" accept="image/*" hidden>
+
+                                <i class="fas fa-plus addImage"></i>
+                            </div>
+                        </div>
+                    </div>
+            `
+            for (let i=1; i<imagesArray.length; i++){
+                 imageString += `
+                <div class="col-2 card imageCard">
+                <img src="/img/products/${product.product_images[i].filename}" class="imgCol">
+                <input type="text" value="${product.product_images[i].filename}" name="existingImages" class="d-none">
+                <div class="card-body ">
+                    <div class="d-flex justify-content-end">
+                        <label for="image${i+1}"><i class="far fa-edit"></i></label>
+                        <input type="file" id="image${i+1}" name="image${i+1}" accept="image/*" hidden>
+                        <i class="far fa-trash-alt mx-2"></i>
+                        <i class="fas fa-plus addImage"></i>
+                    </div>
+                </div>
+                </div>
+                `
+            }
+            return imageString
+        } else {
+            return `
+                <div class="col-2 card imageCard">
+                        <img src="..." class="imgCol">
+                        <div class="card-body d-flex justify-content-between">
+                            <div>Main</div>
+                            <div>
+                                <label for="image1"><i class="far fa-edit"></i></label>
+                                <input type="file" id="image1" name="image1" accept="image/*" hidden>
+
+                                <i class="fas fa-plus addImage"></i>
+                            </div>
+                        </div>
+                    </div>
+            `
+        }
+    }
+
+    function visibility(status) {
+        if (status){
+            return `
+            <input type="checkbox" name="status" class="visibilitySwitch" value="status" checked>
+            <span class="slider round"></span>
+          `
+        } else {
+            return `
+            <input type="checkbox" name="status" class="visibilitySwitch" value="status">
+            <span class="slider round"></span>
+          `
+        }
+    }
+
+
+
     return layout({
         title: title,
         content: `
@@ -11,131 +157,182 @@ module.exports = ({product}) => {
         Product Information
     </div>
     <div class="card-body">
-        <form id="editProductsForm" method="POST" action="/admin/products/edit/${product.id}">
+        <form id="editProductsForm" method="POST" enctype="multipart/form-data">
             <div class="mb-3 form-group">
-                <label for="productName" class="form-label">Product Name</label>
-                <input name="productName" value="${product.productName}" type="text" class="form-control" id="productName" aria-describedby="product name">
+                <label for="product_name" class="form-label">Product Name</label>
+                <input name="product_name" value="${product.product_name}" type="text" class="form-control" id="product_name" aria-describedby="product name">
+                <div class="form-text">use this format (colour : product name : for device) e.g Black nillkin frosted shield for iPhone 12</div>
+                <div class="inputError">${getError(error, 'product_name')}</div>
             </div>
-            <div>
-                <!--                    <div class="row">-->
-                <!--                        <div class="mb-3 col-md-4 form-group ">-->
-                <!--                            <label for="category" class="form-label" >Category</label>-->
-                <!--                            <select class="form-select" aria-label="Select Category" id="category" name="categoryID">-->
-                <!--                                <option value="cases">Cases</option>-->
-                <!--                                <option value="protectors">Protectors</option>-->
-                <!--                                <option value="power">Power</option>-->
-                <!--                                <option value="power">Audio</option>-->
-                <!--                                <option value="watches">Smart Watches and Accesories</option>-->
-                <!--                                <option value="camera">Camera Accesories</option>-->
-                <!--                                <option value="car">Car Accesories</option>-->
-                <!--                                <option value="computer">Computer Accesories</option>-->
-                <!--                                <option value="tv">TV Accesories</option>-->
-                <!--                                <option value="others">Others</option>-->
-                <!--                            </select>-->
-                <!--                        </div>-->
-                <!--                        <div class="mb-3 col-md-4 form-group ">-->
-                <!--                            <label for="special" class="form-label" >Special Category</label>-->
-                <!--                            <select class="form-select" aria-label="Special Category" id="special" name="specialID">-->
-                <!--                                <option value="none">None</option>-->
-                <!--                                <option value="featured">Featured Products</option>-->
-                <!--                                <option value="newArrivals">New Arrivals</option>-->
-                <!--                                <option value="sale">Sale</option>-->
-                <!--                            </select>-->
-                <!--                        </div>-->
-                <!--                        <div class="mb-3 col-md-4 form-group ">-->
-                <!--                            <label for="brand" class="form-label" >Brand</label>-->
-                <!--                            <input type="text" class="form-control" id="brand" aria-describedby="product name" name="brandID"-->
-                <!--                                   placeholder="Nillkin">-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--            <div class="row">-->
-                <!--                <div class="mb-3 col-md-6 form-group ">-->
-                <!--                    <label for="colour" class="form-label">Colour <span-->
-                <!--                            class="optional">(optional)</span></label>-->
-                <!--                    <input type="text" class="form-control" id="colour" aria-describedby="colour" name="colour"-->
-                <!--                           placeholder="Black">-->
-                <!--                </div>-->
-                <!--                <div class="mb-3 col-md-6 form-group">-->
-                <!--                    <label for="material" class="form-label">Material <span-->
-                <!--                            class="optional">(optional)</span></label>-->
-                <!--                    <input type="text" class="form-control" id="material" aria-describedby="material" name="material"-->
-                <!--                           placeholder="Leather">-->
-                <!--                </div>-->
-                <!--            </div>-->
-                <!--            <div class="mb-3 col form-group">-->
-                <!--                <div class="d-flex">-->
-                <!--                    <label for="description" class="form-label">Description</label>-->
-                <!--                    <button type="button" data-command="insertUnorderedList" class="ulButton">-->
-                <!--                        <i class=' fas fa-list-ul'></i>-->
-                <!--                    </button>-->
-                <!--                </div>-->
-                <!--                <div id="description" contenteditable="true" class="ulList border form-control">-->
-                <!--                </div>-->
-                <!--            </div>-->
-                <!--            <div class="mb-3 col form-group">-->
-                <!--                <div class="d-flex">-->
-                <!--                    <label for="inBox" class="form-label">What's in the box</label>-->
-                <!--                    <button type="button" data-command="insertUnorderedList" class="ulButton">-->
-                <!--                        <i class=' fas fa-list-ul'></i>-->
-                <!--                    </button>-->
-                <!--                </div>-->
-                <!--                <div id="inBox" contenteditable="true" class="ulList border form-control">-->
-                <!--                </div>-->
-                <!--            </div>-->
+            
+            <div class="row mb-4">
+                <div class="mb-3 col-md-4 form-group ">
+                    <label for="category" class="form-label" required>Category</label>
+                    <select class="form-select" aria-label="Select Category" id="category" name="categoryID"
+                            required>
+                        <option value="">-Select a category-</option>
+                        ${renderedCategories}
+                    </select>
+                    <div class="form-text">press the first letter repeatedly to scroll</div>
+                </div>
+                <div class="mb-3 col-md-4 form-group ">
+                    <label for="brand" class="form-label" required>Brand</label>
+                    <select class="form-select" aria-label="Select Brand" id="brand" name="brandID" required>
+                        <option value="">-Select a brand or a sub brand-</option>
+                        ${renderedBrands}
+                    </select>
+                    <div class="form-text">press the first letter repeatedly to scroll</div>
+                </div>
+                
+                <div class="mb-3 col-md-4 form-group ">
+                    <label for="special" class="form-label" required>Special Category</label>
+                    <select class="form-select" aria-label="Special Category" id="special" name="specialID"
+                            required>
+                        <option value="">-Select a special category-</option>
+                        ${renderedSpecials}
+                    </select>
+                </div>
             </div>
-            <div class="my-5 table-responsive-md">
+            
+            <div class="mb-4 col form-group">
+
+                <div class="d-flex">
+                    <label for="description" class="form-label richTitle">Description</label>
+                    <ul class="tool-list">
+                        <li>
+                            <button type="button" class="descriptionBtn ulButton" data-command="insertOrderedList">
+                                <i class=' fas fa-list-ol'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="descriptionBtn ulButton"
+                                    data-command="insertUnorderedList">
+                                <i class=' fas fa-list-ul'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="descriptionBtn ulButton" data-command="bold">
+                                <i class=' fas fa-bold'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="descriptionBtn ulButton" data-command="italic">
+                                <i class=' fas fa-italic'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="descriptionBtn ulButton" data-command="underline">
+                                <i class=' fas fa-underline'></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <iframe name="descriptionFrame" class="ulList border form-control">
+                </iframe>
+
+                <input type="text" name="description" id="description" class="d-none" value="${product.description}">
+                
+                <div class="descriptionCopy d-none">${checkDescription(product)}</div>
+
+            </div>
+
+            <div class="mb-4 col form-group">
+                <div class="d-flex">
+                    <label for="inBox" class="form-label richTitle">What's in the box</label>
+                    <ul class="tool-list">
+                        <li>
+                            <button type="button" class="inBoxBtn ulButton" data-command="insertOrderedList">
+                                <i class=' fas fa-list-ol'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="inBoxBtn ulButton" data-command="insertUnorderedList">
+                                <i class=' fas fa-list-ul'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="inBoxBtn ulButton" data-command="bold">
+                                <i class=' fas fa-bold'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="inBoxBtn ulButton" data-command="italic">
+                                <i class=' fas fa-italic'></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="inBoxBtn ulButton" data-command="underline">
+                                <i class=' fas fa-underline'></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <iframe name="inBoxFrame" class="ulList border form-control">
+                </iframe>
+
+                <input type="text" name="inBox" id="inBox" class="d-none" value="${product.inBox}">
+                
+                <div class="inBoxCopy d-none">${checkinBox(product)}</div>
+            </div>
+            
+            <div class="mb-4 table-responsive-md">
                 <div class="subHeading">PRICING</div>
                 <table class="table table-bordered mt-3">
                     <thead>
                     <tr class="table-primary">
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price (ksh)</th>
+                        <th scope="col" required>Quantity</th>
+                        <th scope="col" required>Shop Price (ksh)</th>
+                        <th scope="col" required>Price (ksh)</th>
                         <th scope="col">Discount Price (ksh)</th>
-<!--                        <th scope="col">Discount Start</th>-->
-<!--                        <th scope="col">Discount End</th>-->
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td><input type="number" name="quantity" value="${product.quantity}"></td>
-                        <td><input type="number" name="price" value="${product.price}"></td>
-                        <td><input type="number" name="discountPrice" value="${product.discountPrice}"></td>
-<!--                        <td><input type="date" name="discountStart" value="${product.discountStart}"></td>-->
-<!--                        <td><input type="date" name="discountEnd"value="${product.discountStart}"></td>-->
+                        <td>
+                            <input type="number" name="quantity" min="1" value="${getInput(product, 'quantity')}" required>
+                            <div class="inputError">${getError(error, 'quantity')}</div>
+                        </td>
+                        <td>
+                            <input type="number" name="shop_price" min="1" value="${getInput(product, 'shop_price')}" required>
+                            <div class="inputError">${getError(error, 'shop_price')}</div>
+                        </td>
+                        <td>
+                            <input type="number" name="price" min="1" value="${getInput(product, 'price')}" required>
+                            <div class="inputError">${getError(error, 'price')}</div>
+                        </td>
+                        <td>
+                            <input type="number" name="discount_price" min="1" value="${getInput(product, 'discount_price')}"
+                                   placeholder="optional">
+                            <div class="inputError">${getError(error, 'discount_price')}</div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div>
-<!--            <div class="my-5">-->
-<!--                <div class="subHeading">IMAGES</div>-->
-<!--                <div class="row imgRow">-->
-<!--                    <div class="col-2 card imageCard">-->
-<!--                        <img src="..." class="imgCol">-->
-<!--                        <div class="card-body d-flex justify-content-between">-->
-<!--                            <div>Main</div>-->
-<!--                            <div>-->
-<!--                                <i class="far fa-edit"></i>-->
-<!--                                <i class="fas fa-plus addImage"></i>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-</div>
+
+            <div class="mb-4">
+                <div class="subHeading">IMAGES</div>
+                <div class="row editImgRow">
+                <input class="imagesLength d-none" value="${product.product_images.length}">
+                ${printImages(product.product_images)}
+                </div>
+            </div>
+            
             <div class="my-3 d-flex justify-content-evenly">
                 <div>
                     <span id="visibility" class="mt-3">Visibility</span>
-                    <label class="switch">
-                        <input type="checkbox" name="status" class="visibilitySwitch" checked>
-                        <span class="slider round"></span>
+                    <label class="switch">                
+                    ${visibility(product.status)}
                     </label>
                 </div>
-                <button class="btn btn-success save" type="submit" value="submit">SAVE</button>
-                <button class="btn btn-warning save">SAVE AND CREATE COPY</button>
+                <button class="btn btn-success save" type="submit" formaction="/admin/products/edit/${product.id}"">SAVE</button>
+                <a class="btn btn-secondary save" onclick="location.href='/admin/products'">CANCEL</a>
             </div>
         </form>
     </div>
 </div>
+
         `});
 };

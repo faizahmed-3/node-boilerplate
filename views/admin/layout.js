@@ -62,6 +62,17 @@ module.exports = ({title, content}) => {
                     <div class="card card-body">
                         <ul class="mt-0 px-0">
                         <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">All Products</li>
+                        <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">Brands</li>
+                        <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">Cases</li>
+                        <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">Protectors</li>
+                        <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">Power</li>
+                        <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">Audio</li>
+                        <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">Smart Watches</li>
+                        <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">Camera Accessories</li>
+                        <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">Car Accessories</li>
+                        <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">Computer Accessories</li>
+                        <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">TV Accessories</li>
+                        <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products'">Other Categories</li>
                         </ul>
                     </div>
                 </div>
@@ -148,8 +159,7 @@ module.exports = ({title, content}) => {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous">
-</script>
-       
+</script>       
 
 <!--Custom JS -->
 <script src="/js/admin.js"></script>

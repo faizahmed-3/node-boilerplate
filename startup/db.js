@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 module.exports = function () {
     mongoose.connect(
-        'mongodb+srv://faiz:faiz123@amazon-db.qmd2y.mongodb.net/amazonDB?retryWrites=true&w=majority',
+        'mongodb://localhost/amazon-local',
         {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false})
-        .then(() => winston.info('Connected to Amazon Cellular DB successfully...'))
+        .then(() => winston.info('Connected to Amazon Local DB successfully...'))
 }

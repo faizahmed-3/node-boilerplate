@@ -1104,11 +1104,13 @@ body {
 
   select{
     @include pointer;
+    text-transform: capitalize;
   }
 
   .optional {
     font-size: 0.7rem;
     font-weight: normal;
+    text-transform: capitalize;
   }
 
   .ulButton {
@@ -1135,7 +1137,7 @@ body {
     font-size: 1.4rem;
   }
 
-  .imgRow {
+  .imgRow, editImgRow {
     display: flex;
   }
 
@@ -1279,6 +1281,33 @@ body {
 
   .hasSub{
     @include pointer;
+  }
+
+  .product-name-heading{
+    width: 30%;
+    text-align: center;
+    text-transform: capitalize;
+  }
+
+  .product-name{
+    font-size: 0.8rem;
+    text-align: start;
+    text-transform: capitalize;
+  }
+
+  .product-others{
+    width: 8.75%;
+    text-align: center;
+  }
+
+  .product-row{
+    height: 3.5rem;
+  }
+
+  .products-view-switch{
+    &:hover{
+      cursor: no-drop;
+    }
   }
 }
 

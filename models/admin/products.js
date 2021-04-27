@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
         required: true,
         maxlength: 255,
         trim: true,
-        // unique: true
+        unique: true
     },
     categoryID: {
         type: mongoose.Schema.Types.ObjectId,
@@ -24,16 +24,6 @@ const productSchema = new mongoose.Schema({
     specialID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'SpecialCategory'
-    },
-    colour: {
-        type: String,
-        maxlength: 255,
-        trim: true
-    },
-    material: {
-        type: String,
-        maxlength: 255,
-        trim: true
     },
     description: {
         type: String,
@@ -64,12 +54,12 @@ const productSchema = new mongoose.Schema({
     },
     status: {
         type: Boolean,
-        default: true
+        default: false
     },
     product_images: [{
         filename: String,
-        destination: String,
-        size: Number
+        // destination: String,
+        // size: Number
     }],
     dateCreated: {
         type: Date,
@@ -95,8 +85,6 @@ function validate(product) {
         categoryID: Joi.string().min(3).max(255),
         brandID: Joi.string().min(3).max(255),
         specialID: Joi.string().min(3).max(255),
-        colour: Joi.string().optional().allow('').min(3).max(255),
-        material: Joi.string().optional().allow('').min(3).max(255),
         description: Joi.string().optional().allow(''),
         inBox: Joi.string().optional().allow(''),
         quantity: Joi.number().required(),

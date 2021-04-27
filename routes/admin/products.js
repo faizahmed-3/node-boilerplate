@@ -11,24 +11,7 @@ const editProductTemplate = require('../../views/admin/products/edit')
 const express = require('express');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    const products = await Product.find().sort('product_name');
-    res.send(viewProductsTemplate({products}));
-});
-
-router.get('/new', async (req, res) => {
-    const categories = await Category.find().select('_id category_name').sort('category_name');
-    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
-    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
-
-    res.send(addProductTemplate({categories, brands, specials}));
-});
-
-router.post('/', productImagesUpload, async (req, res) => {
-    const categories = await Category.find().select('_id category_name').sort('category_name');
-    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
-    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
-
+async function post(req, res) {
     const {error} = validate(req.body);
     if (error) return res.send(addProductTemplate({
         input: req.body,
@@ -59,7 +42,7 @@ router.post('/', productImagesUpload, async (req, res) => {
 
     const product = new Product(
         _.pick(req.body,
-            ['product_name', 'categoryID', 'brandID', 'subBrandID', 'specialID', 'colour', 'material', 'description', 'inBox', 'quantity', 'shop_price', 'price', 'discount_price', 'status'])
+            ['product_name', 'categoryID', 'brandID', 'subBrandID', 'specialID', 'description', 'inBox', 'quantity', 'shop_price', 'price', 'discount_price', 'status'])
     );
 
     product.product_images = product_images;
@@ -87,9 +70,46 @@ router.post('/', productImagesUpload, async (req, res) => {
         await brand.save()
     }
 
-    res.send(product)
 
-    // res.redirect('/admin/products');
+}
+
+
+router.get('/', async (req, res) => {
+    const products = await Product.find().sort('product_name');
+    res.send(viewProductsTemplate({products}));
+});
+
+router.get('/new', async (req, res) => {
+    const categories = await Category.find().select('_id category_name').sort('category_name');
+    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
+    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
+
+    res.send(addProductTemplate({categories, brands, specials}));
+});
+
+router.post('/', productImagesUpload, async (req, res) => {
+    const categories = await Category.find().select('_id category_name').sort('category_name');
+    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
+    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
+
+    await post(req,res);
+
+    res.redirect('/admin/products');
+});
+
+router.post('/copy', productImagesUpload, async (req, res) => {
+    const categories = await Category.find().select('_id category_name').sort('category_name');
+    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
+    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
+
+    await post(req,res);
+
+    res.send(addProductTemplate({
+        input: req.body,
+        categories,
+        brands,
+        specials
+    }))
 });
 
 router.get('/edit/:id', async (req, res) => {
@@ -99,22 +119,78 @@ router.get('/edit/:id', async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(400).send(`Sorry, that product doesn't exist`);
 
-    res.send(editProductTemplate({product}));
+    const categories = await Category.find().select('_id category_name').sort('category_name');
+    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
+    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
+
+
+    res.send(editProductTemplate({product, categories, brands, specials}));
 });
 
-router.post('/edit/:id', async (req, res) => {
-    const {error} = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
+router.post('/edit/:id', productImagesUpload, async (req, res) => {
     const valid = mongoose.isValidObjectId(req.params.id);
     if (!valid) return res.status(400).send('Invalid ID passed');
 
+    let product = await Product.findById(req.params.id);
+    if (!product) return res.status(400).send(`Sorry, that product doesn't exist`);
 
-    const product = await Product.findByIdAndUpdate(req.params.id,
-        _.pick(req.body, ['productName', 'colour', 'material', 'quantity', 'price', 'discountPrice', 'discountStart', 'discountEnd', 'status']),
+    const categories = await Category.find().select('_id category_name').sort('category_name');
+    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
+    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
+
+    const {error} = validate(req.body);
+    if (error) return res.send(editProductTemplate({
+        product,
+        error: error.details[0],
+        categories,
+        brands,
+        specials
+    }))
+
+    const product_images = []
+    const reqFiles = []
+    const fileKeys = Object.keys(req.files);
+    fileKeys.forEach(function (key) {
+        reqFiles.push(req.files[key]);
+    });
+    reqFiles.forEach(image => {
+        product_images.push(image[0])
+    })
+
+    let existingImages = []
+    if (typeof req.body.existingImages === 'string') {
+        existingImages.push({filename: req.body.existingImages})
+    } else if (typeof req.body.existingImages === 'object') {
+        req.body.existingImages.forEach( image => {
+            existingImages.push({filename : image})
+        })
+    }
+
+    const editedImagesArray = existingImages.concat(product_images);
+
+
+    function checkSubBrand(id) {
+        if (id.includes('-')) {
+            const splitted = id.split('-');
+            req.body.brandID = splitted[0]
+            req.body.subBrandID = splitted[1]
+        }
+    }
+    checkSubBrand(req.body.brandID);
+
+    if (!req.body.status) req.body.status = false;
+
+    product = await Product.findByIdAndUpdate(req.params.id,
+        _.pick(req.body, ['product_name', 'categoryID', 'brandID', 'subBrandID', 'specialID', 'description', 'inBox', 'quantity', 'shop_price', 'price', 'discount_price', 'status']),
         {new: true});
     if (!product) return res.status(404).send(`Sorry, that product doesn't exist`);
 
+    if (editedImagesArray.length > 0) product.product_images = editedImagesArray;
+
+    await product.save();
+
+    console.log(req.body.status);
+    console.log(req.body);
 
     res.redirect('/admin/products');
 });

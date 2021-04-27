@@ -1007,12 +1007,16 @@ body .inputError {
 #add-product .form-text {
   font-size: 0.7rem;
 }
+#add-product select {
+  text-transform: capitalize;
+}
 #add-product select:hover {
   cursor: pointer;
 }
 #add-product .optional {
   font-size: 0.7rem;
   font-weight: normal;
+  text-transform: capitalize;
 }
 #add-product .ulButton {
   display: block;
@@ -1034,7 +1038,7 @@ body .inputError {
   font-weight: 600;
   font-size: 1.4rem;
 }
-#add-product .imgRow {
+#add-product .imgRow, #add-product editImgRow {
   display: flex;
 }
 #add-product .card {
@@ -1256,6 +1260,26 @@ body .inputError {
 }
 #viewProducts .hasSub:hover {
   cursor: pointer;
+}
+#viewProducts .product-name-heading {
+  width: 30%;
+  text-align: center;
+  text-transform: capitalize;
+}
+#viewProducts .product-name {
+  font-size: 0.8rem;
+  text-align: start;
+  text-transform: capitalize;
+}
+#viewProducts .product-others {
+  width: 8.75%;
+  text-align: center;
+}
+#viewProducts .product-row {
+  height: 3.5rem;
+}
+#viewProducts .products-view-switch:hover {
+  cursor: no-drop;
 }
 
 @media (max-width: 1199.98px) {
