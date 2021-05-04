@@ -11,6 +11,7 @@ module.exports = ({categories, brands, specials, input, error}) => {
 
     const renderedBrands = brands.map(brand => {
             if (brand.subBrands.length > 0) {
+                brand.subBrands.sort((a,b) => a.subBrandName.localeCompare(b.subBrandName))
                 let subBrands = brand.subBrands.map(subBrand => {
                     return `
                     <option class="subBrandOption" value="${brand._id}-${subBrand._id}">${subBrand.subBrandName}</option>
@@ -64,7 +65,7 @@ module.exports = ({categories, brands, specials, input, error}) => {
                 <label for="product_name" class="form-label" required>Product Name</label>
                 <input name="product_name" type="text" class="form-control" id="product_name"
                        aria-describedby="product_name" value="${getInput(input, 'product_name')}" required>
-                <div class="form-text">use this format (colour : product name : for device) e.g Black nillkin frosted shield for iPhone 12</div>
+                <div class="form-text">use this format (colour : brand: product name : for device) e.g Black nillkin frosted shield for iPhone 12</div>
                 <div class="inputError">${getError(error, 'product_name')}</div>
             </div>
 
@@ -187,7 +188,6 @@ module.exports = ({categories, brands, specials, input, error}) => {
                         <th scope="col" required>Quantity</th>
                         <th scope="col" required>Shop Price (ksh)</th>
                         <th scope="col" required>Price (ksh)</th>
-                        <th scope="col">Discount Price (ksh)</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -203,11 +203,6 @@ module.exports = ({categories, brands, specials, input, error}) => {
                         <td>
                             <input type="number" name="price" min="1" value="${getInput(input, 'price')}" required>
                             <div class="inputError">${getError(error, 'price')}</div>
-                        </td>
-                        <td>
-                            <input type="number" name="discount_price" min="1" value="${getInput(input, 'discount_price')}"
-                                   placeholder="optional">
-                            <div class="inputError">${getError(error, 'discount_price')}</div>
                         </td>
                     </tr>
                     </tbody>

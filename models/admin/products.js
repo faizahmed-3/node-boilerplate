@@ -48,10 +48,6 @@ const productSchema = new mongoose.Schema({
         min: 0,
         required:true
     },
-    discount_price: {
-        type: Number,
-        min: 0,
-    },
     status: {
         type: Boolean,
         default: false
@@ -90,7 +86,6 @@ function validate(product) {
         quantity: Joi.number().required(),
         shop_price: Joi.number().required(),
         price: Joi.number().required(),
-        discount_price: Joi.number().optional().allow(''),
         status: Joi.boolean()
 
     }).unknown(true);;

@@ -10,8 +10,16 @@ const brandsSchema = new mongoose.Schema({
         maxlength: 255,
         trim: true
     },
+    brandCategoryID: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Category'
+    },
     subBrands: [{
         subBrandName: String,
+        subBrandCategoryID: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Category'
+        },
         unitsSold: {
             type: Number,
             min: 0,
@@ -49,7 +57,6 @@ const brandsSchema = new mongoose.Schema({
 
 const Brand = mongoose.model('Brand', brandsSchema);
 
-
 function validate(brand) {
     const schema = Joi.object({
         brand_name: Joi.string().required().min(3).max(255),
@@ -65,7 +72,6 @@ function validate(brand) {
 
     return schema.validate(brand, options);
 }
-
 
 exports.Brand = Brand;
 exports.validate = validate;

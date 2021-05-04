@@ -17,6 +17,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
 
     const renderedBrands = brands.map(brand => {
         if (brand.subBrands.length > 0) {
+            brand.subBrands.sort((a,b) => a.subBrandName.localeCompare(b.subBrandName))
             let subBrands = brand.subBrands.map(subBrand => {
                 if (product.subBrandID){
                     if (product.subBrandID.toString() === subBrand._id.toString()) {
@@ -104,9 +105,9 @@ module.exports = ({product, error, categories, brands, specials}) => {
                 <input type="text" value="${product.product_images[i].filename}" name="existingImages" class="d-none">
                 <div class="card-body ">
                     <div class="d-flex justify-content-end">
-                        <label for="image${i+1}"><i class="far fa-edit"></i></label>
-                        <input type="file" id="image${i+1}" name="image${i+1}" accept="image/*" hidden>
-                        <i class="far fa-trash-alt mx-2"></i>
+<!--                        <label for="image${i+1}"><i class="far fa-edit"></i></label>-->
+<!--                        <input type="file" id="image${i+1}" name="image${i+1}" accept="image/*" hidden>-->
+                        <i class="far fa-trash-alt mx-2" style="color: red"></i>
                         <i class="fas fa-plus addImage"></i>
                     </div>
                 </div>
@@ -152,7 +153,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
         title: title,
         content: `
 
-<div id="add-product" class="container card my-5">
+<div id="add-product" class="container card mt-3 mb-5">
     <div class="card-header">
         Product Information
     </div>
@@ -161,7 +162,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
             <div class="mb-3 form-group">
                 <label for="product_name" class="form-label">Product Name</label>
                 <input name="product_name" value="${product.product_name}" type="text" class="form-control" id="product_name" aria-describedby="product name">
-                <div class="form-text">use this format (colour : product name : for device) e.g Black nillkin frosted shield for iPhone 12</div>
+                <div class="form-text">use this format (colour :brand: product name : for device) e.g Black nillkin frosted shield for iPhone 12</div>
                 <div class="inputError">${getError(error, 'product_name')}</div>
             </div>
             
@@ -285,7 +286,6 @@ module.exports = ({product, error, categories, brands, specials}) => {
                         <th scope="col" required>Quantity</th>
                         <th scope="col" required>Shop Price (ksh)</th>
                         <th scope="col" required>Price (ksh)</th>
-                        <th scope="col">Discount Price (ksh)</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -302,18 +302,14 @@ module.exports = ({product, error, categories, brands, specials}) => {
                             <input type="number" name="price" min="1" value="${getInput(product, 'price')}" required>
                             <div class="inputError">${getError(error, 'price')}</div>
                         </td>
-                        <td>
-                            <input type="number" name="discount_price" min="1" value="${getInput(product, 'discount_price')}"
-                                   placeholder="optional">
-                            <div class="inputError">${getError(error, 'discount_price')}</div>
-                        </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="mb-4">
-                <div class="subHeading">IMAGES</div>
+                <div class="subHeading">IMAGES</div> 
+                <div class="form-text" style="color: red; font-size:1rem">Deleting an image will delete all images except the main image. Refresh the page to undo the deletion</div>
                 <div class="row editImgRow">
                 <input class="imagesLength d-none" value="${product.product_images.length}">
                 ${printImages(product.product_images)}

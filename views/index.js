@@ -1,16 +1,20 @@
+const {printProductModal, printMainImage} = require('../middlewares/otherFunctions');
 const layout = require('./layout');
 const title = 'Home';
 
-module.exports = ({products}) => {
-    const renderedProducts = products.map(
-        product => {
-            return `<div class="col-6 col-md-4 col-lg-2">
+module.exports = ({featured_products, new_arrivals, sale}) => {
+
+    function renderSpecial(products) {
+        return products.map(
+            product => {
+                return `
+<div class="col-6 col-md-4 col-lg-2">
     <div class="card">
-        <img src="/img/home/featured/5.jpg" class="card-img-top" alt="..." data-bs-toggle="modal"
-             data-bs-target="#product-view">
+        <img src="/img/products/${printMainImage(product)}" class="card-img-top" alt="..." data-bs-toggle="modal"
+             data-bs-target="#_${product._id}">
         <div class="card-body">
-            <h6 class="card-title" data-bs-toggle="modal" data-bs-target="#product-view">${product.productName}</h6>
-            <p class="card-text mb-0">ksh. ${product.discountPrice} <span>${product.price}</span></p>
+            <h6 class="card-title" data-bs-toggle="modal" data-bs-target="#_${product._id}">${product.product_name}</h6>
+            <p class="card-text mb-0 featured-card-price">ksh. ${product.price}</p>
             <div class="action">
                 <form method="post" action="/wishlist/${product._id}">
                 <button type="submit" class="formBtn"><i class="bi bi-heart"></i></button>
@@ -22,43 +26,31 @@ module.exports = ({products}) => {
         </div>
     </div>
 </div>
+
+<!--Product view Modal-->
+${printProductModal(product)}
+
             `}).join('');
+    }
 
     return layout({
         title: title,
-        content: `<div class="index">
+        content: `
+<div class="index">
 <!--Tiles-->
 <section id="tiles">
     <div class="container-fluid">
         <div class="row mt-2 mt-lg-0  my-lg-4">
-            <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card">
-                    <img src="/img/home/phones.jfif" class="card-img-top image-tile" alt="..."
-                         onclick="location.href='findby.html'">
-                    <div class="card-footer text-center">
-                        Find By Device
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card" onclick="location.href='brands.html'">
-                    <img src="/img/home/brands.jfif" class="card-img-top image-tile" alt="...">
-                    <div class="card-footer text-center">
-                        Brands
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card">
-                    <img src="/img/home/cases.jfif" class="card-img-top image-tile" alt="..."
-                         onclick="location.href='cases.html'">
+            <div class="offset-lg-1 col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
+                <div class="card" onclick="location.href='/6088049365de8726600704af'">
+                    <img src="/img/home/cases.jfif" class="card-img-top image-tile" alt="...">
                     <div class="card-footer text-center">
                         Cases
                     </div>
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card">
+                <div class="card" onclick="location.href='/608922137c058834a8fa35e8'">
                     <img src="/img/home/protector.jfif" class="card-img-top image-tile" alt="...">
                     <div class="card-footer text-center">
                         Protectors
@@ -66,7 +58,7 @@ module.exports = ({products}) => {
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card">
+                <div class="card" onclick="location.href='/6089221f7c058834a8fa35e9'">
                     <img src="/img/home/power.jfif" class="card-img-top image-tile" alt="...">
                     <div class="card-footer text-center">
                         Power
@@ -74,25 +66,25 @@ module.exports = ({products}) => {
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card">
+                <div class="card" onclick="location.href='/6088049f65de8726600704b0'">
                     <img src="/img/home/audio.jfif" class="card-img-top image-tile" alt="...">
                     <div class="card-footer text-center">
                         Audio
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row my-lg-4">
             <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card">
+                <div class="card" onclick="location.href='/608922917c058834a8fa35f0'">
                     <img src="/img/home/watches.jfif" class="card-img-top image-tile" alt="...">
                     <div class="card-footer text-center">
-                        Smart Watch and Accessories
+                        Smart Watches
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card">
+        </div>
+        <div class="row my-lg-4">
+            <div class="offset-lg-1 col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
+                <div class="card" onclick="location.href='/608922477c058834a8fa35eb'">
                     <img src="/img/home/camera.jfif" class="card-img-top image-tile" alt="...">
                     <div class="card-footer text-center">
                         Camera <br> Accessories
@@ -100,7 +92,7 @@ module.exports = ({products}) => {
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card">
+                <div class="card" onclick="location.href='/6089224d7c058834a8fa35ec'">
                     <img src="/img/home/car.jfif" class="card-img-top image-tile" alt="...">
                     <div class="card-footer text-center">
                         Car <br> Accessories
@@ -108,7 +100,7 @@ module.exports = ({products}) => {
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card">
+                <div class="card" onclick="location.href='/608922557c058834a8fa35ed'">
                     <img src="/img/home/comp.jfif" class="card-img-top image-tile" alt="...">
                     <div class="card-footer text-center">
                         Computer <br> Accessories
@@ -116,7 +108,7 @@ module.exports = ({products}) => {
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card">
+                <div class="card" onclick="location.href='/6089225e7c058834a8fa35ee'">
                     <img src="/img/home/tv.jfif" class="card-img-top image-tile" alt="...">
                     <div class="card-footer text-center">
                         Tv <br> Accessories
@@ -124,7 +116,7 @@ module.exports = ({products}) => {
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-2 mb-3 mb-lg-0 ">
-                <div class="card">
+                <div class="card" onclick="location.href='/608922687c058834a8fa35ef'">
                     <img src="/img/home/others.jfif" class="card-img-top image-tile" alt="...">
                     <div class="card-footer text-center">
                         Other <br> Categories
@@ -174,109 +166,14 @@ module.exports = ({products}) => {
     </div>
 </section>
 
-<!--Test Products-->
-<section class="container featured">
-    <h4 class="section-title">
-         Products Test
-    </h4>
-    <button type="button" class="btn btn-sm see-all" onclick="location.href='featured.html'">SEE ALL</button>
-    <div class="row">
-        ${renderedProducts}
-    </div>
-</section>
-
 <!--Featured Products-->
 <section class="container featured">
     <h4 class="section-title">
         Featured Products
     </h4>
-    <button type="button" class="btn btn-sm see-all" onclick="location.href='featured.html'">SEE ALL</button>
+<!--    <button type="button" class="btn btn-sm see-all" onclick="location.href='/special/6088050e65de8726600704b6'">SEE ALL</button>-->
     <div class="row">
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/watches.jfif" class="card-img-top" alt="..." data-bs-toggle="modal"
-                     data-bs-target="#product-view">
-                <div class="card-body">
-                    <h6 class="card-title" data-bs-toggle="modal" data-bs-target="#product-view">Nillkin Amazing 2-in-1
-                        HD full screen tempered glass</h6>
-                    <p class="card-text mb-0">ksh. 3200 <span>ksh. 4000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/2.jpg" class="card-img-top" alt="..." data-bs-toggle="modal"
-                     data-bs-target="#product-view">
-                <div class="card-body">
-                    <h6 class="card-title" data-bs-toggle="modal" data-bs-target="#product-view">Nillkin CamShield Armor case for Apple iPhone 12</h6>
-                    <p class="card-text mb-0">ksh. 800 </p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/3.jpg" class="card-img-top" alt="..." data-bs-toggle="modal"
-                     data-bs-target="#product-view">
-                <div class="card-body">
-                    <h6 class="card-title" data-bs-toggle="modal" data-bs-target="#product-view">Nillkin CamShield Pro cover case for Apple iPhone 12</h6>
-                    <p class="card-text mb-0">ksh. 1800 <span>ksh. 2500</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/4.jpg" class="card-img-top" alt="..." data-bs-toggle="modal"
-                     data-bs-target="#product-view">
-                <div class="card-body">
-                    <h6 class="card-title" data-bs-toggle="modal" data-bs-target="#product-view">Nillkin CamShield Silky Magnetic silicon case for Apple iPhone 12, iPhone 12 Pro</h6>
-                    <p class="card-text mb-0">ksh. 1500 <span>ksh. 2000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/5.jpg" class="card-img-top" alt="..." data-bs-toggle="modal"
-                     data-bs-target="#product-view">
-                <div class="card-body">
-                    <h6 class="card-title" data-bs-toggle="modal" data-bs-target="#product-view">Nillkin Textured nylon fiber case for Apple iPhone 12 Mini</h6>
-                    <p class="card-text mb-0">ksh. 3200 <span>ksh. 4000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/6.jpg" class="card-img-top" alt="..." data-bs-toggle="modal"
-                     data-bs-target="#product-view">
-                <div class="card-body">
-                    <h6 class="card-title" data-bs-toggle="modal" data-bs-target="#product-view">Nillkin Flex PURE Pro MagSafe cover case for Apple iPhone 12 Mini</h6>
-                    <p class="card-text mb-0">ksh. 500 <span>ksh. 1000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+        ${renderSpecial(featured_products)}
     </div>
 </section>
 
@@ -285,177 +182,22 @@ module.exports = ({products}) => {
     <h4 class="section-title">
         New Arrivals
     </h4>
-    <button type="button" class="btn btn-sm see-all">SEE ALL</button>
+<!--    <button type="button" class="btn btn-sm see-all" onclick="location.href='/special/6088051765de8726600704b7'">SEE ALL</button>-->
     <div class="row">
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/6.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin Amazing 2-in-1 HD full screen tempered glass</h6>
-                    <p class="card-text mb-0">ksh. 3200 <span>ksh. 4000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/5.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin CamShield Armor case for Apple iPhone 12</h6>
-                    <p class="card-text mb-0">ksh. 800 </p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/4.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin CamShield Pro cover case for Apple iPhone 12</h6>
-                    <p class="card-text mb-0">ksh. 1800 <span>ksh. 2500</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/3.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin CamShield Silky Magnetic silicon case for Apple iPhone 12, iPhone 12
-                        Pro</h6>
-                    <p class="card-text mb-0">ksh. 1500 <span>ksh. 2000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/2.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin Textured nylon fiber case for Apple iPhone 12 Mini</h6>
-                    <p class="card-text mb-0">ksh. 3200 <span>ksh. 4000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/1.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin Flex PURE Pro MagSafe cover case for Apple iPhone 12 Mini</h6>
-                    <p class="card-text mb-0">ksh. 500 <span>ksh. 1000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+        ${renderSpecial(new_arrivals)}
     </div>
 </section>
 
 <!--Sale-->
-<section class="container featured mb-4">
+<section class="container featured pb-5">
     <h4 class="section-title">
         Sale
     </h4>
-    <button type="button" class="btn btn-sm see-all">SEE ALL</button>
+<!--    <button type="button" class="btn btn-sm see-all" onclick="location.href='/special/60891d6820824d1308bc6946'">SEE ALL</button>-->
     <div class="row">
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/2.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin Amazing 2-in-1 HD full screen tempered glass</h6>
-                    <p class="card-text mb-0">ksh. 3200 <span>ksh. 4000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/4.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin CamShield Armor case for Apple iPhone 12</h6>
-                    <p class="card-text mb-0">ksh. 800 </p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/6.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin CamShield Pro cover case for Apple iPhone 12</h6>
-                    <p class="card-text mb-0">ksh. 1800 <span>ksh. 2500</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/1.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin CamShield Silky Magnetic silicon case for Apple iPhone 12, iPhone 12
-                        Pro</h6>
-                    <p class="card-text mb-0">ksh. 1500 <span>ksh. 2000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/3.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin Textured nylon fiber case for Apple iPhone 12 Mini</h6>
-                    <p class="card-text mb-0">ksh. 3200 <span>ksh. 4000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <div class="card">
-                <img src="/img/home/featured/5.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h6 class="card-title">Nillkin Flex PURE Pro MagSafe cover case for Apple iPhone 12 Mini</h6>
-                    <p class="card-text mb-0">ksh. 500 <span>ksh. 1000</span></p>
-                    <div class="action">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+        ${renderSpecial(sale)}
     </div>
 </section>
-</div>       `})
+</div>       
+`})
 }

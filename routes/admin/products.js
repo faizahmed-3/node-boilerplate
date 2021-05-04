@@ -38,11 +38,12 @@ async function post(req, res) {
             req.body.subBrandID = splitted[1]
         }
     }
+
     checkSubBrand(req.body.brandID);
 
     const product = new Product(
         _.pick(req.body,
-            ['product_name', 'categoryID', 'brandID', 'subBrandID', 'specialID', 'description', 'inBox', 'quantity', 'shop_price', 'price', 'discount_price', 'status'])
+            ['product_name', 'categoryID', 'brandID', 'subBrandID', 'specialID', 'description', 'inBox', 'quantity', 'shop_price', 'price', 'status'])
     );
 
     product.product_images = product_images;
@@ -70,7 +71,7 @@ router.post('/', productImagesUpload, async (req, res) => {
     const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
     const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
 
-    await post(req,res);
+    await post(req, res);
 
     res.redirect('/admin/products');
 });
@@ -80,7 +81,7 @@ router.post('/copy', productImagesUpload, async (req, res) => {
     const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
     const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
 
-    await post(req,res);
+    await post(req, res);
 
     res.send(addProductTemplate({
         input: req.body,
@@ -139,12 +140,25 @@ router.post('/edit/:id', productImagesUpload, async (req, res) => {
     if (typeof req.body.existingImages === 'string') {
         existingImages.push({filename: req.body.existingImages})
     } else if (typeof req.body.existingImages === 'object') {
-        req.body.existingImages.forEach( image => {
-            existingImages.push({filename : image})
+        req.body.existingImages.forEach(image => {
+            existingImages.push({filename: image})
         })
     }
 
+    let i = 0;
+    existingImages.forEach(existingImage => {
+        product_images.forEach(newImage => {
+            if (existingImage.filename.includes(newImage.fieldname)){
+                existingImages.splice([i], 1)
+            }
+            i++;
+        })
+    })
+
+
     const editedImagesArray = existingImages.concat(product_images);
+
+    editedImagesArray.sort((a,b) => a.filename.localeCompare(b.filename))
 
 
     function checkSubBrand(id) {
@@ -154,21 +168,19 @@ router.post('/edit/:id', productImagesUpload, async (req, res) => {
             req.body.subBrandID = splitted[1]
         }
     }
+
     checkSubBrand(req.body.brandID);
 
     if (!req.body.status) req.body.status = false;
 
     product = await Product.findByIdAndUpdate(req.params.id,
-        _.pick(req.body, ['product_name', 'categoryID', 'brandID', 'subBrandID', 'specialID', 'description', 'inBox', 'quantity', 'shop_price', 'price', 'discount_price', 'status']),
+        _.pick(req.body, ['product_name', 'categoryID', 'brandID', 'subBrandID', 'specialID', 'description', 'inBox', 'quantity', 'shop_price', 'price', 'status']),
         {new: true});
     if (!product) return res.status(404).send(`Sorry, that product doesn't exist`);
 
     if (editedImagesArray.length > 0) product.product_images = editedImagesArray;
 
     await product.save();
-
-    console.log(req.body.status);
-    console.log(req.body);
 
     res.redirect('/admin/products');
 });
@@ -191,7 +203,7 @@ router.get('/categories/:id', async (req, res) => {
 
     const category = await Category.findById(req.params.id).select('category_name')
 
-    res.send(viewProductsTemplate({title: category.category_name , products}));
+    res.send(viewProductsTemplate({title: category.category_name, products}));
 })
 
 router.get('/brands/:id', async (req, res) => {
@@ -202,7 +214,7 @@ router.get('/brands/:id', async (req, res) => {
 
     const brand = await Brand.findById(req.params.id).select('brand_name')
 
-    res.send(viewProductsTemplate({title: brand.brand_name , products}));
+    res.send(viewProductsTemplate({title: brand.brand_name, products}));
 })
 
 router.get('/special/:id', async (req, res) => {
@@ -213,9 +225,7 @@ router.get('/special/:id', async (req, res) => {
 
     const special = await Special.findById(req.params.id).select('special_name')
 
-    console.log(special);
-
-    res.send(viewProductsTemplate({title: special.special_name , products}));
+    res.send(viewProductsTemplate({title: special.special_name, products}));
 })
 
 module.exports = router;

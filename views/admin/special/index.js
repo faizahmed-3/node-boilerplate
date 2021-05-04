@@ -1,4 +1,3 @@
-const {displayDate} = require('../../../middlewares/otherFunctions');
 const layout = require('../layout');
 const title = 'View Special Categories'
 
@@ -7,32 +6,32 @@ module.exports = ({specials}) => {
         special => {
             return `<tr>
     <td class="view_table_name"><a href="/admin/products/special/${special._id}">${special.special_name}</a></td>
-    <td>${displayDate(special.dateCreated)}</td>
     <td>${special.unitsSold}</td>
     <td>${special.income}</td>
-    <td>${special.topPicks}</td>
     <td>
         <a href="/admin/special/edit/${special._id}"><i class="far fa-edit"></i></a>
-        <div  class="deleteForm ms-4">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#_${special._id}" class="formBtn">
-            <i class="far fa-trash-alt "></i>
-            </button>
+        <div>
+<!--        <div  class="deleteForm ms-4">-->
+<!--            <button type="button" data-bs-toggle="modal" data-bs-target="#_${special._id}" class="formBtn">-->
+<!--            <i class="far fa-trash-alt "></i>-->
+<!--            </button>-->
+<!--        </div>-->
+<!--        -->
+<!--        <div class="modal fade" id="_${special._id}" tabindex="-1" aria-labelledby="specialModal" aria-hidden="true">-->
+<!--            <div class="modal-dialog modal-dialog-centered">-->
+<!--                <div class="modal-content">-->
+<!--                <form method="POST" >-->
+<!--                    <div class="modal-body">-->
+<!--                        <p><b>DELETE</b> ${special.special_name}?</p>-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>-->
+<!--                        <button class="btn btn-danger" type="submit" formaction="/admin/special/delete/${special._id}">Confirm</button>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
-        
-        <div class="modal fade" id="_${special._id}" tabindex="-1" aria-labelledby="specialModal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                <form method="POST" >
-                    <div class="modal-body">
-                        <p><b>DELETE</b> ${special.special_name}?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button class="btn btn-danger" type="submit" formaction="/admin/special/delete/${special._id}">Confirm</button>
-                    </div>
-                </form>
-                </div>
-            </div>
         </div>
     </td>
 </tr>
@@ -42,18 +41,16 @@ module.exports = ({specials}) => {
         title: title,
         content: `<div id="viewProducts" class="card ">
         <div class="d-flex justify-content-end">
-    <button type="button" class="btn btn-primary mt-3 me-3" style="font-size: 0.8rem" onclick="location.href='/admin/special/new'">Add New Special Category</button>
+    <button type="button" class="btn btn-primary mt-4 me-3" style="font-size: 0.8rem" onclick="location.href='/admin/special/new'">Add New Special Category</button>
     </div> 
     <div class="card-body table-responsive-md">
         <table class="table table-hover table-bordered border-dark">
             <thead>
             <tr class="table-dark">
                 <th scope="col" class="tableHeaderBig">Special Category Name</th>
-                <th scope="col" class="tableHeader">Date Created</th>
                 <th scope="col" class="tableHeader">Units Sold</th>
                 <th scope="col" class="tableHeader">Income</th>
-                <th scope="col" class="tableHeader">Top Picks</th>
-                <th scope="col" class="tableHeader">Actions</th>
+                <th scope="col" class="tableHeader">Edit</th>
             </tr>
             </thead>
             <tbody>

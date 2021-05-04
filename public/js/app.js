@@ -22,28 +22,33 @@ let year = new Date().getFullYear();
 document.querySelector('#copyright').innerHTML = year;
 
 
+//open modal externally
+window.addEventListener('load', () => {
+    let url = window.location.href;
+
+    if (url.includes('#_')){
+        let modalToOpen = url.substring(url.indexOf("#"));
+
+        if (document.querySelector(modalToOpen)){
+            if(window.location.href.indexOf(modalToOpen) !== -1) {
+                let myModal = new bootstrap.Modal(document.querySelector(modalToOpen), {})
+                myModal.show()
+            }
+        }
+    }
+
+
+})
+
+
 // Product view image
-
-let mainImg = document.querySelector('#prod-main-img');
 let smallImages = document.querySelectorAll('.prod-small-img');
-
-smallImages[0].onclick = function () {
-    mainImg.src = smallImages[0].src;
-}
-smallImages[1].onclick = function () {
-    mainImg.src = smallImages[1].src;
-}
-smallImages[2].onclick = function () {
-    mainImg.src = smallImages[2].src;
-}
-smallImages[3].onclick = function () {
-    mainImg.src = smallImages[3].src;
-}
-smallImages[4].onclick = function () {
-    mainImg.src = smallImages[4].src;
-}
-smallImages[5].onclick = function () {
-    mainImg.src = smallImages[5].src;
+if (smallImages.length>0){
+    smallImages.forEach(smallImage => {
+        smallImage.addEventListener('click', (evt) => {
+            evt.path[4].children[0].children[0].src = smallImage.src;
+        })
+    })
 }
 
 
@@ -66,7 +71,7 @@ const subtotalInputs = document.querySelectorAll('.subtotal');
 const total = document.querySelector('.total');
 let sum =0;
 
-if (qtyInputs){
+if (qtyInputs.length>0){
     for (let i=0; i<qtyInputs.length; i++){
         qtyInputs[i].addEventListener('change', evt => {
             subtotalInputs[i].innerHTML = `${evt.target.value * parseInt(priceInputs[i].innerHTML)}`

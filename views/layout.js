@@ -87,7 +87,7 @@ module.exports = ({title, content}) => {
 
             <ul class="navbar-nav mb-2 order-lg-first mx-lg-auto">
                 <li class="nav-item mx-2">
-                    <a class="nav-link active pb-0" aria-current="page" href="/">Home</a>
+                    <a class="nav-link pb-0" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item mx-2 dropdown">
                     <a class="nav-link dropdown-toggle pb-0" href="#" id="navbarDropdown" role="button"
@@ -190,103 +190,7 @@ ${content}
 
 
 <!--Product view Modal-->
-<div class="modal fade" id="product-view" tabindex="-1" aria-labelledby="Product view" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="product-title">Nillkin CamShield Pro cover case for Apple iPhone 12</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body pt-0">
-                <div class="container-fluid">
-                    <div class="row ">
-                        <div class="col-md-7 col-lg-8">
-                            <img src="/img/home/featured/1.jpg" alt="" id="prod-main-img">
-                        </div>
-                        <div class="col-md-5 col-lg-4 d-flex flex-column justify-content-between">
-                            <div class="row small-img-row">
-                                <div class="col-2 small-img-col">
-                                    <img src="/img/home/featured/1.jpg" alt="" class="prod-small-img">
-                                </div>
-                                <div class="col-2 small-img-col">
-                                    <img src="/img/home/watches.jfif" alt="" class="prod-small-img">
-                                </div>
-                                <div class="col-2 small-img-col">
-                                    <img src="/img/home/featured/3.jpg" alt="" class="prod-small-img">
-                                </div>
-                                <div class="col-2 small-img-col">
-                                    <img src="/img/home/featured/4.jpg" alt="" class="prod-small-img">
-                                </div>
-                                <div class="col-2 small-img-col">
-                                    <img src="/img/home/featured/5.jpg" alt="" class="prod-small-img">
-                                </div>
-                                <div class="col-2 small-img-col">
-                                    <img src="/img/home/featured/6.jpg" alt="" class="prod-small-img">
-                                </div>
-                                <div class="col-2 small-img-col">
-                                    <img src="/img/home/featured/3.jpg" alt="" class="prod-small-img">
-                                </div>
-                                <div class="col-2 small-img-col">
-                                    <img src="/img/home/featured/4.jpg" alt="" class="prod-small-img">
-                                </div>
-                                <div class="col-2 small-img-col">
-                                    <img src="/img/home/featured/5.jpg" alt="" class="prod-small-img">
-                                </div>
-                                <div class="col-2 small-img-col">
-                                    <img src="/img/home/featured/6.jpg" alt="" class="prod-small-img">
-                                </div>
-                            </div>
-                            <div>
-                                <div id="prod-price"><span>ksh.</span> 2500</div>
-                                <div class="mt-2 mt-md-1 mt-lg-2 count">
-                                    <input type="number" placeholder="Quantity" class="form-control">
-                                    <div class="count-sub"><span>Subtotal (ksh.):</span> 3250</div>
-                                </div>
-                                <div class="mt-2 mt-md-1 mt-lg-2  d-flex justify-content-evenly">
-                                    <button class="btn btn-outline-success prod-start"> Wishlist <i
-                                            class="bi bi-heart"></i></button>
-                                    <button class="btn btn-outline-success prod-start"> Cart <i
-                                            class="bi bi-cart3"></i></button>
-                                </div>
-                                <div class="mt-2 mt-md-1 mt-lg-2  d-flex justify-content-center">
-                                    <button class="btn btn-success checkout" onclick="location.href='checkout.html'">
-                                        Checkout
-                                    </button>
-                                </div>
-                            </div>
-                            <div id="share" class="text-center">
-                                <i class="bi bi-share-fill px-2"></i>
-                                <i class="fab fa-facebook-f"></i>
-                                <i class="fab fa-instagram"></i>
-                                <i class="fab fa-twitter"></i>
-                                <i class="fab fa-whatsapp"></i>
-                                <p class="mb-0 mt-1 scroll d-none d-lg-block">Scroll down for more details</p>
-                            </div>
 
-                        </div>
-                        <div>
-                            <div class="description mt-3"> Description</div>
-                            <ul class="bullets">
-                                <li>Quality matte cover that protects the back and the edges</li>
-                                <li>Anti-scratch and wear-resistant surface</li>
-                                <li>All ports and controls are easily accessible</li>
-                                <li>High protection from usual damages in combination with a modern design</li>
-                                <li>Material: Highly durable polycarbonate</li>
-                            </ul>
-                            <div class="description">What's in the box</div>
-                            <ul class="bullets">
-                                <li>Nillkin Super Frosted Shield Case</li>
-                                <li>Screen Protector Film</li>
-                                <li>Cleaning Cloth</li>
-                                <li>De-dust Sticker</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
@@ -306,6 +210,8 @@ ${content}
             myInput.focus()
         })
     }
+    
+  
 
 </script>
 

@@ -1,3 +1,4 @@
+const {Category} = require('../../models/admin/categories');
 const mongoose = require('mongoose');
 const viewBrandsTemplate = require('../../views/admin/brands/index');
 const addBrandTemplate = require('../../views/admin/brands/new');
@@ -6,16 +7,7 @@ const {Brand, validate} = require('../../models/admin/brands');
 const express = require('express');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    const brands = await Brand.find().sort('brand_name');
-    res.send(viewBrandsTemplate({brands}));
-});
-
-router.get('/new', (req, res) => {
-    res.send(addBrandTemplate({}));
-});
-
-router.post('/', async (req, res) => {
+async function post(req, res) {
     const {error} = validate(req.body);
     if (error) return res.status(400).send(addBrandTemplate({input: req.body, error: error.details[0]}));
 
@@ -25,27 +17,30 @@ router.post('/', async (req, res) => {
         case('false'):
             brand = new Brand({
                 brand_name: req.body.brand_name,
+                brandCategoryID: req.body.brandCategoryID
             })
             break;
 
         case('true'):
             if (typeof req.body.subBrandItems === "string") {
-                if (req.body.subBrandItems.length > 0) {
-                    brand = new Brand({
-                        brand_name: req.body.brand_name,
-                        subBrands: [{
-                            subBrandName: req.body.subBrandItems
-                        }]
+                brand = new Brand({
+                    brand_name: req.body.brand_name,
+                    subBrands: [{
+                        subBrandName: req.body.subBrandItems,
+                        subBrandCategoryID: req.body.subBrandCategoryID
+                    }]
+                })
+
+            } else if (typeof req.body.subBrandItems === "object") {
+
+                const subBrandArray = []
+
+                for (let i=0; i<req.body.subBrandItems.length; i++){
+                    subBrandArray.push({
+                        subBrandName: req.body.subBrandItems[i],
+                        subBrandCategoryID: req.body.subBrandCategoryID[i]
                     })
                 }
-            } else if (typeof req.body.subBrandItems === "object") {
-                const subBrandArrayFiltered = req.body.subBrandItems.filter(
-                    item => item.length > 0
-                )
-
-                const subBrandArray = subBrandArrayFiltered.map(item => {
-                    return {subBrandName: item}
-                })
 
                 brand = new Brand({
                     brand_name: req.body.brand_name,
@@ -55,54 +50,34 @@ router.post('/', async (req, res) => {
             break;
     }
 
+
     await brand.save();
+}
+
+router.get('/', async (req, res) => {
+    const brands = await Brand.find().sort('brand_name');
+    const categories = await Category.find().select('_id, category_name').sort('category_name');
+
+    res.send(viewBrandsTemplate({brands, categories}));
+});
+
+router.get('/new', async (req, res) => {
+    const categories = await Category.find().select('_id, category_name').sort('category_name');
+    res.send(addBrandTemplate({categories}));
+});
+
+router.post('/', async (req, res) => {
+    await post(req, res);
 
     res.redirect('/admin/brands');
 });
 
 router.post('/copy', async (req, res) => {
-    const {error} = validate(req.body);
-    if (error) return res.status(400).send(addBrandTemplate({input: req.body, error: error.details[0]}));
+    await post(req, res);
 
-    let brand;
+    const categories = await Category.find().select('_id, category_name').sort('category_name');
 
-    switch (req.body.subBrand) {
-        case('false'):
-            brand = new Brand({
-                brand_name: req.body.brand_name,
-            })
-            break;
-
-        case('true'):
-            if (typeof req.body.subBrandItems === "string") {
-                if (req.body.subBrandItems.length > 0) {
-                    brand = new Brand({
-                        brand_name: req.body.brand_name,
-                        subBrands: [{
-                            subBrandName: req.body.subBrandItems
-                        }]
-                    })
-                }
-            } else if (typeof req.body.subBrandItems === "object") {
-                const subBrandArrayFiltered = req.body.subBrandItems.filter(
-                    item => item.length > 0
-                )
-
-                const subBrandArray = subBrandArrayFiltered.map(item => {
-                    return {subBrandName: item}
-                })
-
-                brand = new Brand({
-                    brand_name: req.body.brand_name,
-                    subBrands: subBrandArray
-                })
-            }
-            break;
-    }
-
-    await brand.save();
-
-    res.send(addBrandTemplate({input: req.body}))
+    res.send(addBrandTemplate({input: req.body, categories}))
 });
 
 router.get('/edit/:id', async (req, res) => {
@@ -112,7 +87,9 @@ router.get('/edit/:id', async (req, res) => {
     const brand = await Brand.findById(req.params.id);
     if (!brand) return res.status(400).send(`Sorry, that brand doesn't exist`);
 
-    res.send(editBrandTemplate({brand}));
+    const categories = await Category.find().select('_id, category_name').sort('category_name');
+
+    res.send(editBrandTemplate({brand, categories}));
 });
 
 router.post('/edit/:id', async (req, res) => {
@@ -131,6 +108,7 @@ router.post('/edit/:id', async (req, res) => {
         case('false'):
             brand = await Brand.findByIdAndUpdate(req.params.id, {
                 brand_name: req.body.brand_name,
+                brandCategoryID: req.body.brandCategoryID
             }, {new: true})
 
             //deleting existing sub brands
@@ -160,22 +138,42 @@ router.post('/edit/:id', async (req, res) => {
 
             //deleting existing sub brands
              existingItemsArray = brand.subBrands.map(subBrand => {
-                return subBrand._id.toString()
+                return {
+                    subBrandID: subBrand._id,
+                    subBrandCategoryID: subBrand.subBrandCategoryID
+                }
             })
 
-             userItemsArray = []
+            userItemsArray = []
 
+            let i=0;
+             let item
             for (let prop in req.body) {
                 if (mongoose.isValidObjectId(prop)) {
-                    userItemsArray.push(prop)
+                    if (typeof req.body.existingSubBrandCategoryID === 'string'){
+                        item = {
+                            subBrandID: prop,
+                            subBrandCategoryID: req.body.existingSubBrandCategoryID
+                        }
+                    } else if (typeof req.body.existingSubBrandCategoryID === 'object'){
+                        item = {
+                            subBrandID: prop,
+                            subBrandCategoryID: req.body.existingSubBrandCategoryID[i]
+                        }
+                    }
+                    i++;
+                    userItemsArray.push(item)
                 }
             }
 
-             difference = existingItemsArray.filter(x => !userItemsArray.includes(x));
+
+            difference = existingItemsArray.filter(({ subBrandID: id1 }) => !userItemsArray.some(({ subBrandID: id2 }) => id2 === id1.toString()));
+
 
             difference.forEach(toDelete => {
-                brand.subBrands = brand.subBrands.filter(subBrand => subBrand._id.toString() !== toDelete);
+                 brand.subBrands = brand.subBrands.filter(subBrand => subBrand._id.toString() !== toDelete.subBrandID.toString());
             })
+
 
             await brand.save()
 
@@ -186,6 +184,11 @@ router.post('/edit/:id', async (req, res) => {
                     if (subBrand.subBrandName !== req.body[prop]) {
                         subBrand.subBrandName = req.body[prop];
                     }
+
+                    let editedUserItem =userItemsArray.filter(userItem => userItem.subBrandID === prop.toString())
+                    if (subBrand.subBrandCategoryID.toString() !== editedUserItem[0].subBrandCategoryID.toString()) {
+                        subBrand.subBrandCategoryID = editedUserItem[0].subBrandCategoryID
+                    }
                 }
             }
 
@@ -194,22 +197,27 @@ router.post('/edit/:id', async (req, res) => {
             //adding new sub brands
             if (typeof req.body.subBrandItems === "string") {
                 if (req.body.subBrandItems.length > 0) {
+                    console.log('got here')
                     brand = await Brand.findByIdAndUpdate(req.params.id, {
                         brand_name: req.body.brand_name,
                         $push: {
                             subBrands: {
-                                subBrandName: req.body.subBrandItems
+                                subBrandName: req.body.subBrandItems,
+                                subBrandCategoryID: req.body.subBrandCategoryID
                             }
                         }
                     })
                 }
-            } else if (typeof req.body.subBrandItems === "object") {
-                const subBrandArrayFiltered = req.body.subBrandItems.filter(
-                    item => item.length > 0
-                )
+            }
+            else if (typeof req.body.subBrandItems === "object") {
 
-                const subBrandArray = subBrandArrayFiltered.map(item => {
-                    return {subBrandName: item}
+                let j=-1;
+                const subBrandArray = req.body.subBrandItems.map(item => {
+                    j++
+                    return {
+                        subBrandName: item,
+                        subBrandCategoryID: req.body.subBrandCategoryID[j]
+                    }
                 })
 
                 let subBrands = brand.subBrands;

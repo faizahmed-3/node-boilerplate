@@ -30,9 +30,11 @@
 
   .card-body {
     padding: 0.5rem;
+    height: 106.29px;
   }
 
   .card-title {
+    height: 28.57px;
     text-transform: capitalize;
     font-size: 0.75rem;
     font-weight: bold;
@@ -50,11 +52,12 @@
     font-weight: bold;
   }
 
-  span {
-    margin-left: 0.2rem;
-    font-size: 0.6rem;
-    font-weight: normal;
-    text-decoration: line-through $red;
+  .featured-card-price{
+    span {
+      margin-left: 0.2rem;
+      font-size: 0.6rem;
+      font-weight: normal;
+    }
   }
 
   .card-img-top {
