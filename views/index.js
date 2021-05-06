@@ -1,12 +1,13 @@
-const {printProductModal, printMainImage} = require('../middlewares/otherFunctions');
+const {printProductModal, printMainImage, printWishlistModal, printCartModal, wishlistButton, cartButton} = require('../middlewares/otherFunctions');
 const layout = require('./layout');
 const title = 'Home';
 
-module.exports = ({featured_products, new_arrivals, sale}) => {
+module.exports = ({featured_products, new_arrivals, sale, wishlist, cart}) => {
 
-    function renderSpecial(products) {
+    function renderSpecial(products, wishlist, cart) {
         return products.map(
             product => {
+
                 return `
 <div class="col-6 col-md-4 col-lg-2">
     <div class="card">
@@ -16,22 +17,20 @@ module.exports = ({featured_products, new_arrivals, sale}) => {
             <h6 class="card-title" data-bs-toggle="modal" data-bs-target="#_${product._id}">${product.product_name}</h6>
             <p class="card-text mb-0 featured-card-price">ksh. ${product.price}</p>
             <div class="action">
-                <form method="post" action="/wishlist/${product._id}">
-                <button type="submit" class="formBtn"><i class="bi bi-heart"></i></button>
-                </form>                
-                <form method="post" action="/cart/${product._id}">
-                    <button type="submit" class="formBtn"><i class="bi bi-cart3"></i></button>
-                </form>
+                ${wishlistButton(product._id, wishlist)}      
+                ${cartButton(product._id, cart)}      
             </div>
         </div>
     </div>
 </div>
 
 <!--Product view Modal-->
-${printProductModal(product)}
+${printProductModal(product, wishlist, cart)}
 
             `}).join('');
     }
+
+
 
     return layout({
         title: title,
@@ -173,7 +172,7 @@ ${printProductModal(product)}
     </h4>
 <!--    <button type="button" class="btn btn-sm see-all" onclick="location.href='/special/6088050e65de8726600704b6'">SEE ALL</button>-->
     <div class="row">
-        ${renderSpecial(featured_products)}
+        ${renderSpecial(featured_products, wishlist, cart)}
     </div>
 </section>
 
@@ -184,7 +183,7 @@ ${printProductModal(product)}
     </h4>
 <!--    <button type="button" class="btn btn-sm see-all" onclick="location.href='/special/6088051765de8726600704b7'">SEE ALL</button>-->
     <div class="row">
-        ${renderSpecial(new_arrivals)}
+        ${renderSpecial(new_arrivals, wishlist, cart)}
     </div>
 </section>
 
@@ -195,9 +194,13 @@ ${printProductModal(product)}
     </h4>
 <!--    <button type="button" class="btn btn-sm see-all" onclick="location.href='/special/60891d6820824d1308bc6946'">SEE ALL</button>-->
     <div class="row">
-        ${renderSpecial(sale)}
+        ${renderSpecial(sale,wishlist, cart)}
     </div>
 </section>
-</div>       
+</div> 
+
+${printWishlistModal(wishlist)}
+      
+${printCartModal(cart)}      
 `})
 }

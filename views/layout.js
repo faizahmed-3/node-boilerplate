@@ -1,3 +1,5 @@
+const {getCount} = require('../middlewares/otherFunctions');
+
 module.exports = ({title, content}) => {
     return `<!DOCTYPE html>
 <html lang="en">
@@ -74,14 +76,11 @@ module.exports = ({title, content}) => {
                     </span>
                         </div>
                     </div>
-                    <a class="formBtn" href="/wishlist">
-                    <i class="bi bi-heart mx-2 notification mt-1">
-                    <span class="tip">4</span>
-                       </i>
-                       </a>
+                    
+                    <i class="bi bi-heart mx-2 notification mt-1" data-bs-toggle="modal" data-bs-target="#wishlist"><span class="tip">${getCount('wishlistCount')}</span></i>
+                       
 
-                    <a class="formBtn" href="/cart">
-                        <i class="bi bi-cart3 mx-2 notification mt-1" ><span class="tip">2</span></i></a>
+                    <i class="bi bi-cart3 mx-2 notification mt-1" data-bs-toggle="modal" data-bs-target="#cart"><span class="tip">${getCount('cartCount')}</span></i>
                 </form>
             </div>
 
@@ -95,13 +94,11 @@ module.exports = ({title, content}) => {
                         Categories
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="bydevice.html">Find By Device</a></li>
-                        <li><a class="dropdown-item" href="brands.html">Brands</a></li>
                         <li><a class="dropdown-item" href="cases.html">Cases</a></li>
                         <li><a class="dropdown-item" href="#">Power</a></li>
                         <li><a class="dropdown-item" href="#">Audio</a></li>
                         <li><a class="dropdown-item" href="#">Protectors</a></li>
-                        <li><a class="dropdown-item" href="#">Smart Watch Accessories</a></li>
+                        <li><a class="dropdown-item" href="#">Smart Watches</a></li>
                         <li><a class="dropdown-item" href="#">Camera Accessories</a></li>
                         <li><a class="dropdown-item" href="#">Car Accessories</a></li>
                         <li><a class="dropdown-item" href="#">Computer Accessories</a></li>
@@ -184,12 +181,6 @@ ${content}
     <i class="fas fa-chevron-up"></i>
 </a>
 
-<!-- Modals -->
-
-<!--Cart Modal-->
-
-
-<!--Product view Modal-->
 
 
 <!-- Bootstrap Bundle with Popper -->

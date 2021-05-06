@@ -1,3 +1,5 @@
+let sessionstorage = require('sessionstorage');
+
 function displayDate(date) {
     let day = date.getDate();
     let month = date.getMonth();
@@ -22,7 +24,7 @@ function getError(error, key) {
     } else return ''
 }
 
-function printProductModal(product) {
+function printProductModal(product, wishlist, cart) {
     return `
         <div class="modal fade product-view" id="_${product._id}" tabindex="-1" aria-labelledby="Product view" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
@@ -42,16 +44,16 @@ function printProductModal(product) {
                                 ${printProductViewSmallImages(product)}
                             </div>
                             <div>
-                                <div id="prod-price"><span>ksh.</span> ${product.price}</div>
+                                <div id="prod-price">
+                                    <span>ksh.</span> <div class="d-inline pricePV">${product.price}</div>
+                                </div>
                                 <div class="mt-2 mt-md-1 mt-lg-2 count">
-                                    <input type="number" placeholder="Quantity" class="form-control">
-                                    <div class="count-sub"><span>Subtotal (ksh.):</span> 3250</div>
+                                    <input type="number" placeholder="Quantity" class="form-control qtyPV" value="1" min="1">
+                                    <div class="count-sub"><span>subtotal (ksh.):</span> <div class="d-inline subPV">${product.price}</div></div>
                                 </div>
                                 <div class="mt-2 mt-md-1 mt-lg-2  d-flex justify-content-evenly">
-                                    <button class="btn btn-outline-success prod-start"> Wishlist <i
-                                            class="bi bi-heart"></i></button>
-                                    <button class="btn btn-outline-success prod-start"> Cart <i
-                                            class="bi bi-cart3"></i></button>
+                                    ${wishBtnPV(product._id, wishlist)}
+                                    ${cartBtnPV(product._id, cart)}
                                 </div>
                                 <div class="mt-2 mt-md-1 mt-lg-2  d-flex justify-content-center">
                                     <button class="btn btn-success checkout" onclick="location.href='checkout.html'">
@@ -105,7 +107,290 @@ function printProductViewSmallImages(product) {
     }).join('');
 }
 
+function printWishlistModal(wishlist) {
 
+    if (Object.keys(wishlist).length>0){
+        sessionstorage.setItem( "wishlistCount", wishlist.products.length );
+
+        function renderedWishlistItems(wishlist) {
+            if (wishlist.products.length>0){
+                return wishlist.products.map(wishItem => {
+                    return `
+                <div class="row">
+                    <div class="col-3">
+                        <img src="/img/products/${printMainImage(wishItem._id)}" alt="" class="img-thumbnail">
+                    </div>
+                    <div class="col-9">
+                        <h5 class="prod-title">${wishItem._id.product_name}</h5>
+                        <div class="mt-3 mt-lg-4">
+                            <div class="price"><span>  ksh.</span> ${wishItem._id.price}</div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-3 mt-lg-4">
+                            <form method="post" action="/wishlist/delete/${wishItem._id._id}"><button type="submit" class="remove btn btn-sm btn-danger" >Remove <i class="bi bi-trash"></i></button></form>
+                            <form method="post" action="/cart/from-wish/${wishItem._id._id}">
+                                <button type="submit" class="remove btn btn-sm btn-success">Add to cart <i class="bi bi-cart3"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <span class="my-2 border-bottom border-2">
+                </span> 
+            </div>
+            `}).join('');
+            } else {
+                return `
+                    <h6 class="text-center py-5 text-muted">Your wishlist is empty at the moment<br>Click <i class="bi bi-heart"></i> to add items to your wishlist</h6>
+                `   }
+        }
+
+        return `
+<div class="modal fade" id="wishlist" tabindex="-1" aria-labelledby="Cart" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cartTitle">Wishlist</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ${renderedWishlistItems(wishlist)}
+            </div>
+            <div class="modal-footer py-3"></div>
+        </div>
+    </div>
+</div>
+    `
+
+    } else {
+        sessionstorage.setItem( "wishlistCount", 0 );
+
+        return `
+<div class="modal fade" id="wishlist" tabindex="-1" aria-labelledby="Wishlist" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="favsTitle">Wishlist</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <h6 class="text-center py-5 text-muted">Your wishlist is empty at the moment<br>Click <i class="bi bi-heart"></i> to add items to your wishlist</h6>     
+            </div>
+        </div>
+    </div>
+</div>
+             
+        `}
+}
+
+function printCartModal(cart) {
+
+    if (Object.keys(cart).length>0){
+        sessionstorage.setItem( "cartCount", cart.products.length );
+
+        function renderedCartItems(cart) {
+            if (cart.products.length>0){
+                return cart.products.map(cartItem => {
+                    return `
+                <div class="row">
+                    <div class="col-3">
+                        <img src="/img/products/${printMainImage(cartItem._id)}" alt="" class="img-thumbnail">
+                    </div>
+                    <div class="col-9">
+                        <h5 class="prod-title">${cartItem._id.product_name}</h5>
+                        <div class="d-flex justify-content-between mt-3 mt-lg-4">
+                            <div>
+                                <input type="number"  class="form-control qty" name="cartQuantity" value="1" min="1">
+                            </div>
+                            <div> 
+                                <span>  ksh.</span> 
+                                <div class="itemPrice"> ${cartItem._id.price}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-3 mt-lg-4">
+                            <form method="post" action="/cart/delete/${cartItem._id._id}">
+                            <button type="submit" class="remove btn btn-sm btn-danger">Remove <i class="bi bi-trash"></i></button>
+                            </form>
+                            <div>
+                            <span>subtotal (ksh):</span>
+                            <div class="subtotal">${cartItem._id.price} </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-2">
+                </div>
+            `}).join('');
+            } else {
+                return `
+                    <h6 class="text-center py-5 text-muted">Your cart is empty at the moment<br>Click <i class="bi bi-cart3"></i> to add items to your cart</h6>  
+                `}
+        }
+
+        return `
+<div class="modal fade" id="cart" tabindex="-1" aria-labelledby="Cart" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cartTitle">Shopping Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ${renderedCartItems(cart)}
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <div>Total (ksh): <span class="total">0</span></div>
+                <button type="button" class="btn btn-success" id="checkout" onclick="location.href='checkout.html'">
+                    Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+    `
+    } else {
+        sessionstorage.setItem( "cartCount", 0 );
+
+        return `
+<div class="modal fade" id="cart" tabindex="-1" aria-labelledby="Cart" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cartTitle">Shopping Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="text-center py-5 text-muted">Your cart is empty at the moment<br>Click <i class="bi bi-cart3"></i> to add items to your cart</h6>  
+            </div>
+        </div>
+    </div>
+</div>
+             
+        `}
+
+}
+
+function getCount(countFor) {
+    let count = sessionstorage.getItem( countFor )
+    return count ? parseInt(count) : 0
+}
+
+async function getModals(req, Wishlist, Cart) {
+    let wishlist = {};
+    if (req.session.wishlistID){
+        wishlist = await Wishlist.findById(req.session.wishlistID).populate('products._id', '_id product_name price product_images');
+    }  else wishlist = [];
+
+
+    let cart;
+    if (req.session.cartID){
+        cart = await Cart.findById(req.session.cartID).populate('products._id', '_id product_name price product_images');
+    }  else cart = [];
+
+    return [wishlist, cart]
+}
+
+function wishlistButton(productID, wishlist) {
+    if (wishlist.length>0 || Object.keys(wishlist).length > 0) {
+        const product = wishlist.products.id(productID);
+        if (product) {
+            return `
+                <form method="post" action="/wishlist/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-heart-fill actionSelected"></i></button>
+                </form>
+            `
+        } else {
+            return `
+                <form method="post" action="/wishlist/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-heart"></i></button>
+                </form>
+            `
+        }
+    } else {
+        return `
+                <form method="post" action="/wishlist/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-heart"></i></button>
+                </form>
+            `
+    }
+}
+
+function cartButton(productID, cart) {
+    if (cart.length>0 || Object.keys(cart).length > 0) {
+        const product = cart.products.id(productID);
+        if (product) {
+            return `
+                <form method="post" action="/cart/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-cart-fill actionSelected"></i></button>
+                </form>
+            `
+        } else {
+            return `
+                <form method="post" action="/cart/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-cart3"></i></button>
+                </form>
+            `
+        }
+    } else {
+        return `
+                <form method="post" action="/cart/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-cart3"></i></button>
+                </form>
+            `
+    }
+}
+
+function wishBtnPV(productID, wishlist) {
+    if (wishlist.length>0 || Object.keys(wishlist).length > 0) {
+        const product = wishlist.products.id(productID);
+        if (product) {
+            return `
+                <form method="post" action="/wishlist/${productID}">
+                    <button type="submit" class="btn btn-success prod-start"> Added 
+                        <i class="bi bi-heart-fill"></i></button>
+                </form>
+            `
+        } else {
+            return `
+                <form method="post" action="/wishlist/${productID}">
+                    <button type="submit" class="btn btn-outline-success prod-start"> Wishlist 
+                        <i class="bi bi-heart"></i></button>
+                </form>
+            `
+        }
+    } else {
+        return `
+                <form method="post" action="/wishlist/${productID}">
+                    <button type="submit" class="btn btn-outline-success prod-start"> Wishlist 
+                        <i class="bi bi-heart"></i></button>
+                </form>
+            `
+    }
+}
+
+function cartBtnPV(productID, cart) {
+    if (cart.length>0 || Object.keys(cart).length > 0) {
+        const product = cart.products.id(productID);
+        if (product) {
+            return `
+                <form method="post" action="/cart/${productID}">
+                    <button type="submit" class="btn btn-success prod-start"> Added 
+                        <i class="bi bi-cart-fill"></i></button>
+                </form>
+            `
+        } else {
+            return `
+                <form method="post" action="/cart/${productID}">
+                    <button type="submit" class="btn btn-outline-success prod-start"> Cart 
+                        <i class="bi bi-cart3"></i></button>
+                </form>
+            `
+        }
+    } else {
+        return `
+                <form method="post" action="/cart/${productID}">
+                    <button type="submit" class="btn btn-outline-success prod-start"> Cart 
+                        <i class="bi bi-cart3"></i></button>
+                </form>
+            `
+    }
+}
 
 
 exports.displayDate = displayDate;
@@ -113,4 +398,9 @@ exports.getInput = getInput;
 exports.getError = getError;
 exports.printProductModal = printProductModal;
 exports.printMainImage = printMainImage;
-
+exports.printWishlistModal = printWishlistModal;
+exports.printCartModal = printCartModal;
+exports.getCount = getCount;
+exports.getModals = getModals;
+exports.wishlistButton = wishlistButton;
+exports.cartButton = cartButton;

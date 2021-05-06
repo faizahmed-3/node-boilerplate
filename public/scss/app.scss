@@ -84,6 +84,10 @@ body {
   .line-through{
     text-decoration: line-through $red;
   }
+
+  .actionSelected{
+    color: $red;
+  }
 }
 
 
@@ -187,6 +191,7 @@ body {
   .prod-title {
     font-weight: 600;
     font-size: 1.15rem;
+    text-transform: capitalize;
   }
 
   .modal-body {
@@ -240,6 +245,7 @@ body {
   .prod-title {
     font-weight: 600;
     font-size: 1.15rem;
+    text-transform: capitalize;
   }
 
   .modal-body {
@@ -327,7 +333,7 @@ body {
 
 
 #tiles {
-  margin-top: 1rem;
+  padding-top: 2.5rem;
 
   .card {
     text-transform: uppercase;
@@ -392,6 +398,7 @@ body {
 
   .modal-title {
     font-weight: 800;
+    text-transform: capitalize;
   }
 
   #prod-main-img {

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const cartSchema = new mongoose.Schema({
     dateCreated: {
         type: Date,
@@ -10,6 +9,11 @@ const cartSchema = new mongoose.Schema({
         _id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product'
+        },
+        quantity: {
+            type: Number,
+            default: 1,
+            min: 1
         }
     }],
     cartTotal: {
@@ -18,6 +22,5 @@ const cartSchema = new mongoose.Schema({
 })
 
 const Cart = mongoose.model('Cart', cartSchema);
-
 
 exports.Cart = Cart;

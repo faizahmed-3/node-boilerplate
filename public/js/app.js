@@ -7,7 +7,6 @@ window.addEventListener("load", () => {
 
 // Back to top button
 const toTop = document.querySelector(".to-top");
-
 window.addEventListener("scroll", () => {
     if (window.pageYOffset > 100) {
         toTop.classList.add("active");
@@ -15,6 +14,16 @@ window.addEventListener("scroll", () => {
         toTop.classList.remove("active");
     }
 })
+
+
+//load same scroll position
+window.addEventListener('scroll', function() {
+    localStorage.setItem('scrollPosition', window.scrollY);
+}, false);
+window.addEventListener('load', function() {
+    if(localStorage.getItem('scrollPosition') !== null)
+        window.scrollTo(0, localStorage.getItem('scrollPosition'));
+}, false);
 
 
 // Copyright year
@@ -28,7 +37,6 @@ window.addEventListener('load', () => {
 
     if (url.includes('#_')){
         let modalToOpen = url.substring(url.indexOf("#"));
-
         if (document.querySelector(modalToOpen)){
             if(window.location.href.indexOf(modalToOpen) !== -1) {
                 let myModal = new bootstrap.Modal(document.querySelector(modalToOpen), {})
@@ -66,12 +74,12 @@ if (addNum){
 
 //calculate price on cart
 const qtyInputs = document.querySelectorAll('.qty');
-const priceInputs = document.querySelectorAll('.itemPrice');
-const subtotalInputs = document.querySelectorAll('.subtotal');
-const total = document.querySelector('.total');
-let sum =0;
-
 if (qtyInputs.length>0){
+    const priceInputs = document.querySelectorAll('.itemPrice');
+    const subtotalInputs = document.querySelectorAll('.subtotal');
+    const total = document.querySelector('.total');
+    let sum =0;
+
     for (let i=0; i<qtyInputs.length; i++){
         qtyInputs[i].addEventListener('change', evt => {
             subtotalInputs[i].innerHTML = `${evt.target.value * parseInt(priceInputs[i].innerHTML)}`
@@ -89,6 +97,30 @@ if (qtyInputs.length>0){
     })
     total.innerHTML = sum;
 }
+
+
+//calculate price on product view
+const qtyInputsPV = document.querySelectorAll('.qtyPV');
+if (qtyInputsPV.length>0){
+    qtyInputsPV.forEach(qtyInput => {
+        qtyInput.addEventListener('change', evt => {
+            let price = evt.path[2].children[0].children[1]
+            let subtotal = evt.path[1].children[1].children[1];
+
+            subtotal.innerHTML = `${evt.target.value * parseInt(price.innerHTML)}`
+        })
+    })
+}
+
+
+//wishlist and cart buttons
+const wishlistBtns = document.querySelectorAll('.wishlistBtn');
+if (wishlistBtns.length>0){
+    for (let i =0; i<wishlistBtns.length; i++){
+        console.log(wishlistBtns[i]);
+    }
+}
+
 
 
 

@@ -1,17 +1,11 @@
+const sessionstorage = require('sessionstorage');
 const mongoose = require('mongoose');
-const wishlistTemplate = require('../views/wishlist');
 const {Wishlist} = require('../models/wishlist');
 const express = require('express');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    const wishlist = await Wishlist.findById(req.session.wishlistID).populate('products._id', 'productName price discountPrice')
-
-    res.send(wishlistTemplate({wishlist: wishlist.products}));
-});
-
 router.post('/:id', async (req, res) => {
-    let wishlist;
+    let wishlist = {};
 
     if (!req.session.wishlistID) {
         wishlist = new Wishlist();
@@ -20,7 +14,6 @@ router.post('/:id', async (req, res) => {
     } else {
         wishlist = await Wishlist.findById(req.session.wishlistID);
     }
-
 
     const product = wishlist.products.id(req.params.id);
 
@@ -32,9 +25,19 @@ router.post('/:id', async (req, res) => {
                 }
             }
         }, {new: true})
+    } else {
+        wishlist = await Wishlist.findByIdAndUpdate(req.session.wishlistID, {
+            $pull: {
+                products: {
+                    _id: req.params.id
+                }
+            }
+        }, {new: true})
     }
 
     await wishlist.save();
+
+    sessionstorage.setItem( "wishlistCount", wishlist.products.length );
 
     res.redirect('back');
 });
@@ -43,7 +46,7 @@ router.post('/delete/:id', async (req, res) => {
     const valid = mongoose.isValidObjectId(req.params.id);
     if (!valid) return res.status(400).send('Invalid ID passed');
 
-    await Wishlist.findByIdAndUpdate(req.session.wishlistID, {
+    const wishlist = await Wishlist.findByIdAndUpdate(req.session.wishlistID, {
         $pull: {
             products: {
                 _id: req.params.id
@@ -51,11 +54,9 @@ router.post('/delete/:id', async (req, res) => {
         }
     }, {new: true})
 
-    res.redirect('/wishlist');
+    sessionstorage.setItem( "wishlistCount", wishlist.products.length );
+
+    res.redirect('back');
 })
-
-
-
-
 
 module.exports = router;

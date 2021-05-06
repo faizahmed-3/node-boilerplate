@@ -1,6 +1,9 @@
+const {getModals} = require('../middlewares/otherFunctions');
 const mongoose = require('mongoose')
 const {Brand} = require('../models/admin/brands');
 const {Category} = require('../models/admin/categories');
+const {Wishlist} = require('../models/wishlist');
+const {Cart} = require('../models/cart');
 const seeAllTemplate = require('../views/see-all');
 const {Product} = require('../models/admin/products');
 const homepageTemplate = require('../views/index');
@@ -8,14 +11,15 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async(req, res) => {
-
     const featured_products = await Product.find({specialID: '6088050e65de8726600704b6'}).sort('product_name');
 
     const new_arrivals = await Product.find({specialID: '6088051765de8726600704b7'}).sort('product_name');
 
     const sale = await Product.find({specialID: '60891d6820824d1308bc6946'}).sort('product_name');
 
-    res.send(homepageTemplate({featured_products, new_arrivals, sale}));
+    let [wishlist, cart] = await getModals(req, Wishlist, Cart)
+
+    res.send(homepageTemplate({featured_products, new_arrivals, sale, wishlist, cart}));
 })
 
 router.get('/:id', async (req, res) => {
@@ -25,11 +29,12 @@ router.get('/:id', async (req, res) => {
 
     const brands = await Brand.find().sort('brand_name');
 
-    res.send(seeAllTemplate({category, products, brands}))
+    let [wishlist, cart] = await getModals(req, Wishlist, Cart)
+
+    res.send(seeAllTemplate({category, products, brands, wishlist, cart}))
 })
 
 router.post('/price-filter/:id', async(req, res) => {
-    console.log(req.body);
     let min = {}
     let max = {}
 
@@ -63,7 +68,9 @@ router.post('/price-filter/:id', async(req, res) => {
 
     const brands = await Brand.find().sort('brand_name');
 
-    res.send(seeAllTemplate({category, products, brands}))
+    let [wishlist, cart] = await getModals(req, Wishlist, Cart)
+
+    res.send(seeAllTemplate({category, products, brands, wishlist, cart}))
 })
 
 router.post('/brands-filter/:id', async(req, res) => {
@@ -92,7 +99,9 @@ router.post('/brands-filter/:id', async(req, res) => {
 
     const brands = await Brand.find().sort('brand_name');
 
-    res.send(seeAllTemplate({category, products, brands}))
+    let [wishlist, cart] = await getModals(req, Wishlist, Cart)
+
+    res.send(seeAllTemplate({category, products, brands, wishlist, cart}))
 })
 
 module.exports = router;

@@ -68,6 +68,9 @@ body .inputError {
 body .line-through {
   text-decoration: line-through #DC3545;
 }
+body .actionSelected {
+  color: #DC3545;
+}
 
 .index {
   background: white;
@@ -148,6 +151,7 @@ body .line-through {
 #wishlist .prod-title {
   font-weight: 600;
   font-size: 1.15rem;
+  text-transform: capitalize;
 }
 #wishlist .modal-body {
   padding-bottom: 0;
@@ -187,6 +191,7 @@ body .line-through {
 #cart .prod-title {
   font-weight: 600;
   font-size: 1.15rem;
+  text-transform: capitalize;
 }
 #cart .modal-body {
   padding-bottom: 0;
@@ -256,7 +261,7 @@ body .line-through {
 }
 
 #tiles {
-  margin-top: 1rem;
+  padding-top: 2.5rem;
 }
 #tiles .card {
   text-transform: uppercase;
@@ -355,6 +360,7 @@ body .line-through {
 }
 .product-view .modal-title {
   font-weight: 800;
+  text-transform: capitalize;
 }
 .product-view #prod-main-img {
   width: 100%;
