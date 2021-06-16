@@ -39,7 +39,6 @@ module.exports = ({categories, brands, specials, input, error}) => {
             `
         }).join('');
 
-
     function checkDescription(content) {
         if (content){
             return `${content.description}`
@@ -54,7 +53,8 @@ module.exports = ({categories, brands, specials, input, error}) => {
 
     return layout({
         title: title,
-        content: `<div id="add-product" class="container card mt-3 mb-5">
+        content: `
+<div id="add-product" class="container card mt-3 mb-5">
     <div class="card-header">
         Product Information
     </div>

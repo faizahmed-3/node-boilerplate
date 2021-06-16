@@ -1,3 +1,4 @@
+const sessionstorage = require('sessionstorage');
 const {getModals} = require('../middlewares/otherFunctions');
 const mongoose = require('mongoose')
 const {Brand} = require('../models/admin/brands');
@@ -10,21 +11,32 @@ const homepageTemplate = require('../views/index');
 const express = require('express');
 const router = express.Router();
 
-router.get('/', async(req, res) => {
+async function shuffleSpecial() {
+    const featured_products = await Product.aggregate([
+        {$match: {specialID: mongoose.Types.ObjectId('6088050e65de8726600704b6')}},
+        {$sample: {size: 6}}
+    ]);
 
-    const featured_products = await Product.find({specialID: '6088050e65de8726600704b6'}).sort('product_name');
+    const new_arrivals = await Product.aggregate([
+        {$match: {specialID: mongoose.Types.ObjectId('6088051765de8726600704b7')}},
+        {$sample: {size: 6}}
+    ]);
 
-    const new_arrivals = await Product.find({specialID: '6088051765de8726600704b7'}).sort('product_name');
+    const sale = await Product.aggregate([
+        {$match: {specialID: mongoose.Types.ObjectId('60891d6820824d1308bc6946')}},
+        {$sample: {size: 6}}
+    ]);
 
-    const sale = await Product.find({specialID: '60891d6820824d1308bc6946'}).sort('product_name');
+    return [featured_products, new_arrivals, sale]
+}
 
-    let [wishlist, cart] = await getModals(req, Wishlist, Cart)
-
-    res.send(homepageTemplate({featured_products, new_arrivals, sale, wishlist, cart}));
-})
-
-router.get('/:id', async (req, res) => {
-    const products = await Product.find({categoryID: req.params.id}).sort('product_name');
+async function priceFilter(req, res, filter) {
+    let products;
+    if (Object.keys(filter).length>0){
+        products = await Product.find( filter).and([{categoryID: req.params.id}]).sort('product_name')
+    } else {
+        products = await Product.find({categoryID: req.params.id}).sort('product_name')
+    }
 
     const category = await Category.findById(req.params.id).select('category_name');
 
@@ -33,6 +45,80 @@ router.get('/:id', async (req, res) => {
     let [wishlist, cart] = await getModals(req, Wishlist, Cart)
 
     res.send(seeAllTemplate({category, products, brands, wishlist, cart}))
+}
+
+async function brandsFilter(req, res, filter) {
+    let products;
+    if (filter.length>0){
+        products = await Product.find().or(filter).sort('product_name')
+    } else {
+        products = await Product.find({categoryID: req.params.id}).sort('product_name')
+    }
+
+    const category = await Category.findById(req.params.id).select('category_name');
+
+    const brands = await Brand.find().sort('brand_name');
+
+    let [wishlist, cart] = await getModals(req, Wishlist, Cart)
+
+    res.send(seeAllTemplate({category, products, brands, wishlist, cart}))
+}
+
+router.get('/', async(req, res) => {
+    if (!req.session.existingSession){
+        let [featured_products, new_arrivals, sale] = await shuffleSpecial();
+        sessionstorage.setItem('featured_products', featured_products)
+        sessionstorage.setItem('new_arrivals', new_arrivals)
+        sessionstorage.setItem('sale', sale)
+    }
+
+    req.session.existingSession = true;
+
+    let featured_products = sessionstorage.getItem('featured_products')
+    let new_arrivals = sessionstorage.getItem('new_arrivals')
+    let sale = sessionstorage.getItem('sale')
+
+    const categories = await Category.find().sort('dateCreated')
+
+    let [wishlist, cart] = await getModals(req, Wishlist, Cart)
+
+    try{
+        res.send(homepageTemplate({categories, featured_products, new_arrivals, sale, wishlist, cart}));
+    }
+    catch (e) {
+        const featured_products = await Product.find({specialID: '6088050e65de8726600704b6'}).sort('-dateCreated').limit(6);
+
+        const new_arrivals = await Product.find({specialID: '6088051765de8726600704b7'}).sort('-dateCreated').limit(6);
+
+        const sale = await Product.find({specialID: '60891d6820824d1308bc6946'}).sort('-dateCreated').limit(6);
+
+        let [wishlist, cart] = await getModals(req, Wishlist, Cart)
+
+        const categories = await Category.find().sort('dateCreated')
+
+        res.send(homepageTemplate({categories, featured_products, new_arrivals, sale, wishlist, cart}));
+    }
+
+})
+
+router.get('/:id', async (req, res) => {
+    const products = await Product.find({categoryID: req.params.id}).sort('dateCreated');
+
+    const category = await Category.findById(req.params.id).select('category_name');
+
+    const brands = await Brand.find().sort('brand_name');
+
+    let [wishlist, cart] = await getModals(req, Wishlist, Cart)
+
+    res.send(seeAllTemplate({category, products, brands, wishlist, cart}))
+})
+
+router.get('/price-filter/:id', async(req, res) => {
+    let filter = req.session.filter;
+
+    await priceFilter(req, res, filter)
+
+    req.session.filter = null;
 })
 
 router.post('/price-filter/:id', async(req, res) => {
@@ -57,22 +143,20 @@ router.post('/price-filter/:id', async(req, res) => {
         }
     }
 
+    req.session.filter = filter;
 
-    let products;
-    if (Object.keys(filter).length>0){
-        products = await Product.find( filter).and([{categoryID: req.params.id}]).sort('product_name')
-    } else {
-        products = await Product.find({categoryID: req.params.id}).sort('product_name')
-    }
-
-    const category = await Category.findById(req.params.id).select('category_name');
-
-    const brands = await Brand.find().sort('brand_name');
-
-    let [wishlist, cart] = await getModals(req, Wishlist, Cart)
-
-    res.send(seeAllTemplate({category, products, brands, wishlist, cart}))
+    await priceFilter(req,res,filter)
 })
+
+router.get('/brands-filter/:id', async (req, res) => {
+
+    let filter = req.session.filter;
+
+    await brandsFilter(req, res, filter)
+
+    req.session.filter = null;
+
+} )
 
 router.post('/brands-filter/:id', async(req, res) => {
     let filter = []
@@ -89,20 +173,9 @@ router.post('/brands-filter/:id', async(req, res) => {
         }
     }
 
-    let products;
-    if (filter.length>0){
-        products = await Product.find().or(filter).sort('product_name')
-    } else {
-        products = await Product.find({categoryID: req.params.id}).sort('product_name')
-    }
+    req.session.filter = filter;
 
-    const category = await Category.findById(req.params.id).select('category_name');
-
-    const brands = await Brand.find().sort('brand_name');
-
-    let [wishlist, cart] = await getModals(req, Wishlist, Cart)
-
-    res.send(seeAllTemplate({category, products, brands, wishlist, cart}))
+    await brandsFilter(req, res, filter)
 })
 
 module.exports = router;

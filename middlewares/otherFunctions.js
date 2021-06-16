@@ -1,6 +1,7 @@
 const localstorage = require('local-storage');
 let sessionstorage = require('sessionstorage');
 const nodemailer = require("nodemailer");
+const config = require('config');
 
 function displayDate(date) {
     let day = date.getDate();
@@ -494,15 +495,14 @@ exports.emailRegistration = async function (customer) {
         secure: false,
         auth: {
             user: 'amazon.cellular.outfitters@gmail.com',
-            pass: 'Nozama_2020'
-        },
-        debug: false,
-        logger: true
+            pass: config.get('EMAILPASS')
+        }
     });
 
     let info = await transporter.sendMail({
         from: '"Amazon Cellular 🛒" amazon.cellular.outfitters@gmail.com',
         to: customer.email,
+        cc: ['44faizahmed@gmail.com','fahmyahmed9@gmail.com'],
         subject: `SUCCESSFUL REGISTRATION ON AMAZON CELLULAR OUTFITTERS`,
         html: `
 Dear ${customer.full_name},
@@ -526,15 +526,14 @@ exports.emailOrderStatus = async function (order, email, fullName) {
         secure: false,
         auth: {
             user: 'amazon.cellular.outfitters@gmail.com',
-            pass: 'Nozama_2020'
-        },
-        debug: false,
-        logger: true
+            pass: config.get('EMAILPASS')
+        }
     });
 
     let info = await transporter.sendMail({
         from: '"Amazon Cellular 🛒" amazon.cellular.outfitters@gmail.com',
         to: email,
+        cc: ['44faizahmed@gmail.com','fahmyahmed9@gmail.com'],
         subject: `UPDATE ON STATUS FOR ORDER ${order._id}`,
         html: `
 Dear ${fullName},
@@ -596,16 +595,16 @@ function emailStatusBtn(order) {
 }
 
 
-    exports.displayDate = displayDate;
-    exports.getInput = getInput;
-    exports.getError = getError;
-    exports.printProductModal = printProductModal;
-    exports.printMainImage = printMainImage;
-    exports.printWishlistModal = printWishlistModal;
-    exports.printCartModal = printCartModal;
-    exports.getCount = getCount;
-    exports.getModals = getModals;
-    exports.wishlistButton = wishlistButton;
-    exports.cartButton = cartButton;
-    exports.extraNav = extraNav;
-    exports.footer = footer;
+exports.displayDate = displayDate;
+exports.getInput = getInput;
+exports.getError = getError;
+exports.printProductModal = printProductModal;
+exports.printMainImage = printMainImage;
+exports.printWishlistModal = printWishlistModal;
+exports.printCartModal = printCartModal;
+exports.getCount = getCount;
+exports.getModals = getModals;
+exports.wishlistButton = wishlistButton;
+exports.cartButton = cartButton;
+exports.extraNav = extraNav;
+exports.footer = footer;

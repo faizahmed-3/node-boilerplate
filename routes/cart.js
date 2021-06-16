@@ -96,7 +96,7 @@ router.post('/delete/:id', async (req, res) => {
     const valid = mongoose.isValidObjectId(req.params.id);
     if (!valid) return res.status(400).send('Invalid ID passed');
 
-    let cart = await Cart.findById(req.session.cartID).populate('products._id', '_id product_name price product_images');
+    let cart = await Cart.findById(req.session.cartID).populate('products._id', 'price');
 
     const product = cart.products.id(req.params.id);
 

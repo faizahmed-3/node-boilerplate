@@ -53,8 +53,7 @@ module.exports = ({title, content}) => {
                      Dashboard
                 </li>
                 <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" onclick="location.href='/admin/orders/'">
-                    <div>Orders</div>
-                    <span class="badge bg-danger rounded-pill">14</span></li>
+                    <div>Orders</div></li>
                 <li class="list-group-item list-group-item-action" onclick="location.href='/admin/products/'">
                      Products
                 </li>
@@ -75,6 +74,9 @@ module.exports = ({title, content}) => {
                 </li>
                 <li class="list-group-item list-group-item-action ">
                      Admins
+                </li>
+                <li class="list-group-item list-group-item-action" onclick="location.href='/admin/settings/'">
+                    <i class="fas fa-cog"></i> Settings
                 </li>
             </ul>
         </div>
@@ -98,7 +100,7 @@ module.exports = ({title, content}) => {
                     <button class="btn btn-primary addBtn" onclick="location.href='/admin/products/new'">Add Product</button>
                 </li>
                 <li class="nav-item notiCount">
-                    <i class="bi bi-bell notification"><span class="tip">4</span></i>
+                    <i class="bi bi-bell notification"></i>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

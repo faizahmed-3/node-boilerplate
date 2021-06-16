@@ -1,3 +1,4 @@
+const {categoryImagesUpload} = require('../../middlewares/multer');
 const mongoose = require('mongoose');
 const viewCategoriesTemplate = require('../../views/admin/categories/index');
 const addCategoryTemplate = require('../../views/admin/categories/new');
@@ -51,7 +52,8 @@ router.get('/edit/:id', async (req, res) => {
     res.send(editCategoryTemplate({category}));
 });
 
-router.post('/edit/:id', async (req, res) => {
+router.post('/edit/:id', categoryImagesUpload, async (req, res) => {
+
     const valid = mongoose.isValidObjectId(req.params.id);
     if (!valid) return res.status(400).send('Invalid ID passed');
 
@@ -61,10 +63,18 @@ router.post('/edit/:id', async (req, res) => {
     const {error} = validate(req.body);
     if (error) return res.status(400).send(editCategoryTemplate({category, error: error.details[0]}));
 
-    category = await Category.findByIdAndUpdate(req.params.id, {
-        category_name: req.body.category_name
-    }, {new: true});
-    if (!category) return res.status(400).send(`Sorry, that category doesn't exist`);
+    if (req.file){
+        category = await Category.findByIdAndUpdate(req.params.id, {
+            category_name: req.body.category_name,
+            image: req.file.filename
+        }, {new: true});
+        if (!category) return res.status(400).send(`Sorry, that category doesn't exist`);
+    } else {
+        category = await Category.findByIdAndUpdate(req.params.id, {
+            category_name: req.body.category_name,
+        }, {new: true});
+        if (!category) return res.status(400).send(`Sorry, that category doesn't exist`);
+    }
 
     res.redirect('/admin/categories');
 });

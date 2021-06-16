@@ -31,11 +31,11 @@ const categoriesSchema = new mongoose.Schema({
     dateCreated: {
         type: Date,
         default: Date.now
-    }
+    },
+    image: String
 });
 
 const Category = mongoose.model('Category', categoriesSchema);
-
 
 function validate(category) {
     const schema = Joi.object({
@@ -52,7 +52,6 @@ function validate(category) {
 
     return schema.validate(category, options);
 }
-
 
 exports.Category = Category;
 exports.validate = validate;

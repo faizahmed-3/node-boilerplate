@@ -65,13 +65,13 @@ module.exports = ({title, content}) => {
         <div class="collapse navbar-collapse flex-column flex-lg-row mt-1" id="navbarSupportedContent">
 
             <div id="nav-icons" class="order-lg-last ml-lg-auto row justify-content-center">
-                <form class="form-inline d-flex col-10 col-md-7 col-lg-10 col-xl-11">
+                <form method="get" class="form-inline d-flex col-10 col-md-7 col-lg-10 col-xl-11" action="/search">
                     <div class="input-group">
                         <label for="search-nav"></label>
-                        <input type="text" class="form-control" placeholder="Search" id="search-nav">
+                        <input type="text" class="form-control" name="query" placeholder="Search" id="search-nav">
                         <div class="input-group-append">
                     <span class="input-group-text notification">
-                        <i class="bi bi-search mx-2 "></i>
+                        <button type="submit" class="formBtn"><i class="bi bi-search mx-2 "></i></button>
                     </span>
                         </div>
                     </div>
@@ -93,20 +93,19 @@ module.exports = ({title, content}) => {
                         Categories
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="cases.html">Cases</a></li>
-                        <li><a class="dropdown-item" href="#">Power</a></li>
-                        <li><a class="dropdown-item" href="#">Audio</a></li>
-                        <li><a class="dropdown-item" href="#">Protectors</a></li>
-                        <li><a class="dropdown-item" href="#">Smart Watches</a></li>
-                        <li><a class="dropdown-item" href="#">Camera Accessories</a></li>
-                        <li><a class="dropdown-item" href="#">Car Accessories</a></li>
-                        <li><a class="dropdown-item" href="#">Computer Accessories</a></li>
-                        <li><a class="dropdown-item" href="#">TV Accessories</a></li>
-                        <li><a class="dropdown-item" href="#">Others</a></li>
+                        <li><a class="dropdown-item" href="/6088049365de8726600704af">Cases</a></li>
+                        <li><a class="dropdown-item" href="/608922137c058834a8fa35e8">Protectors</a></li>
+                        <li><a class="dropdown-item" href="/6088049f65de8726600704b0">Audio</a></li>
+                        <li><a class="dropdown-item" href="/6089221f7c058834a8fa35e9">Power</a></li>
+                        <li><a class="dropdown-item" href="/608922917c058834a8fa35f0">Smart Watches</a></li>
+                        <li><a class="dropdown-item" href="/608922477c058834a8fa35eb">Camera Accessories</a></li>
+                        <li><a class="dropdown-item" href="/6089224d7c058834a8fa35ec">Car Accessories</a></li>
+                        <li><a class="dropdown-item" href="/608922557c058834a8fa35ed">Computer Accessories</a></li>
+                        <li><a class="dropdown-item" href="/608922687c058834a8fa35ef">Others</a></li>
                     </ul>
                 </li>
                 <li class="nav-item mx-2">
-                    <a class="nav-link pb-0" href="faqs.html">FAQ's</a>
+                    <a class="nav-link pb-0" href="/contact">FAQs</a>
                 </li>
             </ul>
 
@@ -200,4 +199,5 @@ ${content}
 </body>
 </html>
 
-`}
+`
+}

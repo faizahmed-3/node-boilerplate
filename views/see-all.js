@@ -134,23 +134,23 @@ module.exports = ({category, products, brands, wishlist, cart}) => {
     <!--    Display-->
     <div class="container-fluid" id="category-display">
         <div class="card">
-            <div class="card-header d-flex justify-content-between">
+            <div class="card-header">
                 <div class="categoryTitle">${category.category_name}</div>
-                <div class="sortBy mt-2">
-                    Sort by:
-                    <span class="dropdown">
-                    <a class="dropdown-toggle" href="#" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Latest
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="SortDropdown">
-                        <li><a class="dropdown-item" href="#">Alphabetically</a></li>
-                        <li><a class="dropdown-item" href="#">Latest</a></li>
-                        <li><a class="dropdown-item" href="#">Price - Low to High</a></li>
-                        <li><a class="dropdown-item" href="#">Price - High toLow</a></li>
-                    </ul>
-                </span>
-                </div>
+<!--                <div class="sortBy mt-2">-->
+<!--                    Sort by:-->
+<!--                    <span class="dropdown">-->
+<!--                    <a class="dropdown-toggle" href="#" role="button"-->
+<!--                       data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                        Latest-->
+<!--                    </a>-->
+<!--                    <ul class="dropdown-menu" aria-labelledby="SortDropdown">-->
+<!--                        <li><a class="dropdown-item" href="#">Alphabetically</a></li>-->
+<!--                        <li><a class="dropdown-item" href="#">Latest</a></li>-->
+<!--                        <li><a class="dropdown-item" href="#">Price - Low to High</a></li>-->
+<!--                        <li><a class="dropdown-item" href="#">Price - High toLow</a></li>-->
+<!--                    </ul>-->
+<!--                </span>-->
+<!--                </div>-->
             </div>
             <div class="card-body  mainContent row">
                 ${renderProducts(products, wishlist, cart)}

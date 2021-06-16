@@ -156,6 +156,7 @@ body {
   #search-nav {
     font-size: 0.8rem;
     margin-bottom: 1.6rem;
+    height: 38px;
   }
 
   .formBtn{
@@ -165,7 +166,8 @@ body {
 
   .notification {
     position: relative;
-    @include pointer
+    @include pointer;
+    height: 38px;
   }
 
 
@@ -798,6 +800,12 @@ body {
         font-size: 1.3rem;
         font-weight: 800;
       }
+
+      .queryDisplay{
+        text-transform: initial;
+        font-size: 1.15rem;
+        font-weight: 600;
+      }
     }
 
     .sortBy {
@@ -1210,7 +1218,11 @@ body {
     font-size: 1.4rem;
   }
 
-  .imgRow, editImgRow {
+  .subHeadingCategory {
+    font-weight: 600;
+  }
+
+  .imgRow, .editImgRow {
     display: flex;
   }
 
@@ -1224,6 +1236,16 @@ body {
     height: 14rem;
     background: $grey;
     @include resizeImage;
+  }
+
+  .catImage {
+    height: 176px;
+    background: $grey;
+    @include resizeImage;
+  }
+
+  .catImageCard{
+    width: 217.15px;
   }
 
   .far, .fa-plus {

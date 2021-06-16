@@ -24,7 +24,8 @@ router.get('/edit/:id', async(req, res) => {
 
 router.post('/edit/:id', async (req, res) => {
     const order = await Order.findByIdAndUpdate(req.params.id, {
-        orderStatus: req.body.orderStatus
+        orderStatus: req.body.orderStatus,
+        new: false
     }, {new: true}).populate('customerID', 'email phone full_name');
 
     emailOrderStatus(order, order.customerID.email, order.customerID.full_name).catch(console.error);

@@ -5,7 +5,8 @@ const {getInput, getError}= require('../../../middlewares/otherFunctions');
 module.exports = ({input, error}) => {
     return layout({
         title: title,
-        content: `<div id="add-product" class="container card my-5">
+        content: `
+<div id="add-product" class="container card my-5">
     <div class="card-header">
         Category Information
     </div>

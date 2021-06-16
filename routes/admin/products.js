@@ -12,6 +12,7 @@ const express = require('express');
 const router = express.Router();
 
 async function post(req, res) {
+    console.log(req.files);
     const {error} = validate(req.body);
     if (error) return res.send(addProductTemplate({
         input: req.body,

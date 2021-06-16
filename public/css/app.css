@@ -121,6 +121,7 @@ body .actionSelected {
 .navbar #search-nav {
   font-size: 0.8rem;
   margin-bottom: 1.6rem;
+  height: 38px;
 }
 .navbar .formBtn {
   margin: 0.2rem 0.3rem;
@@ -128,6 +129,7 @@ body .actionSelected {
 }
 .navbar .notification {
   position: relative;
+  height: 38px;
 }
 .navbar .notification:hover {
   cursor: pointer;
@@ -317,17 +319,17 @@ body .actionSelected {
 }
 .featured .card-body {
   padding: 0.5rem;
-  height: 106.29px;
+  height: 120px;
 }
 .featured .card-title {
-  height: 28.57px;
+  height: 42.86px;
   text-transform: capitalize;
   font-size: 0.75rem;
   font-weight: bold;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
 }
 .featured .card-title:hover {
   cursor: pointer;
@@ -640,17 +642,17 @@ body .actionSelected {
 }
 .tp .row .card-body {
   padding: 0.5rem;
-  height: 106.29px;
+  height: 120px;
 }
 .tp .row .card-title {
-  height: 28.57px;
+  height: 42.86px;
   text-transform: capitalize;
   font-size: 0.75rem;
   font-weight: bold;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
 }
 .tp .row .card-title:hover {
   cursor: pointer;
@@ -732,6 +734,11 @@ body .actionSelected {
   font-size: 1.3rem;
   font-weight: 800;
 }
+.category-main #category-display .card-header .queryDisplay {
+  text-transform: initial;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
 .category-main #category-display .sortBy {
   font-size: 0.8rem;
 }
@@ -748,17 +755,17 @@ body .actionSelected {
 }
 .category-main #category-display .mainContent .card-body {
   padding: 0.5rem;
-  height: 106.29px;
+  height: 120px;
 }
 .category-main #category-display .mainContent .card-title {
-  height: 28.57px;
+  height: 42.86px;
   text-transform: capitalize;
   font-size: 0.75rem;
   font-weight: bold;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
 }
 .category-main #category-display .mainContent .card-title:hover {
   cursor: pointer;
@@ -1101,7 +1108,10 @@ body .actionSelected {
   font-weight: 600;
   font-size: 1.4rem;
 }
-#add-product .imgRow, #add-product editImgRow {
+#add-product .subHeadingCategory {
+  font-weight: 600;
+}
+#add-product .imgRow, #add-product .editImgRow {
   display: flex;
 }
 #add-product .card {
@@ -1114,6 +1124,15 @@ body .actionSelected {
   background: #f4f4f4;
   object-fit: cover;
   object-position: center center;
+}
+#add-product .catImage {
+  height: 176px;
+  background: #f4f4f4;
+  object-fit: cover;
+  object-position: center center;
+}
+#add-product .catImageCard {
+  width: 217.15px;
 }
 #add-product .far, #add-product .fa-plus {
   font-size: 1.35rem;

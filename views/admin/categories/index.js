@@ -41,10 +41,11 @@ module.exports = ({categories}) => {
 
     return layout({
         title: title,
-        content: `<div id="viewProducts" class="card ">
-    <div class="d-flex justify-content-end">
-    <button type="button" class="btn btn-primary mt-4 me-3" style="font-size: 0.8rem" onclick="location.href='/admin/categories/new'">Add New Category</button>
-    </div>    
+        content: `
+<div id="viewProducts" class="card ">
+<!--    <div class="d-flex justify-content-end">-->
+<!--    <button type="button" class="btn btn-primary mt-4 me-3" style="font-size: 0.8rem" onclick="location.href='/admin/categories/new'">Add New Category</button>-->
+<!--    </div>    -->
     <div class="card-body table-responsive-md ">
         <table class="table table-hover table-bordered border-dark">
             <thead>

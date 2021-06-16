@@ -156,7 +156,6 @@ if (imgRow) {
     })
 }
 
-
 //edit image
 const editImgRow = document.querySelector('.editImgRow');
 if (editImgRow) {
@@ -213,6 +212,27 @@ if (editImgRow) {
     })
 }
 
+//category image
+const catRow = document.querySelector('.catRow');
+if (catRow) {
+
+    catRow.addEventListener('click', evt => {
+        const target = evt.target;
+
+        if (target.matches('.fa-edit')) {
+            let input = evt.path[2].children[1];
+            input.addEventListener('change', event => {
+                let output = evt.path[4].children[0];
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.onload = function () {
+                    URL.revokeObjectURL(output.src) // free memory
+                }
+            })
+        }
+
+    })
+}
+
 
 //visibility switch
 const checkbox = document.querySelector('.visibilitySwitch')
@@ -259,7 +279,6 @@ if (subBrand) {
                 <option value="6089221f7c058834a8fa35e9">Power</option>
                 <option value="608922137c058834a8fa35e8">Protectors</option>
                 <option value="608922917c058834a8fa35f0">Smart Watches and Accessories</option>
-                <option value="6089225e7c058834a8fa35ee">TV Accessories</option>
             </select>
             <i class="fas fa-trash-alt subBrandDelete"></i>
         `

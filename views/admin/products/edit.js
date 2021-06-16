@@ -84,8 +84,8 @@ module.exports = ({product, error, categories, brands, specials}) => {
     function printImages(imagesArray) {
         if (imagesArray.length > 0){
             let imageString = `
-                        <div class="col-2 card imageCard">
-                        <img src="/img/products/${product.product_images[0].filename}" class="imgCol">
+                <div class="col-2 card imageCard">
+                            <img src="/img/products/${product.product_images[0].filename}" class="imgCol">
                         <input type="text" value="${product.product_images[0].filename}" name="existingImages" class="d-none">
                         <div class="card-body d-flex justify-content-between">
                             <div>Main</div>
@@ -96,7 +96,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
                                 <i class="fas fa-plus addImage"></i>
                             </div>
                         </div>
-                    </div>
+                </div>
             `
             for (let i=1; i<imagesArray.length; i++){
                  imageString += `
@@ -152,20 +152,23 @@ module.exports = ({product, error, categories, brands, specials}) => {
     return layout({
         title: title,
         content: `
-
 <div id="add-product" class="container card mt-3 mb-5">
     <div class="card-header">
         Product Information
     </div>
     <div class="card-body">
         <form id="editProductsForm" method="POST" enctype="multipart/form-data">
+        
             <div class="mb-3 form-group">
                 <label for="product_name" class="form-label">Product Name</label>
-                <input name="product_name" value="${product.product_name}" type="text" class="form-control" id="product_name" aria-describedby="product name">
-                <div class="form-text">use this format (colour :brand: product name : for device) e.g Black nillkin frosted shield for iPhone 12</div>
+                <input name="product_name" value="${product.product_name}" type="text" class="form-control" id="product_name"
+                       aria-describedby="product name">
+                <div class="form-text">use this format (colour :brand: product name : for device) e.g Black nillkin
+                    frosted shield for iPhone 12
+                </div>
                 <div class="inputError">${getError(error, 'product_name')}</div>
             </div>
-            
+
             <div class="row mb-4">
                 <div class="mb-3 col-md-4 form-group ">
                     <label for="category" class="form-label" required>Category</label>
@@ -184,7 +187,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
                     </select>
                     <div class="form-text">press the first letter repeatedly to scroll</div>
                 </div>
-                
+
                 <div class="mb-3 col-md-4 form-group ">
                     <label for="special" class="form-label" required>Special Category</label>
                     <select class="form-select" aria-label="Special Category" id="special" name="specialID"
@@ -194,7 +197,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
                     </select>
                 </div>
             </div>
-            
+
             <div class="mb-4 col form-group">
 
                 <div class="d-flex">
@@ -233,7 +236,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
                 </iframe>
 
                 <input type="text" name="description" id="description" class="d-none" value="${product.description}">
-                
+
                 <div class="descriptionCopy d-none">${checkDescription(product)}</div>
 
             </div>
@@ -274,10 +277,10 @@ module.exports = ({product, error, categories, brands, specials}) => {
                 </iframe>
 
                 <input type="text" name="inBox" id="inBox" class="d-none" value="${product.inBox}">
-                
+
                 <div class="inBoxCopy d-none">${checkinBox(product)}</div>
             </div>
-            
+
             <div class="mb-4 table-responsive-md">
                 <div class="subHeading">PRICING</div>
                 <table class="table table-bordered mt-3">
@@ -308,22 +311,25 @@ module.exports = ({product, error, categories, brands, specials}) => {
             </div>
 
             <div class="mb-4">
-                <div class="subHeading">IMAGES</div> 
-                <div class="form-text" style="color: red; font-size:1rem">Deleting an image will delete all images except the main image. Refresh the page to undo the deletion</div>
+                <div class="subHeading">IMAGES</div>
+                <div class="form-text" style="color: red; font-size:1rem">Deleting an image will delete all images
+                    except the main image. Refresh the page to undo the deletion
+                </div>
                 <div class="row editImgRow">
-                <input class="imagesLength d-none" value="${product.product_images.length}">
-                ${printImages(product.product_images)}
+                    <input class="imagesLength d-none" value="${product.product_images.length}">
+                    ${printImages(product.product_images)}
                 </div>
             </div>
-            
+
             <div class="my-3 d-flex justify-content-evenly">
                 <div>
                     <span id="visibility" class="mt-3">Visibility</span>
-                    <label class="switch">                
-                    ${visibility(product.status)}
+                    <label class="switch">
+                        ${visibility(product.status)}
                     </label>
                 </div>
-                <button class="btn btn-success save" type="submit" formaction="/admin/products/edit/${product.id}"">SAVE</button>
+                <button class="btn btn-success save" type="submit" formaction="/admin/products/edit/${product.id}"
+                ">SAVE</button>
                 <a class="btn btn-secondary save" onclick="location.href='/admin/products'">CANCEL</a>
             </div>
         </form>
