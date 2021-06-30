@@ -48,6 +48,16 @@ window.addEventListener('load', () => {
         }
     }
 
+    if (url.includes('#wishlist')){
+        let myModal = new bootstrap.Modal(document.querySelector('#wishlist'), {})
+        myModal.show()
+    }
+
+    if (url.includes('#cart')){
+        let myModal = new bootstrap.Modal(document.querySelector('#cart'), {})
+        myModal.show()
+    }
+
 
 })
 

@@ -20,6 +20,7 @@ async function placeOrder(req, res) {
             const products = updateCart.products.map(
                 product => {
                     return {
+                        productID: product._id._id,
                         product_name: product._id.product_name,
                         price: product._id.price,
                         quantity: product.quantity
@@ -87,7 +88,6 @@ router.post('/', async (req, res) => {
         res.send(ordersTemplate({req, orders, wishlist, cart}))
     } else if (req.session.mpesa === 'true') {
         req.session.newOrder = false;
-        console.log(req.session.newOrder);
 
         res.redirect('/orders/mpesa')
     }

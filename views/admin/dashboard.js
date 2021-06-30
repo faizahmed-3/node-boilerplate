@@ -1,4 +1,4 @@
-const { printOrders } = require('../../middlewares/otherFunctions')
+const { printOrdersNew } = require('../../middlewares/otherFunctions')
 const layout = require('./layout');
 const title = 'Dashboard';
 
@@ -10,7 +10,7 @@ module.exports = ({orders}) => {
         <!--Recent Orders-->
         <div class="card order">
             <div class="card-header text-center">
-                Recent Orders
+                New Orders
             </div>
             <div class="card-body table-responsive-md">
                 <table class="table table-hover table-bordered border-dark ">
@@ -27,7 +27,7 @@ module.exports = ({orders}) => {
                     </tr>
                     </thead>
                     <tbody>
-                        ${printOrders(orders)}
+                        ${printOrdersNew(orders)}
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-center">

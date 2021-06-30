@@ -15,7 +15,6 @@ module.exports = function ({req, customer, wishlist, cart, paymentError}) {
                 .then(value => {
                     return value;
                 })
-            console.log(address);
             return address;
         } catch (e) {
             console.log(e)

@@ -10,6 +10,10 @@ const ordersSchema = new mongoose.Schema({
         ref: 'Customer'
     },
     products: [{
+        productID: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product'
+        },
         quantity: Number,
         price: Number,
         product_name: String

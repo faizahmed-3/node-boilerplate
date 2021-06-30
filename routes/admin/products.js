@@ -99,7 +99,7 @@ router.get('/edit/:id', async (req, res) => {
     if (!product) return res.status(400).send(`Sorry, that product doesn't exist`);
 
     const categories = await Category.find().select('_id category_name').sort('category_name');
-    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
+    const brands = await Brand.find().select('_id brand_name brandCategoryID subBrands').sort('brand_name');
     const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
 
 

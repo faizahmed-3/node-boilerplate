@@ -87,7 +87,9 @@ router.post('/from-wish/:id', async (req, res) => {
 
     req.session.wishlistCount = wishlist.products.length
 
-    res.redirect('back');
+    const previousUrl = req.headers.referer.split(req.headers.host).pop()
+
+    res.redirect(`${previousUrl}#wishlist`);
 
 })
 
@@ -115,7 +117,9 @@ router.post('/delete/:id', async (req, res) => {
 
     req.session.cartCount = cart.products.length
 
-    res.redirect('back');
+    const previousUrl = req.headers.referer.split(req.headers.host).pop()
+
+    res.redirect(`${previousUrl}#cart`);
 })
 
 module.exports = router;

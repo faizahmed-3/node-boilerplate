@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async(req, res) => {
-    const orders = await Order.find().sort('-orderDate').populate('customerID', 'email phone').limit(5)
+    const orders = await Order.find().sort('-orderDate').populate('customerID', 'email phone')
     res.send(dashboardTemplate({orders}));
 })
 

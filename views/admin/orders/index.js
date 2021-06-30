@@ -1,4 +1,4 @@
-const { printOrders} = require('../../../middlewares/otherFunctions');
+const { printOrdersRecent} = require('../../../middlewares/otherFunctions');
 const layout = require('../layout');
 const title = 'View Orders'
 
@@ -26,7 +26,7 @@ module.exports = ({orders}) => {
             </tr>
             </thead>
             <tbody>
-            ${printOrders(orders)}
+            ${printOrdersRecent(orders)}
             </tbody>
         </table>
     </div>

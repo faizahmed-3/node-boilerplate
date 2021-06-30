@@ -10,7 +10,7 @@ module.exports = ({categories, brands, specials, input, error}) => {
         }).join('');
 
     const renderedBrands = brands.map(brand => {
-            if (brand.subBrands.length > 0) {
+        if (brand.subBrands.length > 0) {
                 brand.subBrands.sort((a,b) => a.subBrandName.localeCompare(b.subBrandName))
                 let subBrands = brand.subBrands.map(subBrand => {
                     return `

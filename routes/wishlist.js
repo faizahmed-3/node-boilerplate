@@ -55,7 +55,9 @@ router.post('/delete/:id', async (req, res) => {
 
     req.session.wishlistCount = wishlist.products.length
 
-    res.redirect('back');
+    const previousUrl = req.headers.referer.split(req.headers.host).pop()
+
+    res.redirect(`${previousUrl}#wishlist`);
 })
 
 module.exports = router;

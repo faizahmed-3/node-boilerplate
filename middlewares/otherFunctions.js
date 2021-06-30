@@ -593,25 +593,26 @@ function emailStatusBtn(order) {
     }
 }
 
-exports.printOrders = function (orders) {
-    function printNewBadge(order) {
-        if (order.new){
-            return `
-                <span class="badge bg-danger rounded-pill">new</span>
+function printBadge(order) {
+    if (order.new){
+        return `
+                <span class="badge bg-info">new</span>
             `}
-        else if (order.processed){
-            return `
-                <span class="badge bg-success rounded-pill">processed</span>
+    else if (order.processed){
+        return `
+                <span class="badge bg-secondary ">processed</span>
             `}
-        else return ''
-    }
+    else return ''
+}
+
+exports.printOrdersRecent = function (orders) {
 
     return orders.map(
         order => {
             return `
 <tr>
     <td class="orderRows">${displayDate(order.orderDate)}</td>
-    <td class="orderRows">${order._id}${printNewBadge(order)}</td>
+    <td class="orderRows">${order._id}${printBadge(order)}</td>
     <td class="orderRows">${order.customerID.phone}</td>
     <td>
         <ul class="orderItems">
@@ -627,6 +628,37 @@ exports.printOrders = function (orders) {
 </tr>
             `}).join('')
 }
+
+
+exports.printOrdersNew = function (orders) {
+
+    const newOrders = orders.map(
+        order => {
+            if (order.new)  return `
+<tr>
+    <td class="orderRows">${displayDate(order.orderDate)}</td>
+    <td class="orderRows">${order._id}${printBadge(order)}</td>
+    <td class="orderRows">${order.customerID.phone}</td>
+    <td>
+        <ul class="orderItems">
+            ${printProducts(order.products)}
+        </ul>
+    </td>
+    <td class="orderRows">${order.total}</td>
+    <td class="orderRows">${printPaymentMethod(order)}</td>
+    ${printStatusBtn(order)}
+    <td>
+        <a href="/admin/orders/edit/${order._id}"><i class="far fa-edit"></i></a>
+    </td>
+</tr>
+            `}).join('')
+
+    if (newOrders.length>0){
+        return newOrders
+    } else return `<td colspan="8">no new orders</td>`
+}
+
+
 
 
 

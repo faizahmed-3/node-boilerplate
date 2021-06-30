@@ -40,7 +40,7 @@ module.exports = ({order}) => {
                 product => {
                     return `
                 <li class="d-flex justify-content-evenly">
-                    <input type="hidden" name="productID" value="${product._id}" >
+                    <input type="hidden" name="productID" value="${product.productID}" >
                     <input type="text" class="form-control mb-2 orderProductEdit " name="product_name" value="${product.product_name}" readonly>
                     <input type="number" class="form-control mb-2 orderQuantityEdit orderPriceEdit" name="price" value="${product.price}" readonly><span class="mt-2">X</span>
                     <input type="number" class="form-control mb-2 orderQuantityEdit orderQtyInputs" min="1" name="quantity" value="${product.quantity}" required> <span class="mt-2">=</span>  

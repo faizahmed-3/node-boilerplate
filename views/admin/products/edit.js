@@ -179,6 +179,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
                     </select>
                     <div class="form-text">press the first letter repeatedly to scroll</div>
                 </div>
+
                 <div class="mb-3 col-md-4 form-group ">
                     <label for="brand" class="form-label" required>Brand</label>
                     <select class="form-select" aria-label="Select Brand" id="brand" name="brandID" required>
