@@ -5,5 +5,5 @@ module.exports = function () {
     mongoose.connect(
         'mongodb://localhost/amazon-local',
         {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false})
-        .then(() => winston.info('Connected to Amazon Local DB successfully...'))
+        .then(() => winston.info('Connected to Amazon DB successfully...'))
 }
