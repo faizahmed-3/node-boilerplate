@@ -1,9 +1,15 @@
 const config = require('config');
 
 module.exports = function () {
+    if (!config.get('DBPASS')) {
+        throw new Error('FATAL ERROR: Please enter your database password ');
+    }
+
     if (!config.get('JWTKEY')) {
         throw new Error('FATAL ERROR: Please enter your token identifier ');
-    } else if (!config.get('EMAILPASS')){
-        throw new Error('FATAL ERROR: Please enter the password for you email')
+    }
+
+    if (!config.get('EMAILPASS')){
+        throw new Error('FATAL ERROR: Please enter your email password')
     }
 }
