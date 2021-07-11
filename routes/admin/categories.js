@@ -1,3 +1,4 @@
+const sharp = require('sharp');
 const {categoryImagesUpload} = require('../../middlewares/multer');
 const mongoose = require('mongoose');
 const viewCategoriesTemplate = require('../../views/admin/categories/index');
@@ -8,7 +9,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const categories = await Category.find().sort('category_name');
+    const categories = await Category.find().collation({locale: "en" }).sort('category_name');
     res.send(viewCategoriesTemplate({categories}));
 });
 
@@ -64,6 +65,15 @@ router.post('/edit/:id', categoryImagesUpload, async (req, res) => {
     if (error) return res.status(400).send(editCategoryTemplate({category, error: error.details[0]}));
 
     if (req.file){
+        sharp(req.file.path)
+            .toFile(`${req.file.path}.webp`)
+            .then()
+            .catch(err => {
+                console.log(err);
+            });
+
+        req.file.filename = `${req.file.filename}.webp`
+
         category = await Category.findByIdAndUpdate(req.params.id, {
             category_name: req.body.category_name,
             image: req.file.filename

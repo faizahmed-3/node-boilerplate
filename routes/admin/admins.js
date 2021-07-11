@@ -7,7 +7,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const admins = await Admin.find().sort('admin_name');
+    const admins = await Admin.find().collation({locale: "en" }).sort('admin_name');
     res.send(viewAdminsTemplate({admins}));
 });
 

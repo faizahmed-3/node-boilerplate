@@ -34,14 +34,14 @@ async function shuffleSpecial() {
 async function priceFilter(req, res, filter) {
     let products;
     if (Object.keys(filter).length>0){
-        products = await Product.find( filter).and([{categoryID: req.params.id}]).sort('product_name')
+        products = await Product.find( filter).and([{categoryID: req.params.id}]).collation({locale: "en" }).sort('product_name')
     } else {
-        products = await Product.find({categoryID: req.params.id}).sort('product_name')
+        products = await Product.find({categoryID: req.params.id}).collation({locale: "en" }).sort('product_name')
     }
 
     const category = await Category.findById(req.params.id).select('category_name');
 
-    const brands = await Brand.find().sort('brand_name');
+    const brands = await Brand.find().collation({locale: "en" }).sort('brand_name');
 
     let [wishlist, cart] = await getModals(req, Wishlist, Cart)
 
@@ -51,14 +51,14 @@ async function priceFilter(req, res, filter) {
 async function brandsFilter(req, res, filter) {
     let products;
     if (filter.length>0){
-        products = await Product.find().or(filter).sort('product_name')
+        products = await Product.find().or(filter).collation({locale: "en" }).sort('product_name')
     } else {
-        products = await Product.find({categoryID: req.params.id}).sort('product_name')
+        products = await Product.find({categoryID: req.params.id}).collation({locale: "en" }).sort('product_name')
     }
 
     const category = await Category.findById(req.params.id).select('category_name');
 
-    const brands = await Brand.find().sort('brand_name');
+    const brands = await Brand.find().collation({locale: "en" }).sort('brand_name');
 
     let [wishlist, cart] = await getModals(req, Wishlist, Cart)
 
@@ -111,7 +111,7 @@ router.get('/:id', async (req, res) => {
 
     const category = await Category.findById(req.params.id).select('category_name');
 
-    const brands = await Brand.find().sort('brand_name');
+    const brands = await Brand.find().collation({locale: "en" }).sort('brand_name');
 
     let [wishlist, cart] = await getModals(req, Wishlist, Cart)
 

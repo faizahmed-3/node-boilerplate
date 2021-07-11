@@ -1,3 +1,4 @@
+const sharp = require('sharp');
 const {productImagesUpload} = require('../../middlewares/multer');
 const {Category} = require('../../models/admin/categories');
 const {Brand} = require('../../models/admin/brands');
@@ -31,6 +32,16 @@ async function post(req, res) {
         product_images.push(image[0])
     })
 
+    product_images.forEach(image => {
+        sharp(image.path)
+            .toFile(`${image.path}.webp`)
+            .then()
+            .catch(err => {
+                console.log(err);
+            });
+        image.filename = `${image.filename}.webp`
+    })
+
     function checkSubBrand(id) {
         if (id.includes('-')) {
             const splitted = id.split('-');
@@ -54,22 +65,22 @@ async function post(req, res) {
 
 
 router.get('/', async (req, res) => {
-    const products = await Product.find().sort('product_name');
+    const products = await Product.find().collation({locale: "en" }).sort('product_name');
     res.send(viewProductsTemplate({title: 'All Products', products}));
 });
 
 router.get('/new', async (req, res) => {
-    const categories = await Category.find().select('_id category_name').sort('category_name');
-    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
-    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
+    const categories = await Category.find().select('_id category_name').collation({locale: "en" }).sort('category_name');
+    const brands = await Brand.find().select('_id brand_name subBrands').collation({locale: "en" }).sort('brand_name');
+    const specials = await Special.find().select('_id special_name subBrands').collation({locale: "en" }).sort('special_name');
 
     res.send(addProductTemplate({categories, brands, specials}));
 });
 
 router.post('/', productImagesUpload, async (req, res) => {
-    const categories = await Category.find().select('_id category_name').sort('category_name');
-    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
-    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
+    const categories = await Category.find().select('_id category_name').collation({locale: "en" }).sort('category_name');
+    const brands = await Brand.find().select('_id brand_name subBrands').collation({locale: "en" }).sort('brand_name');
+    const specials = await Special.find().select('_id special_name subBrands').collation({locale: "en" }).sort('special_name');
 
     await post(req, res);
 
@@ -77,9 +88,9 @@ router.post('/', productImagesUpload, async (req, res) => {
 });
 
 router.post('/copy', productImagesUpload, async (req, res) => {
-    const categories = await Category.find().select('_id category_name').sort('category_name');
-    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
-    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
+    const categories = await Category.find().select('_id category_name').collation({locale: "en" }).sort('category_name');
+    const brands = await Brand.find().select('_id brand_name subBrands').collation({locale: "en" }).sort('brand_name');
+    const specials = await Special.find().select('_id special_name subBrands').collation({locale: "en" }).sort('special_name');
 
     await post(req, res);
 
@@ -98,9 +109,9 @@ router.get('/edit/:id', async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(400).send(`Sorry, that product doesn't exist`);
 
-    const categories = await Category.find().select('_id category_name').sort('category_name');
-    const brands = await Brand.find().select('_id brand_name brandCategoryID subBrands').sort('brand_name');
-    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
+    const categories = await Category.find().select('_id category_name').collation({locale: "en" }).sort('category_name');
+    const brands = await Brand.find().select('_id brand_name brandCategoryID subBrands').collation({locale: "en" }).sort('brand_name');
+    const specials = await Special.find().select('_id special_name subBrands').collation({locale: "en" }).sort('special_name');
 
 
     res.send(editProductTemplate({product, categories, brands, specials}));
@@ -113,9 +124,9 @@ router.post('/edit/:id', productImagesUpload, async (req, res) => {
     let product = await Product.findById(req.params.id);
     if (!product) return res.status(400).send(`Sorry, that product doesn't exist`);
 
-    const categories = await Category.find().select('_id category_name').sort('category_name');
-    const brands = await Brand.find().select('_id brand_name subBrands').sort('brand_name');
-    const specials = await Special.find().select('_id special_name subBrands').sort('special_name');
+    const categories = await Category.find().select('_id category_name').collation({locale: "en" }).sort('category_name');
+    const brands = await Brand.find().select('_id brand_name subBrands').collation({locale: "en" }).sort('brand_name');
+    const specials = await Special.find().select('_id special_name subBrands').collation({locale: "en" }).sort('special_name');
 
     const {error} = validate(req.body);
     if (error) return res.send(editProductTemplate({
@@ -134,6 +145,16 @@ router.post('/edit/:id', productImagesUpload, async (req, res) => {
     });
     reqFiles.forEach(image => {
         product_images.push(image[0])
+    })
+
+    product_images.forEach(image => {
+        sharp(image.path)
+            .toFile(`${image.path}.webp`)
+            .then()
+            .catch(err => {
+                console.log(err);
+            });
+        image.filename = `${image.filename}.webp`
     })
 
     let existingImages = []
@@ -199,7 +220,7 @@ router.get('/categories/:id', async (req, res) => {
     const valid = mongoose.isValidObjectId(req.params.id);
     if (!valid) return res.status(400).send('Invalid ID passed');
 
-    const products = await Product.find({categoryID: req.params.id}).sort('product_name');
+    const products = await Product.find({categoryID: req.params.id}).collation({locale: "en" }).sort('product_name');
 
     const category = await Category.findById(req.params.id).select('category_name')
 
@@ -210,7 +231,7 @@ router.get('/brands/:id', async (req, res) => {
     const valid = mongoose.isValidObjectId(req.params.id);
     if (!valid) return res.status(400).send('Invalid ID passed');
 
-    const products = await Product.find({brandID: req.params.id}).sort('product_name');
+    const products = await Product.find({brandID: req.params.id}).collation({locale: "en" }).sort('product_name');
 
     const brand = await Brand.findById(req.params.id).select('brand_name')
 
@@ -221,7 +242,7 @@ router.get('/special/:id', async (req, res) => {
     const valid = mongoose.isValidObjectId(req.params.id);
     if (!valid) return res.status(400).send('Invalid ID passed');
 
-    const products = await Product.find({specialID: req.params.id}).sort('product_name');
+    const products = await Product.find({specialID: req.params.id}).collation({locale: "en" }).sort('product_name');
 
     const special = await Special.findById(req.params.id).select('special_name')
 

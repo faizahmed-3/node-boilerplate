@@ -55,14 +55,14 @@ async function post(req, res) {
 }
 
 router.get('/', async (req, res) => {
-    const brands = await Brand.find().sort('brand_name');
-    const categories = await Category.find().select('_id, category_name').sort('category_name');
+    const brands = await Brand.find().collation({locale: "en" }).sort('brand_name');
+    const categories = await Category.find().select('_id, category_name').collation({locale: "en" }).sort('category_name');
 
     res.send(viewBrandsTemplate({brands, categories}));
 });
 
 router.get('/new', async (req, res) => {
-    const categories = await Category.find().select('_id, category_name').sort('category_name');
+    const categories = await Category.find().select('_id, category_name').collation({locale: "en" }).sort('category_name');
     res.send(addBrandTemplate({categories}));
 });
 
@@ -75,7 +75,7 @@ router.post('/', async (req, res) => {
 router.post('/copy', async (req, res) => {
     await post(req, res);
 
-    const categories = await Category.find().select('_id, category_name').sort('category_name');
+    const categories = await Category.find().select('_id, category_name').collation({locale: "en" }).sort('category_name');
 
     res.send(addBrandTemplate({input: req.body, categories}))
 });
@@ -87,7 +87,7 @@ router.get('/edit/:id', async (req, res) => {
     const brand = await Brand.findById(req.params.id);
     if (!brand) return res.status(400).send(`Sorry, that brand doesn't exist`);
 
-    const categories = await Category.find().select('_id, category_name').sort('category_name');
+    const categories = await Category.find().select('_id, category_name').collation({locale: "en" }).sort('category_name');
 
     res.send(editBrandTemplate({brand, categories}));
 });

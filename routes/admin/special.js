@@ -7,7 +7,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const specials = await Special.find().sort('special_name');
+    const specials = await Special.find().collation({locale: "en" }).sort('special_name');
     res.send(viewSpecialsTemplate({specials}));
 });
 

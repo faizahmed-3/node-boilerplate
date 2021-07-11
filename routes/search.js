@@ -11,7 +11,7 @@ router.get('/', async(req, res) => {
 
     const products = await Product.find({product_name: new RegExp('.*' + req.query.query + '.*', 'i')}).sort('dateCreated');
 
-    const brands = await Brand.find().sort('brand_name');
+    const brands = await Brand.find().collation({locale: "en" }).sort('brand_name');
 
     let [wishlist, cart] = await getModals(req, Wishlist, Cart)
 

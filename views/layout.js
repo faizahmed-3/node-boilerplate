@@ -57,7 +57,7 @@ module.exports = ({title, req, content}) => {
 <nav class=" navbar navbar-expand-lg navbar-light bg-white py-0 border-bottom">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
-            <img src="/img/logo.jpg" alt="" class="img-fluid" id="logo"></a>
+            <img src="/img/logo.webp" alt="" class="img-fluid" id="logo"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

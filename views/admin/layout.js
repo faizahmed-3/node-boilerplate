@@ -44,7 +44,7 @@ module.exports = ({title, content}) => {
 <section id="admin">
     <!--    Sidebar-->
     <div class="sidebar border border-end ">
-        <div class="text-center mt-2 sidebarItem"><img src="/img/logo.jpg" alt="Logo" class="img-fluid">
+        <div class="text-center mt-2 sidebarItem"><img src="/img/logo.webp" alt="Logo" class="img-fluid">
         </div>
         <div class="sidebarItem ">
             <ul class="list-group list-group-flush">
