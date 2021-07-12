@@ -15,24 +15,31 @@ module.exports = ({title, req, content}) => {
     <link rel="icon" href="/img/favicon.ico">
 
     <!--    Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.gstatic.com" >
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&amp;display=swap" as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="preload" href="/bootstrap/dist/css/bootstrap.min.css" as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
 
     <!--    Custom CSS -->
-    <link rel="stylesheet" href="/css/app.css">
+    <link rel="preload" href="/css/app.css" as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
 
-    <!--    Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"
-          integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
+    <!--        Font Awesome -->
+    <link rel="preload" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"
+          integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous" as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
 
     <!--    Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
 
     <!-- Maps   -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="preload" href="https://polyfill.io/v3/polyfill.min.js?features=default" as="script"
+    onload="this.onload=null;this.rel='script'">
+<!--    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>-->
 
 
     <title>${title} | Amazon Cellular</title>
@@ -225,7 +232,6 @@ ${content}
         })
     }
 </script>
-
 
 </body>
 </html>
