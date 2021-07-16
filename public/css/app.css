@@ -279,13 +279,14 @@ body .actionSelected {
   padding-top: 2.5rem;
 }
 #tiles .card {
+  width: 215px;
   text-transform: uppercase;
 }
 #tiles .card:hover {
   cursor: pointer;
 }
 #tiles .image-tile {
-  height: 11rem;
+  height: 176px;
   object-fit: cover;
   object-position: center center;
 }
@@ -353,7 +354,8 @@ body .actionSelected {
   font-weight: normal;
 }
 .featured .card-img-top {
-  height: 14rem;
+  width: 194px;
+  height: 192px;
   object-fit: cover;
   object-position: center center;
 }
@@ -675,7 +677,8 @@ body .actionSelected {
   font-weight: normal;
 }
 .tp .row .card-img-top {
-  height: 14rem;
+  width: 194px;
+  height: 192px;
   object-fit: cover;
   object-position: center center;
 }
@@ -790,7 +793,8 @@ body .actionSelected {
   font-weight: normal;
 }
 .category-main #category-display .mainContent .card-img-top {
-  height: 14rem;
+  width: 194px;
+  height: 192px;
   object-fit: cover;
   object-position: center center;
 }
@@ -1590,11 +1594,14 @@ body .actionSelected {
     font-size: 0.58rem;
   }
 
+  #tiles .card {
+    width: 145px;
+  }
   #tiles .card-footer {
     font-size: 0.85rem;
   }
   #tiles .image-tile {
-    height: 8.5rem;
+    height: 136px;
   }
 
   .featured .section-title {
@@ -1613,7 +1620,8 @@ body .actionSelected {
     font-size: 0.7rem;
   }
   .featured .card-img-top {
-    height: 10rem;
+    width: 134px;
+    height: 144px;
   }
   .featured span {
     font-size: 0.6rem;
@@ -1922,8 +1930,11 @@ body .actionSelected {
     font-size: 0.9rem;
   }
 
+  #tiles .card {
+    width: 230px;
+  }
   #tiles .image-tile {
-    height: 10rem;
+    height: 160px;
   }
   #tiles .card-footer {
     font-size: 0.9rem;
@@ -1950,7 +1961,8 @@ body .actionSelected {
     font-size: 0.7rem;
   }
   .featured .card-img-top {
-    height: 12rem;
+    width: 178px;
+    height: 192px;
   }
   .featured span {
     font-size: 0.6rem;
@@ -2305,8 +2317,11 @@ body .actionSelected {
   #tiles .col-lg-2 {
     padding: 0 0.4rem;
   }
+  #tiles .card {
+    width: 173px;
+  }
   #tiles .image-tile {
-    height: 9.5rem;
+    height: 152px;
   }
   #tiles .card-footer {
     font-size: 0.88rem;
@@ -2351,7 +2366,8 @@ body .actionSelected {
     margin-bottom: 1rem;
   }
   .featured .card-img-top {
-    height: 12rem;
+    width: 173px;
+    height: 192px;
   }
   .featured .card-title {
     font-size: 0.6rem;
@@ -2371,7 +2387,7 @@ body .actionSelected {
     font-size: 1.3rem;
   }
   .featured .col-lg-2 {
-    padding: 0 0.4rem;
+    padding: 0 0.5rem;
   }
 
   .product-view .modal-title {
@@ -2550,7 +2566,8 @@ body .actionSelected {
     margin-bottom: 1rem;
   }
   .tp .row .card-img-top {
-    height: 12rem;
+    width: 173px;
+    height: 192px;
   }
   .tp .row .card-title {
     font-size: 0.6rem;
@@ -2631,7 +2648,8 @@ body .actionSelected {
     margin-bottom: 1rem;
   }
   .category-main #category-display .mainContent .card-img-top {
-    height: 12rem;
+    width: 173px;
+    height: 192px;
   }
   .category-main #category-display .mainContent .card-title {
     font-size: 0.6rem;

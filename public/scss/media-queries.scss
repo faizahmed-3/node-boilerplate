@@ -59,12 +59,16 @@
   }
 
   #tiles {
+    .card{
+      width: 145px;
+    }
+
     .card-footer {
       font-size: 0.85rem;
     }
 
     .image-tile {
-      height: 8.5rem;
+      height: 136px;
     }
   }
 
@@ -89,7 +93,8 @@
     }
 
     .card-img-top {
-      height: 10rem;
+      width: 134px;
+      height: 144px;
     }
 
     span {
@@ -549,8 +554,12 @@
   }
 
   #tiles {
+    .card{
+      width: 230px;
+    }
+
     .image-tile {
-      height: 10rem;
+      height: 160px;
     }
 
     .card-footer {
@@ -589,7 +598,8 @@
     }
 
     .card-img-top {
-      height: 12rem;
+      width: 178px;
+      height: 192px;
     }
 
     span {
@@ -1096,8 +1106,12 @@
       padding: 0 0.4rem;
     }
 
+    .card{
+      width: 173px;
+    }
+
     .image-tile {
-      height: 9.5rem;
+      height: 152px;
     }
 
     .card-footer {
@@ -1155,7 +1169,7 @@
     @include smallFeaturedCards;
 
     .col-lg-2{
-      padding: 0 0.4rem;
+      padding: 0 0.5rem;
     }
 
   }
