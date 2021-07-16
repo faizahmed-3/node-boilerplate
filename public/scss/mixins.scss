@@ -59,8 +59,7 @@
   }
 
   .card-img-top {
-    width: 194px;
-    height: 192px;
+    height: 12rem;
     @include resizeImage;
     @include pointer;
   }
@@ -83,8 +82,7 @@
   }
 
   .card-img-top{
-    width: 173px;
-    height: 192px;
+    height: 12rem;
   }
 
   .card-title {

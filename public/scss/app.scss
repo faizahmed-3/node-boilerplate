@@ -355,13 +355,12 @@ body {
   padding-top: 2.5rem;
 
   .card {
-    width: 215px;
     text-transform: uppercase;
     @include pointer;
   }
 
   .image-tile {
-    height: 176px;
+    height: 11rem;
     @include resizeImage
   }
 

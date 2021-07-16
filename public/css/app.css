@@ -279,14 +279,13 @@ body .actionSelected {
   padding-top: 2.5rem;
 }
 #tiles .card {
-  width: 215px;
   text-transform: uppercase;
 }
 #tiles .card:hover {
   cursor: pointer;
 }
 #tiles .image-tile {
-  height: 176px;
+  height: 11rem;
   object-fit: cover;
   object-position: center center;
 }
@@ -354,8 +353,7 @@ body .actionSelected {
   font-weight: normal;
 }
 .featured .card-img-top {
-  width: 194px;
-  height: 192px;
+  height: 12rem;
   object-fit: cover;
   object-position: center center;
 }
@@ -677,8 +675,7 @@ body .actionSelected {
   font-weight: normal;
 }
 .tp .row .card-img-top {
-  width: 194px;
-  height: 192px;
+  height: 12rem;
   object-fit: cover;
   object-position: center center;
 }
@@ -793,8 +790,7 @@ body .actionSelected {
   font-weight: normal;
 }
 .category-main #category-display .mainContent .card-img-top {
-  width: 194px;
-  height: 192px;
+  height: 12rem;
   object-fit: cover;
   object-position: center center;
 }
@@ -1594,14 +1590,11 @@ body .actionSelected {
     font-size: 0.58rem;
   }
 
-  #tiles .card {
-    width: 145px;
-  }
   #tiles .card-footer {
     font-size: 0.85rem;
   }
   #tiles .image-tile {
-    height: 136px;
+    height: 8.5rem;
   }
 
   .featured .section-title {
@@ -1620,8 +1613,7 @@ body .actionSelected {
     font-size: 0.7rem;
   }
   .featured .card-img-top {
-    width: 134px;
-    height: 144px;
+    height: 9rem;
   }
   .featured span {
     font-size: 0.6rem;
@@ -1930,11 +1922,8 @@ body .actionSelected {
     font-size: 0.9rem;
   }
 
-  #tiles .card {
-    width: 230px;
-  }
   #tiles .image-tile {
-    height: 160px;
+    height: 10rem;
   }
   #tiles .card-footer {
     font-size: 0.9rem;
@@ -1961,8 +1950,7 @@ body .actionSelected {
     font-size: 0.7rem;
   }
   .featured .card-img-top {
-    width: 178px;
-    height: 192px;
+    height: 12rem;
   }
   .featured span {
     font-size: 0.6rem;
@@ -2315,13 +2303,10 @@ body .actionSelected {
     padding-top: 1rem;
   }
   #tiles .col-lg-2 {
-    padding: 0 0.4rem;
-  }
-  #tiles .card {
-    width: 173px;
+    width: 49%;
   }
   #tiles .image-tile {
-    height: 152px;
+    height: 9.5rem;
   }
   #tiles .card-footer {
     font-size: 0.88rem;
@@ -2366,8 +2351,7 @@ body .actionSelected {
     margin-bottom: 1rem;
   }
   .featured .card-img-top {
-    width: 173px;
-    height: 192px;
+    height: 12rem;
   }
   .featured .card-title {
     font-size: 0.6rem;
@@ -2387,7 +2371,7 @@ body .actionSelected {
     font-size: 1.3rem;
   }
   .featured .col-lg-2 {
-    padding: 0 0.5rem;
+    width: 49%;
   }
 
   .product-view .modal-title {
@@ -2566,8 +2550,7 @@ body .actionSelected {
     margin-bottom: 1rem;
   }
   .tp .row .card-img-top {
-    width: 173px;
-    height: 192px;
+    height: 12rem;
   }
   .tp .row .card-title {
     font-size: 0.6rem;
@@ -2648,8 +2631,7 @@ body .actionSelected {
     margin-bottom: 1rem;
   }
   .category-main #category-display .mainContent .card-img-top {
-    width: 173px;
-    height: 192px;
+    height: 12rem;
   }
   .category-main #category-display .mainContent .card-title {
     font-size: 0.6rem;
