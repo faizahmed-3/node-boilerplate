@@ -45,9 +45,9 @@ module.exports = ({title, req, content}) => {
 <body>
 
 <!--Pre Loader-->
-<!--<div class="loader">-->
-<!--    <img src="/img/loader.gif" alt="Loading...">-->
-<!--</div>-->
+<div class="loader">
+    <img src="/img/loader.gif" alt="Loading...">
+</div>
 
 <!--extra navbar-->
 <div class="container-fluid" id="extraNav">
