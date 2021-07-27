@@ -67,52 +67,67 @@ async function brandsFilter(req, res, filter) {
     res.send(seeAllTemplate({req, category, products, brands, wishlist, cart}))
 }
 
-const client = redis.createClient({})
+// const client = redis.createClient({})
 
-const GET_ASYNC = promisify(client.get).bind(client);
-const SET_ASYNC = promisify(client.set).bind(client);
+// const GET_ASYNC = promisify(client.get).bind(client);
+// const SET_ASYNC = promisify(client.set).bind(client);
 
 router.get('/', async (req, res) => {
-    try{
+    try {
         let savedFeatured = await GET_ASYNC('savedFeatured')
-        if (savedFeatured){
-            console.log('using cached data')
-            let savedNew = await GET_ASYNC('savedNew')
-            let savedSale = await GET_ASYNC('savedSale')
+        if (!savedFeatured) {
+            let [featured_products, new_arrivals, sale] = await shuffleSpecial();
+
+            savedFeatured = await SET_ASYNC(
+                'savedFeatured', JSON.stringify(featured_products), 'EX', 86400
+            )
+
+            let savedNew = await SET_ASYNC(
+                'savedNew', JSON.stringify(new_arrivals), 'EX', 86400
+            )
+
+            let savedSale = await SET_ASYNC(
+                'savedSale', JSON.stringify(sale), 'EX', 86400
+            )
 
             const categories = await Category.find().sort('dateCreated')
 
             let [wishlist, cart] = await getModals(req, Wishlist, Cart)
 
-            res.send(homepageTemplate({req, categories, featured_products: JSON.parse(savedFeatured), new_arrivals: JSON.parse(savedNew), sale: JSON.parse(savedSale), wishlist, cart}));
+            res.send(homepageTemplate({
+                req,
+                categories,
+                featured_products: JSON.parse(savedFeatured),
+                new_arrivals: JSON.parse(savedNew),
+                sale: JSON.parse(savedSale),
+                wishlist,
+                cart
+            }));
 
-            return
+            return;
+
         }
 
-        let [featured_products, new_arrivals, sale] = await shuffleSpecial();
 
-        savedFeatured = await SET_ASYNC(
-            'savedFeatured', JSON.stringify(featured_products), 'EX', 5
-        )
-
-        let savedNew = await SET_ASYNC(
-            'savedNew', JSON.stringify(new_arrivals), 'EX', 5
-        )
-
-        let savedSale = await SET_ASYNC(
-            'savedSale', JSON.stringify(sale), 'EX', 5
-        )
+        let savedNew = await GET_ASYNC('savedNew')
+        let savedSale = await GET_ASYNC('savedSale')
 
         const categories = await Category.find().sort('dateCreated')
 
         let [wishlist, cart] = await getModals(req, Wishlist, Cart)
 
-        console.log('using fresh data')
 
-        res.send(homepageTemplate({req, categories, featured_products: JSON.parse(savedFeatured), new_arrivals: JSON.parse(savedNew), sale: JSON.parse(savedSale), wishlist, cart}));
-    }
+        res.send(homepageTemplate({
+            req,
+            categories,
+            featured_products: JSON.parse(savedFeatured),
+            new_arrivals: JSON.parse(savedNew),
+            sale: JSON.parse(savedSale),
+            wishlist,
+            cart
+        }));
 
-    catch (e) {
+    } catch (e) {
         const featured_products = await Product.find({specialID: '6088050e65de8726600704b6'}).sort('-dateCreated').limit(6);
 
         const new_arrivals = await Product.find({specialID: '6088051765de8726600704b7'}).sort('-dateCreated').limit(6);
@@ -121,11 +136,10 @@ router.get('/', async (req, res) => {
 
         const categories = await Category.find().sort('dateCreated')
 
-        console.log('using default data')
+        let [wishlist, cart] = await getModals(req, Wishlist, Cart)
 
         res.send(homepageTemplate({req, categories, featured_products, new_arrivals, sale, wishlist, cart}));
     }
-
 })
 
 router.get('/categories', async (req, res) => {

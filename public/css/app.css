@@ -369,6 +369,9 @@ body .actionSelected {
   cursor: pointer;
 }
 
+.product-view {
+  padding: 0;
+}
 .product-view .modal-header {
   padding: 0.7rem;
 }

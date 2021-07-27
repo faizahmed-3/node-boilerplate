@@ -189,12 +189,12 @@ ${content}
    <div id="wrapper">
         <div class="b-item" onclick="window.location.href='/'"><i class="fas fa-home"></i> <br>Home</div>
         <div class="b-item" onclick="window.location.href='/categories'"><i class="fas fa-list-alt"></i> <br>Categories</div>
-        <div class="b-item">                    
-            <i class="fas fa-heart mx-2 notification mt-1" data-bs-toggle="modal" data-bs-target="#wishlist"><span class="tip">${wishlistCount(req)}</span></i>
+        <div class="b-item" data-bs-toggle="modal" data-bs-target="#wishlist">                    
+            <i class="fas fa-heart mx-2 notification mt-1" ><span class="tip">${wishlistCount(req)}</span></i>
             <br> Wishlist
         </div>
-        <div class="b-item">
-            <i class="fas fa-shopping-cart mx-2 notification mt-1" data-bs-toggle="modal" data-bs-target="#cart"><span class="tip">${cartCount(req)}</span></i>
+        <div class="b-item" data-bs-toggle="modal" data-bs-target="#cart">
+            <i class="fas fa-shopping-cart mx-2 notification mt-1" ><span class="tip">${cartCount(req)}</span></i>
             <br> Cart
         </div>
         <div class="b-item" id="bpSearch"><i class="fas fa-search"></i> <br> Search</div>
