@@ -48,11 +48,16 @@ function printProductModal(product, wishlist, cart) {
                                 <div id="prod-price">
                                     <span>ksh.</span> <div class="d-inline pricePV">${product.price}</div>
                                 </div>
-                                <div class="pvBtns">
-                                    ${wishBtnPV(product._id, wishlist)}
+                                <div class="d-flex justify-content-evenly">
+                                    <div class="pvBtns">
+                                        ${wishBtnPV(product._id, wishlist)}
+                                    </div>
+                                    <div class="pvBtns">
+                                        ${cartBtnPV(product._id, cart)}
+                                    </div>
                                 </div>
                                 <div class="pvBtns">
-                                    ${cartBtnPV(product._id, cart)}
+                                    <button type="submit" class="btn btn-success prod-start" formaction="/cart/checkout/${product._id}"> Checkout </button>
                                 </div>
                             </form>
                             <div id="share" class="text-center">
@@ -61,7 +66,6 @@ function printProductModal(product, wishlist, cart) {
                                 <a href=""><i class="fab fa-instagram"></i></a>
                                 <a href=""><i class="fab fa-twitter"></i></a>
                                 <a href="whatsapp://send?text=http://192.168.1.104:3000/#_${product._id}"><i class="fab fa-whatsapp"></i></a>
-                                <p class="mb-0 mt-1 scroll d-none d-lg-block">Scroll down for more details</p>
                             </div>
                         </div>
                         <div>
@@ -420,8 +424,8 @@ function extraNav(req) {
             <div class="clickable" onclick="location.href='/orders'">Orders</div>
             <div class="separator mx-2">|</div>
             <div class="clickable" onclick="location.href='/login/logout'">Log Out</div>
-        `}
-    else {
+        `
+    } else {
         return `
         <div class="clickable" onclick="location.href='/register'">Register</div>
         <div class="separator mx-2">|</div>
@@ -453,7 +457,7 @@ function footer(req) {
     }
 }
 
-function printProducts (products) {
+function printProducts(products) {
     return products.map(
         product => {
             return `
@@ -463,7 +467,7 @@ function printProducts (products) {
     ).join('');
 }
 
-function printPaymentMethod (order) {
+function printPaymentMethod(order) {
     if (order.mpesa === 'true') {
         return `MPESA`
     } else if (order.mpesa === 'false') {
@@ -471,7 +475,7 @@ function printPaymentMethod (order) {
     }
 }
 
-function printStatusBtn (order) {
+function printStatusBtn(order) {
     switch (order.orderStatus) {
         case 'Order placed':
             return `<td class="text-center orderRows"><div class="btn btn-primary statusBtn">${order.orderStatus}</div></td>`
@@ -561,9 +565,9 @@ function orderData(order) {
     }
 
     function printPaymentType(order) {
-        if (order.mpesa === 'true'){
+        if (order.mpesa === 'true') {
             return `Lipa na M-PESA`
-        } else if (order.mpesa === 'false'){
+        } else if (order.mpesa === 'false') {
             return `On delivery`
         }
     }
@@ -575,8 +579,8 @@ function orderData(order) {
         <p>Amount: (ksh.)&nbsp;${order.total}</p>
 </ul>
     `
-    }
-    
+}
+
 function emailStatusBtn(order) {
     switch (order.orderStatus) {
         case 'Order placed':
@@ -594,15 +598,15 @@ function emailStatusBtn(order) {
 }
 
 function printBadge(order) {
-    if (order.new){
+    if (order.new) {
         return `
                 <span class="badge bg-info">new</span>
-            `}
-    else if (order.processed){
+            `
+    } else if (order.processed) {
         return `
                 <span class="badge bg-secondary ">processed</span>
-            `}
-    else return ''
+            `
+    } else return ''
 }
 
 exports.printOrdersRecent = function (orders) {
@@ -626,7 +630,8 @@ exports.printOrdersRecent = function (orders) {
         <a href="/admin/orders/edit/${order._id}"><i class="far fa-edit"></i></a>
     </td>
 </tr>
-            `}).join('')
+            `
+        }).join('')
 }
 
 
@@ -634,7 +639,7 @@ exports.printOrdersNew = function (orders) {
 
     const newOrders = orders.map(
         order => {
-            if (order.new)  return `
+            if (order.new) return `
 <tr>
     <td class="orderRows">${displayDate(order.orderDate)}</td>
     <td class="orderRows">${order._id}${printBadge(order)}</td>
@@ -651,17 +656,13 @@ exports.printOrdersNew = function (orders) {
         <a href="/admin/orders/edit/${order._id}"><i class="far fa-edit"></i></a>
     </td>
 </tr>
-            `}).join('')
+            `
+        }).join('')
 
-    if (newOrders.length>0){
+    if (newOrders.length > 0) {
         return newOrders
     } else return `<td colspan="8">no new orders</td>`
 }
-
-
-
-
-
 
 
 exports.displayDate = displayDate;

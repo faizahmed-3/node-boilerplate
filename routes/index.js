@@ -67,10 +67,10 @@ async function brandsFilter(req, res, filter) {
     res.send(seeAllTemplate({req, category, products, brands, wishlist, cart}))
 }
 
-// const client = redis.createClient({})
+const client = redis.createClient({})
 
-// const GET_ASYNC = promisify(client.get).bind(client);
-// const SET_ASYNC = promisify(client.set).bind(client);
+const GET_ASYNC = promisify(client.get).bind(client);
+const SET_ASYNC = promisify(client.set).bind(client);
 
 router.get('/', async (req, res) => {
     try {

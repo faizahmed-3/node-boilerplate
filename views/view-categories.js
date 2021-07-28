@@ -19,9 +19,9 @@ module.exports = ( {req, categories, wishlist, cart}) => {
     ${renderedCategories}
 </ul>
 
-${printWishlistModal(wishlist)}
+${printWishlistModal(req, wishlist)}
       
-${printCartModal(cart)} 
+${printCartModal(req, cart)} 
   
         `})
 }

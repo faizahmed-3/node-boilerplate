@@ -43,6 +43,38 @@ router.post('/:id', async (req, res) => {
     res.redirect('back')
 })
 
+router.post('/checkout/:id', async(req, res) => {
+    let cart;
+
+    if (!req.session.cartID){
+        cart = new Cart();
+        cart = await cart.save();
+        req.session.cartID = cart._id;
+    } else {
+        cart = await Cart.findById(req.session.cartID);
+    }
+
+    const product = cart.products.id(req.params.id);
+
+    if (!product){
+        cart = await Cart.findByIdAndUpdate(req.session.cartID, {
+            $push: {
+                products: {
+                    _id: req.params.id
+                }
+            }
+        }, {new: true})
+    }
+
+    await cart.save();
+
+    req.session.cartCount = cart.products.length
+
+    const previousUrl = req.headers.referer.split(req.headers.host).pop()
+
+    res.redirect(`${previousUrl}#cart`);
+})
+
 router.post('/from-wish/:id', async (req, res) => {
     let cart;
 
