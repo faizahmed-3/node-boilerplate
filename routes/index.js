@@ -82,15 +82,15 @@ router.get('/', async (req, res) => {
             let [featured_products, new_arrivals, sale] = await shuffleSpecial();
 
             savedFeatured = await SET_ASYNC(
-                'savedFeatured', JSON.stringify(featured_products), 'EX', 86400
+                'savedFeatured', JSON.stringify(featured_products), 'EX', 3600
             )
 
             let savedNew = await SET_ASYNC(
-                'savedNew', JSON.stringify(new_arrivals), 'EX', 86400
+                'savedNew', JSON.stringify(new_arrivals), 'EX', 3600
             )
 
             let savedSale = await SET_ASYNC(
-                'savedSale', JSON.stringify(sale), 'EX', 86400
+                'savedSale', JSON.stringify(sale), 'EX', 3600
             )
 
             const categories = await Category.find().sort('dateCreated')

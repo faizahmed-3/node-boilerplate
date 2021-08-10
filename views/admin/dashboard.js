@@ -31,7 +31,7 @@ module.exports = ({orders, income, unitsSold, totalProducts, customers, best, wo
                 New Orders
             </div>
             <div class="card-body table-responsive-md">
-                <table class="table table-hover table-bordered ">
+                <table class="table table-hover table-bordered " id="dashorders">
                     <thead>
                     <tr class="table-dark">
                         <th scope="col" class="ordersHeading">Date</th>

@@ -163,7 +163,7 @@ module.exports = ({title, content}) => {
 } );
     
     $(document).ready(function() {
-    $('.table').DataTable({
+    $('.table:not(#dashorders,#brandsT,#adminT)').DataTable({
          retrieve: true,
     });
 } );
