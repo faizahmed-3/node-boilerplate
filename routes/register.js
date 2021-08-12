@@ -35,7 +35,7 @@ router.post('/', async(req, res) => {
 
     customer.password = await bcrypt.hash(customer.password, salt);
 
-    // customer = await customer.save();
+    customer = await customer.save();
 
     const token = customer.generateLoginToken();
 

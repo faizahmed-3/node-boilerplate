@@ -48,7 +48,7 @@ async function placeOrder(req, res) {
 
             order = await order.save()
 
-            emailOrderStatus(order, customer[0].email, customer[0].full_name).catch(console.error);
+            // emailOrderStatus(order, customer[0].email, customer[0].full_name).catch(console.error);
 
             return Order.find({customerID: order.customerID}).sort('-orderDate')
         }

@@ -33,6 +33,7 @@
     "response-time": "^2.3.2",
     "sessionstorage": "^0.1.0",
     "sharp": "^0.28.3",
+    "smtp": "^0.1.4",
     "winston": "^3.3.3",
     "winston-mongodb": "^5.0.7"
   }
