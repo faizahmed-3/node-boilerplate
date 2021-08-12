@@ -35,7 +35,7 @@ router.post('/', async(req, res) => {
 
     customer.password = await bcrypt.hash(customer.password, salt);
 
-    customer = await customer.save();
+    // customer = await customer.save();
 
     const token = customer.generateLoginToken();
 
@@ -45,7 +45,7 @@ router.post('/', async(req, res) => {
 
     req.session.token = token;
 
-    await emailRegistration(customer).catch(console.error)
+    // await emailRegistration(customer).catch(console.error)
 
     if (req.session.checkout){
         res.redirect('/checkout')

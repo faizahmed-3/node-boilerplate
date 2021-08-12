@@ -5,5 +5,9 @@
   "SHORTCODE": "174379",
   "PASSKEY":"bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919",
   "CONSUMER_KEY": "WoQhfUy2OuqFrTVZkXlZD2CLxczG8qrA",
-  "CONSUMER_SECRET": "Zpcixpi4MSAB3MEV"
+  "CONSUMER_SECRET": "Zpcixpi4MSAB3MEV",
+  "CLIENT_ID": "304484311851-jco5rtmrgpdjpnk7upbc4gdlfetdb7ae.apps.googleusercontent.com",
+  "CLIENT_SECRET": "LLaqQIXeM_2RPgpkLQQ2hyTA",
+  "REDIRECT_URI": "https://developers.google.com/oauthplayground",
+  "REFRESH_TOKEN": "1//04ojXsoQxpl8iCgYIARAAGAQSNwF-L9IrSVhpF3ZycN7uylPClpAdlFMaijoe1rR0aWevPSxTXnnG7ndF2tXgQIjHeJ00p0lg1BM"
 }

@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const {google} = require('googleapis')
 const config = require('config');
 
 function displayDate(date) {
@@ -493,21 +494,38 @@ function printStatusBtn(order) {
 
 exports.emailRegistration = async function (customer) {
 
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        secure: false,
-        auth: {
-            user: 'amazon.cellular.outfitters@gmail.com',
-            pass: config.get('EMAILPASS')
-        }
-    });
+    const CLIENT_ID = config.get('CLIENT_ID');
+    const CLIENT_SECRET = config.get('CLIENT_SECRET');
+    const REDIRECT_URI = config.get('REDIRECT_URI');
+    const REFRESH_TOKEN = config.get('REFRESH_TOKEN');
 
-    let info = await transporter.sendMail({
-        from: '"Amazon Cellular 🛒" amazon.cellular.outfitters@gmail.com',
-        to: customer.email,
-        cc: ['4faizahmed@gmail.com'],
-        subject: `SUCCESSFUL REGISTRATION ON AMAZON CELLULAR OUTFITTERS`,
-        html: `
+    const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
+    oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN})
+
+    try {
+        const accessToken = await oAuth2Client.getAccessToken()
+
+        const transport = nodemailer.createTransport({
+            // host: "smtp.gmail.com",
+            // port: 465,
+            service: 'gmail',
+            secure: false,
+            auth: {
+                type: 'OAuth2',
+                user: 'amazon.cellular.outfitters@gmail.com',
+                clientId: CLIENT_ID,
+                clientSecret: CLIENT_SECRET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken: accessToken
+            }
+        })
+
+        const mailOptions = {
+            from: 'amazon.cellular.outfitters@gmail.com',
+            to: customer.email,
+            cc: ['4faizahmed@gmail.com'],
+            subject: `SUCCESSFUL REGISTRATION ON AMAZON CELLULAR OUTFITTERS`,
+            html: `
 Dear ${customer.full_name},
 <br><br>
 Your registration process at Amazon Cellular Outfitters was successful. You will be receiving communication from us to this email e.g. the status of your orders. We are happy to have you on board and remember "<i>if you can't stop thinking about it, buy it 😉"</i>
@@ -516,10 +534,25 @@ Kind regards,<br>
 Amazon Cellular Outfitters
 
  
-`,
-    });
+`
+        }
 
-    console.log("Message sent: %s", info.messageId);
+        console.log('finished building up mail')
+
+        transport.sendMail(mailOptions, function (error, result) {
+            console.log('sending mail....')
+            if (error){
+                console.log(error)
+            } else {
+                console.log(result)
+            }
+        })
+
+    }
+    catch (e) {
+        console.log('an error occured')
+        console.log(e)
+    }
 }
 
 exports.emailOrderStatus = async function (order, email, fullName) {
