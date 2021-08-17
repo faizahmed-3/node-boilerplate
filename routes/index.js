@@ -268,44 +268,56 @@ router.get('/:id', async (req, res) => {
 })
 
 router.get('/latest/:id', async (req, res) => {
-    if (req.session.referer.includes('/price-filter/')) {
-        await priceFilter(req, res, req.session.pfilter, '-dateCreated')
-    } else if (req.session.referer.includes('brands-filter')) {
-        await brandsFilter(req, res, req.session.bfilter, '-dateCreated')
-    } else {
+    if (req.session.referer){
+        if (req.session.referer.includes('/price-filter/')) {
+            await priceFilter(req, res, req.session.pfilter, '-dateCreated')
+        } else if (req.session.referer.includes('brands-filter')) {
+            await brandsFilter(req, res, req.session.bfilter, '-dateCreated')
+        }
+    }
+    else {
         req.session.sortBy = '-dateCreated'
         res.redirect(`/${req.params.id}`)
     }
 })
 
 router.get('/alpha/:id', async (req, res) => {
-    if (req.session.referer.includes('/price-filter/')) {
-        await priceFilter(req, res, req.session.pfilter, 'product_name')
-    } else if (req.session.referer.includes('brands-filter')) {
-        await brandsFilter(req, res, req.session.bfilter, 'product_name')
-    } else {
+    if (req.session.referer){
+        if (req.session.referer.includes('/price-filter/')) {
+            await priceFilter(req, res, req.session.pfilter, 'product_name')
+        } else if (req.session.referer.includes('brands-filter')) {
+            await brandsFilter(req, res, req.session.bfilter, 'product_name')
+        }
+    }
+    else {
         req.session.sortBy = 'product_name'
         res.redirect(`/${req.params.id}`)
     }
 })
 
 router.get('/lth/:id', async (req, res) => {
-    if (req.session.referer.includes('/price-filter/')) {
-        await priceFilter(req, res, req.session.pfilter, 'price')
-    } else if (req.session.referer.includes('brands-filter')) {
-        await brandsFilter(req, res, req.session.bfilter, 'price')
-    } else {
+    if (req.session.referer){
+        if (req.session.referer.includes('/price-filter/')) {
+            await priceFilter(req, res, req.session.pfilter, 'price')
+        } else if (req.session.referer.includes('brands-filter')) {
+            await brandsFilter(req, res, req.session.bfilter, 'price')
+        }
+    }
+     else {
         req.session.sortBy = 'price'
         res.redirect(`/${req.params.id}`)
     }
 })
 
 router.get('/htl/:id', async (req, res) => {
-    if (req.session.referer.includes('/price-filter/')) {
-        await priceFilter(req, res, req.session.pfilter, '-price')
-    } else if (req.session.referer.includes('brands-filter')) {
-        await brandsFilter(req, res, req.session.bfilter, '-price')
-    } else {
+    if (req.session.referer){
+        if (req.session.referer.includes('/price-filter/')) {
+            await priceFilter(req, res, req.session.pfilter, '-price')
+        } else if (req.session.referer.includes('brands-filter')) {
+            await brandsFilter(req, res, req.session.bfilter, '-price')
+        }
+    }
+    else {
         req.session.sortBy = '-price'
         res.redirect(`/${req.params.id}`)
     }
