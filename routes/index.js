@@ -249,8 +249,6 @@ router.get('/categories', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-    // req.session.referer = ''
-
     if (!req.session.sortBy){
         req.session.sortBy = 'product_name'
     }
