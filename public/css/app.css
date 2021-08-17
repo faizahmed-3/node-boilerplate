@@ -737,6 +737,9 @@ body .actionSelected {
   font-size: 0.95rem;
   margin-bottom: 0.5rem;
 }
+.category-main #category-filters label {
+  text-transform: capitalize;
+}
 .category-main #category-display {
   flex-basis: 80vw;
 }

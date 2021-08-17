@@ -1,9 +1,28 @@
-const {printProductModal, printMainImage, printWishlistModal, printCartModal, wishlistButton, cartButton} = require('../middlewares/otherFunctions');
+const {
+    printProductModal,
+    printMainImage,
+    printWishlistModal,
+    printCartModal,
+    wishlistButton,
+    cartButton
+} = require('../middlewares/otherFunctions');
 const layout = require('./layout');
 
-module.exports = ({req, category, products, brands, wishlist, cart}) => {
+module.exports = ({
+                      req,
+                      category,
+                      products,
+                      brands,
+                      wishlist,
+                      cart,
+                      page,
+                      iterator,
+                      endingLink,
+                      numberOfPages,
+                      sort
+                  }) => {
     function renderProducts(products, wishlist, cart) {
-        if (products.length>0) {
+        if (products.length > 0) {
 
             return products.map(product => {
                 return `
@@ -24,7 +43,8 @@ module.exports = ({req, category, products, brands, wishlist, cart}) => {
                 </div>
                 
             ${printProductModal(product, wishlist, cart)}
-        `}).join('')
+        `
+            }).join('')
 
         } else {
             return `<h6 class="no-results text-muted">Didn't find any products with that filter. <br> Try another filter.</h6>`
@@ -34,13 +54,13 @@ module.exports = ({req, category, products, brands, wishlist, cart}) => {
 
     function printBrands(brands, category) {
         return brands.map(brand => {
-            switch (brand.subBrands.length>0) {
+            switch (brand.subBrands.length > 0) {
                 case true:
                     const brandCheck = brand.subBrands.some(subBrand =>
                         subBrand.subBrandCategoryID.toString() === category._id.toString()
                     )
 
-                    if (brandCheck){
+                    if (brandCheck) {
                         return `
                         <div class="form-check">
                             <label class=" form-check-label mb-1" type="button" data-bs-toggle="collapse"
@@ -53,13 +73,14 @@ module.exports = ({req, category, products, brands, wishlist, cart}) => {
                                 </div>
                             </div>
                         </div>
-                        `}
+                        `
+                    }
 
 
                     break;
 
                 default:
-                    if (brand.brandCategoryID.toString() === category._id.toString()){
+                    if (brand.brandCategoryID.toString() === category._id.toString()) {
                         return `
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="${brand._id}" id="${brand._id}" name="${brand._id}">
@@ -67,15 +88,16 @@ module.exports = ({req, category, products, brands, wishlist, cart}) => {
                                 ${brand.brand_name}
                             </label>
                         </div>
-                        `}
+                        `
+                    }
             }
         }).join('')
     }
 
     function printSubBrands(brand, category) {
-        brand.subBrands.sort((a,b) => a.subBrandName.localeCompare(b.subBrandName))
+        brand.subBrands.sort((a, b) => a.subBrandName.localeCompare(b.subBrandName))
         return brand.subBrands.map(subBrand => {
-            if (subBrand.subBrandCategoryID.toString() === category._id.toString()){
+            if (subBrand.subBrandCategoryID.toString() === category._id.toString()) {
                 return `
                <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="${subBrand._id}" id="${subBrand._id}" name="${brand._id}">
@@ -83,9 +105,261 @@ module.exports = ({req, category, products, brands, wishlist, cart}) => {
                         ${subBrand.subBrandName}
                     </label>
                 </div> 
-            `}
+            `
+            }
         }).join('')
 
+    }
+
+    function printSort(sort) {
+        switch (sort) {
+            case 'product_name':
+                return `
+                    <span class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Alphabetically
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="SortDropdown">
+                        <li><a class="dropdown-item" href="/alpha/${category._id}">Alphabetically</a></li>
+                        <li><a class="dropdown-item" href="/latest/${category._id}">Latest</a></li>
+                        <li><a class="dropdown-item" href="/lth/${category._id}">Price - Low to High</a></li>
+                        <li><a class="dropdown-item" href="/htl/${category._id}">Price - High to Low</a></li>
+                    </ul>
+                </span>
+                `
+            case '-dateCreated':
+                return `
+                    <span class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Latest
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="SortDropdown">
+                        <li><a class="dropdown-item" href="/alpha/${category._id}">Alphabetically</a></li>
+                        <li><a class="dropdown-item" href="/latest/${category._id}">Latest</a></li>
+                        <li><a class="dropdown-item" href="/lth/${category._id}">Price - Low to High</a></li>
+                        <li><a class="dropdown-item" href="/htl/${category._id}">Price - High to Low</a></li>
+                    </ul>
+                </span>
+                `
+            case 'price':
+                return `
+                    <span class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Price - Low to High
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="SortDropdown">
+                        <li><a class="dropdown-item" href="/alpha/${category._id}">Alphabetically</a></li>
+                        <li><a class="dropdown-item" href="/latest/${category._id}">Latest</a></li>
+                        <li><a class="dropdown-item" href="/lth/${category._id}">Price - Low to High</a></li>
+                        <li><a class="dropdown-item" href="/htl/${category._id}">Price - High to Low</a></li>
+                    </ul>
+                </span>
+                `
+            case '-price':
+                return `
+                    <span class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Price - High to Low
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="SortDropdown">
+                        <li><a class="dropdown-item" href="/alpha/${category._id}">Alphabetically</a></li>
+                        <li><a class="dropdown-item" href="/latest/${category._id}">Latest</a></li>
+                        <li><a class="dropdown-item" href="/lth/${category._id}">Price - Low to High</a></li>
+                        <li><a class="dropdown-item" href="/htl/${category._id}">Price - High to Low</a></li>
+                    </ul>
+                </span>
+                `
+            default:
+                return `
+                    <span class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Alphabetically
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="SortDropdown">
+                        <li><a class="dropdown-item" href="/alpha/${category._id}">Alphabetically</a></li>
+                        <li><a class="dropdown-item" href="/latest/${category._id}">Latest</a></li>
+                        <li><a class="dropdown-item" href="/lth/${category._id}">Price - Low to High</a></li>
+                        <li><a class="dropdown-item" href="/htl/${category._id}">Price - High to Low</a></li>
+                    </ul>
+                </span>
+                `
+        }
+    }
+
+    function printPg(paginationString,i, active) {
+        if (active) {
+            if (req.originalUrl.includes('price-filter')) {
+                paginationString.push(`<li class="page-item active"><a class="page-link" href="/price-filter/${category._id}?page=${i}">${i}</a></li>`)
+            } else if (req.originalUrl.includes('brands-filter')) {
+                paginationString.push(`<li class="page-item active"><a class="page-link" href="/brands-filter/${category._id}?page=${i}">${i}</a></li>`)
+            }  else if (req.originalUrl.includes('lth')) {
+                paginationString.push(`<li class="page-item active"><a class="page-link" href="/lth/${category._id}?page=${i}">${i}</a></li>`)
+            } else if (req.originalUrl.includes('htl')) {
+                paginationString.push(`<li class="page-item active"><a class="page-link" href="/htl/${category._id}?page=${i}">${i}</a></li>`)
+            }  else if (req.originalUrl.includes('alpha')) {
+                paginationString.push(`<li class="page-item active"><a class="page-link" href="/alpha/${category._id}?page=${i}">${i}</a></li>`)
+            }  else if (req.originalUrl.includes('latest')) {
+                paginationString.push(`<li class="page-item active"><a class="page-link" href="/latest/${category._id}?page=${i}">${i}</a></li>`)
+            }
+            else {
+                paginationString.push(`<li class="page-item active"><a class="page-link" href="/${category._id}?page=${i}">${i}</a></li>`)
+            }
+        } else {
+            if (req.originalUrl.includes('price-filter')) {
+                paginationString.push(`<li class="page-item"><a class="page-link" href="/price-filter/${category._id}?page=${i}">${i}</a></li>`)
+            } else if (req.originalUrl.includes('brands-filter')) {
+                paginationString.push(`<li class="page-item"><a class="page-link" href="/brands-filter/${category._id}?page=${i}">${i}</a></li>`)
+            }
+            else if (req.originalUrl.includes('lth')) {
+                paginationString.push(`<li class="page-item "><a class="page-link" href="/lth/${category._id}?page=${i}">${i}</a></li>`)
+            } else if (req.originalUrl.includes('htl')) {
+                paginationString.push(`<li class="page-item "><a class="page-link" href="/htl/${category._id}?page=${i}">${i}</a></li>`)
+            } else if (req.originalUrl.includes('alpha')) {
+                paginationString.push(`<li class="page-item "><a class="page-link" href="/alpha/${category._id}?page=${i}">${i}</a></li>`)
+            } else if (req.originalUrl.includes('latest')) {
+                paginationString.push(`<li class="page-item "><a class="page-link" href="/latest/${category._id}?page=${i}">${i}</a></li>`)
+            } else {
+                paginationString.push(`<li class="page-item"><a class="page-link" href="/${category._id}?page=${i}">${i}</a></li>`)
+            }
+        }
+    }
+
+    function printPagination(page, iterator, endingLink, numberOfPages, category) {
+
+        let paginationString = [];
+
+        if (page > 1) {
+            if (req.originalUrl.includes('price-filter')) {
+                paginationString.push(`
+                <li class="page-item">
+                    <a class="page-link" href="/price-filter/${category._id}?page=${page - 1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `)
+            } else if (req.originalUrl.includes('brands-filter')) {
+                paginationString.push(`
+                <li class="page-item">
+                    <a class="page-link" href="/brands-filter/${category._id}?page=${page - 1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `)
+            } else if (req.originalUrl.includes('lth')) {
+                paginationString.push(`
+                <li class="page-item">
+                    <a class="page-link" href="/lth/${category._id}?page=${page - 1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `)
+            } else if (req.originalUrl.includes('htl')) {
+                paginationString.push(`
+                <li class="page-item">
+                    <a class="page-link" href="/htl/${category._id}?page=${page - 1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `)
+            } else if (req.originalUrl.includes('alpha')) {
+                paginationString.push(`
+                <li class="page-item">
+                    <a class="page-link" href="/alpha/${category._id}?page=${page - 1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `)
+            } else if (req.originalUrl.includes('latest')) {
+                paginationString.push(`
+                <li class="page-item">
+                    <a class="page-link" href="/latest/${category._id}?page=${page - 1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `)
+            }  else {
+                paginationString.push(`
+                <li class="page-item">
+                    <a class="page-link" href="/${category._id}?page=${page - 1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `)
+            }
+        }
+
+
+        for (let i = iterator; i <= endingLink; i++) {
+            if (i < 1) {
+
+            } else if (i === page) {
+                printPg(paginationString, i, true)
+            }
+            else {
+                printPg(paginationString, i, false)
+            }
+        }
+
+        if (page < numberOfPages) {
+            if (req.originalUrl.includes('price-filter')) {
+                paginationString.push(`
+                <li class="page-item">
+                     <a class="page-link" href="/price-filter/${category._id}?page=${page + 1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                </li>
+            `)            }
+            else if (req.originalUrl.includes('brands-filter')) {
+                paginationString.push(`
+                <li class="page-item">
+                     <a class="page-link" href="/brands-filter/${category._id}?page=${page + 1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                </li>
+            `)            } else if (req.originalUrl.includes('lth')) {
+                paginationString.push(`
+                <li class="page-item">
+                     <a class="page-link" href="/lth/${category._id}?page=${page + 1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                </li>
+            `)            } else if (req.originalUrl.includes('htl')) {
+                paginationString.push(`
+                <li class="page-item">
+                     <a class="page-link" href="/htl/${category._id}?page=${page + 1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                </li>
+            `)            } else if (req.originalUrl.includes('alpha')) {
+                paginationString.push(`
+                <li class="page-item">
+                     <a class="page-link" href="/alpha/${category._id}?page=${page + 1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                </li>
+            `)            } else if (req.originalUrl.includes('latest')) {
+                paginationString.push(`
+                <li class="page-item">
+                     <a class="page-link" href="/latest/${category._id}?page=${page + 1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                </li>
+            `)            } else {
+                paginationString.push(`
+                <li class="page-item">
+                     <a class="page-link" href="/${category._id}?page=${page + 1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                </li>
+            `)            }
+        }
+
+        return paginationString.join('')
     }
 
     return layout({
@@ -102,7 +376,7 @@ module.exports = ({req, category, products, brands, wishlist, cart}) => {
                     <div class="d-flex justify-content-between price-heading">
                         <div>PRICE <span>(ksh.)</span></div>
                         <div>
-                            <button type="button" class="btn btn-sm btn-secondary" onclick="location.href='/${category._id}'">Reset</button>
+                            <button type="button" class="btn btn-sm btn-secondary" onclick="location.href='/reset/${category._id}'">Reset</button>
                             <button type="submit" class="btn btn-sm btn-warning">Apply</button>
                         </div>
                     </div>
@@ -126,7 +400,7 @@ module.exports = ({req, category, products, brands, wishlist, cart}) => {
                     <div class="d-flex justify-content-between price-heading mt-2">
                         <div>FILTER</div>
                         <div>
-                            <button type="button" class="btn btn-sm btn-secondary" onclick="location.href='/${category._id}'">Reset</button>
+                            <button type="button" class="btn btn-sm btn-secondary" onclick="location.href='/reset/${category._id}'">Reset</button>
                             <button type="submit" class="btn btn-sm btn-warning">Apply</button>
                         </div>
                     </div>
@@ -141,25 +415,22 @@ module.exports = ({req, category, products, brands, wishlist, cart}) => {
         <div class="card">
             <div class="card-header">
             <button class="btn btn-primary rounded-pill" id="filterButton"><i class="fas fa-plus"></i>&nbsp;Filter</button>
-                <div class="categoryTitle">${category.category_name}</div>
-<!--                <div class="sortBy mt-2">-->
-<!--                    Sort by:-->
-<!--                    <span class="dropdown">-->
-<!--                    <a class="dropdown-toggle" href="#" role="button"-->
-<!--                       data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                        Latest-->
-<!--                    </a>-->
-<!--                    <ul class="dropdown-menu" aria-labelledby="SortDropdown">-->
-<!--                        <li><a class="dropdown-item" href="#">Alphabetically</a></li>-->
-<!--                        <li><a class="dropdown-item" href="#">Latest</a></li>-->
-<!--                        <li><a class="dropdown-item" href="#">Price - Low to High</a></li>-->
-<!--                        <li><a class="dropdown-item" href="#">Price - High toLow</a></li>-->
-<!--                    </ul>-->
-<!--                </span>-->
-<!--                </div>-->
+            
+            <div class="d-flex justify-content-between">
+            <div class="categoryTitle">${category.category_name}</div>
+                <div class="sortBy mt-2">
+                    Sort by:  
+                     ${printSort(sort)}
+                </div>
+            </div>
             </div>
             <div class="card-body  mainContent row">
                 ${renderProducts(products, wishlist, cart)}
+                <nav class="d-flex justify-content-center mt-2" aria-label="Page navigation">
+                      <ul class="pagination">
+                         ${printPagination(page, iterator, endingLink, numberOfPages, category)}
+                      </ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -169,5 +440,6 @@ ${printWishlistModal(req, wishlist)}
       
 ${printCartModal(req, cart)} 
   
-        `})
+        `
+    })
 }

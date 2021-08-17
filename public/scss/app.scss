@@ -800,6 +800,10 @@ body {
       font-size: 0.95rem;
       margin-bottom: 0.5rem;
     }
+
+    label{
+      text-transform: capitalize;
+    }
   }
 
   #category-display {
