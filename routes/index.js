@@ -36,13 +36,13 @@ async function shuffleSpecial() {
     return [featured_products, new_arrivals, sale]
 }
 
-async function priceFilter(req, res, pfilter, sortBy) {
+async function priceFilter(req, res, pfilter, sortBy, categoryID) {
     let variables = []
 
     if (Object.keys(pfilter).length > 0) {
         let products = await Product.find(pfilter).and([{categoryID: req.params.id}, {status: true}]).collation({locale: "en"}).sort(sortBy)
 
-        let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products)
+        let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products, categoryID)
 
         products = await Product.find(pfilter).and([{categoryID: req.params.id}, {status: true}]).collation({locale: "en"}).skip(startingLimit).limit(resultsPerPage).sort(sortBy)
 
@@ -53,7 +53,7 @@ async function priceFilter(req, res, pfilter, sortBy) {
     } else {
         let products = await Product.find({categoryID: req.params.id}, {status: true}).collation({locale: "en"}).sort('product_name')
 
-        let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products)
+        let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products, categoryID)
 
         products = await Product.find({categoryID: req.params.id}, {status: true}).collation({locale: "en"}).skip(startingLimit).limit(resultsPerPage).sort('product_name')
 
@@ -68,13 +68,13 @@ async function priceFilter(req, res, pfilter, sortBy) {
     await seeAll(req, res, products, page, iterator, endingLink, numberOfPages, sortBy)
 }
 
-async function brandsFilter(req, res, bfilter, sortBy) {
+async function brandsFilter(req, res, bfilter, sortBy, categoryID) {
     let variables = []
 
     if (bfilter.length > 0) {
         let products = await Product.find({status: true}).or(bfilter).collation({locale: "en"}).sort('product_name')
 
-        let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products)
+        let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products, categoryID)
 
         products = await Product.find({status: true}).or(bfilter).collation({locale: "en"}).skip(startingLimit).limit(resultsPerPage).sort('product_name')
 
@@ -88,7 +88,7 @@ async function brandsFilter(req, res, bfilter, sortBy) {
             status: true
         }).collation({locale: "en"}).sort('product_name')
 
-        let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products)
+        let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products, categoryID)
 
         products = await Product.find({
             categoryID: req.params.id,
@@ -132,7 +132,11 @@ async function seeAll(req, res, products, page, iterator, endingLink, numberOfPa
     }))
 }
 
-async function ssPagination1(req, res, products) {
+async function ssPagination1(req, res, products, categoryID) {
+    if (products.length < 1){
+        throw new Error('No product found')
+    }
+
     const resultsPerPage = 10;
 
     const numOfResults = products.length;
@@ -141,9 +145,9 @@ async function ssPagination1(req, res, products) {
 
     let page = req.query.page ? Number(req.query.page) : 1;
     if (page > numberOfPages) {
-        res.redirect('/:id?page=' + encodeURIComponent(numberOfPages));
+        res.redirect(`/${categoryID}?page=` + encodeURIComponent(numberOfPages));
     } else if (page < 1) {
-        res.redirect('/:id?page=' + encodeURIComponent('1'));
+        res.redirect(`/${categoryID}?page=` + encodeURIComponent('1'));
     }
 
     const startingLimit = (page - 1) * resultsPerPage;
@@ -255,7 +259,7 @@ router.get('/:id', async (req, res) => {
 
     let products = await Product.find({categoryID: req.params.id, status: true}).sort(req.session.sortBy);
 
-    let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products)
+    let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products, req.params.id)
 
     products = await Product.find({
         categoryID: req.params.id,
@@ -268,44 +272,56 @@ router.get('/:id', async (req, res) => {
 })
 
 router.get('/latest/:id', async (req, res) => {
-    if (req.session.referer.includes('/price-filter/')) {
-        await priceFilter(req, res, req.session.pfilter, '-dateCreated')
-    } else if (req.session.referer.includes('brands-filter')) {
-        await brandsFilter(req, res, req.session.bfilter, '-dateCreated')
-    } else {
+    if (req.session.referer){
+        if (req.session.referer.includes('/price-filter/')) {
+            await priceFilter(req, res, req.session.pfilter, '-dateCreated')
+        } else if (req.session.referer.includes('brands-filter')) {
+            await brandsFilter(req, res, req.session.bfilter, '-dateCreated')
+        }
+    }
+     else {
         req.session.sortBy = '-dateCreated'
         res.redirect(`/${req.params.id}`)
     }
 })
 
 router.get('/alpha/:id', async (req, res) => {
-    if (req.session.referer.includes('/price-filter/')) {
-        await priceFilter(req, res, req.session.pfilter, 'product_name')
-    } else if (req.session.referer.includes('brands-filter')) {
-        await brandsFilter(req, res, req.session.bfilter, 'product_name')
-    } else {
+    if (req.session.referer){
+        if (req.session.referer.includes('/price-filter/')) {
+            await priceFilter(req, res, req.session.pfilter, 'product_name')
+        } else if (req.session.referer.includes('brands-filter')) {
+            await brandsFilter(req, res, req.session.bfilter, 'product_name')
+        }
+    }
+    else {
         req.session.sortBy = 'product_name'
         res.redirect(`/${req.params.id}`)
     }
 })
 
 router.get('/lth/:id', async (req, res) => {
-    if (req.session.referer.includes('/price-filter/')) {
-        await priceFilter(req, res, req.session.pfilter, 'price')
-    } else if (req.session.referer.includes('brands-filter')) {
-        await brandsFilter(req, res, req.session.bfilter, 'price')
-    } else {
+    if (req.session.referer){
+        if (req.session.referer.includes('/price-filter/')) {
+            await priceFilter(req, res, req.session.pfilter, 'price')
+        } else if (req.session.referer.includes('brands-filter')) {
+            await brandsFilter(req, res, req.session.bfilter, 'price')
+        }
+    }
+    else {
         req.session.sortBy = 'price'
         res.redirect(`/${req.params.id}`)
     }
 })
 
 router.get('/htl/:id', async (req, res) => {
-    if (req.session.referer.includes('/price-filter/')) {
-        await priceFilter(req, res, req.session.pfilter, '-price')
-    } else if (req.session.referer.includes('brands-filter')) {
-        await brandsFilter(req, res, req.session.bfilter, '-price')
-    } else {
+    if (req.session.referer){
+        if (req.session.referer.includes('/price-filter/')) {
+            await priceFilter(req, res, req.session.pfilter, '-price')
+        } else if (req.session.referer.includes('brands-filter')) {
+            await brandsFilter(req, res, req.session.bfilter, '-price')
+        }
+    }
+    else {
         req.session.sortBy = '-price'
         res.redirect(`/${req.params.id}`)
     }
@@ -316,7 +332,7 @@ router.get('/price-filter/:id', async (req, res) => {
 
     req.session.referer = req.originalUrl;
 
-    await priceFilter(req, res, pfilter, 'product_name')
+    await priceFilter(req, res, pfilter, 'product_name', req.params.id)
 
     // req.session.pfilter = null;
 })
@@ -347,7 +363,7 @@ router.post('/price-filter/:id', async (req, res) => {
 
     req.session.referer = req.originalUrl;
 
-    await priceFilter(req, res, pfilter, 'product_name')
+    await priceFilter(req, res, pfilter, 'product_name', req.params.id)
 })
 
 router.get('/brands-filter/:id', async (req, res) => {
@@ -356,7 +372,7 @@ router.get('/brands-filter/:id', async (req, res) => {
 
     req.session.referer = req.originalUrl;
 
-    await brandsFilter(req, res, bfilter)
+    await brandsFilter(req, res, bfilter, req.params.id)
 
     // req.session.bfilter = null;
 })
@@ -380,7 +396,7 @@ router.post('/brands-filter/:id', async (req, res) => {
 
     req.session.referer = req.originalUrl;
 
-    await brandsFilter(req, res, bfilter)
+    await brandsFilter(req, res, bfilter, req.params.id)
 })
 
 router.get('/reset/:id', async (req, res) => {
@@ -394,7 +410,7 @@ router.get('/reset/:id', async (req, res) => {
 
     let products = await Product.find({categoryID: req.params.id, status: true}).sort(req.session.sortBy);
 
-    let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products)
+    let [page, startingLimit, numberOfPages, resultsPerPage] = await ssPagination1(req, res, products, req.params.id)
 
     products = await Product.find({
         categoryID: req.params.id,

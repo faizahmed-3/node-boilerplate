@@ -8,6 +8,10 @@ const express = require('express');
 const router = express.Router();
 
 async function ssPagination1(req, res, products) {
+    if (products.length < 1){
+        throw new Error('No product found')
+    }
+
     const resultsPerPage = 10;
 
     const numOfResults = products.length;

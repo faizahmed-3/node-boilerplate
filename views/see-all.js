@@ -416,10 +416,10 @@ module.exports = ({
             <div class="card-header">
             <button class="btn btn-primary rounded-pill" id="filterButton"><i class="fas fa-plus"></i>&nbsp;Filter</button>
             
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between mt-1">
             <div class="categoryTitle">${category.category_name}</div>
-                <div class="sortBy mt-2">
-                    Sort by:  
+                <div class="sortBy mt-1">
+                    Sort:  
                      ${printSort(sort)}
                 </div>
             </div>

@@ -58,7 +58,7 @@ function printProductModal(product, wishlist, cart) {
                                     </div>
                                 </div>
                                 <div class="pvBtns">
-                                    <button type="submit" class="btn btn-success prod-start" formaction="/cart/checkout/${product._id}"> Checkout </button>
+                                    <button type="submit" class="btn btn-outline-success prod-start" formaction="/cart/checkout/${product._id}"> Checkout </button>
                                 </div>
                             </form>
                             <div id="share" class="text-center">

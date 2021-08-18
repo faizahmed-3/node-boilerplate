@@ -757,12 +757,12 @@ body .actionSelected {
   font-weight: 500;
 }
 .category-main #category-display .sortBy {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 .category-main #category-display .sortBy a {
   text-decoration: none;
   color: black;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
 }
 .category-main #category-display .card-body {
   padding-top: 0;
@@ -2113,10 +2113,10 @@ body .actionSelected {
     font-size: 1rem;
   }
   .category-main #category-display .sortBy {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
   }
   .category-main #category-display .sortBy a {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
   }
   .category-main #category-display .mainContent .col-lg-2 {
     flex-basis: 33%;
@@ -2417,7 +2417,7 @@ body .actionSelected {
     padding: 0.5rem;
   }
   .product-view #prod-main-img {
-    height: 20rem;
+    height: 25rem;
   }
   .product-view .small-img-col {
     flex-basis: 3.5rem;
