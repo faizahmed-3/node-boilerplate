@@ -1,7 +1,7 @@
 const {printProductModal, printMainImage, printWishlistModal, printCartModal, wishlistButton, cartButton} = require('../middlewares/otherFunctions');
 const layout = require('./layout');
 
-module.exports = ({req, query, products, wishlist, cart, page, iterator, endingLink, numberOfPages, sort}) => {
+module.exports = ({req, products, wishlist, cart, page, iterator, endingLink, numberOfPages, sort}) => {
     function renderProducts(products, wishlist, cart) {
         if (products.length>0) {
 

@@ -10,6 +10,8 @@ module.exports = ({title, req, content}) => {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
+    <meta name="description" content="An online as well as physical store based in Nairobi Kenya. We sell accessories for phones, tablets, smart watches, cameras, cars and computers.">
+    <meta property="og:image" content="/img/logo.jpg">
 
     <!--    Favicon -->
     <link rel="icon" href="/img/favicon.ico">

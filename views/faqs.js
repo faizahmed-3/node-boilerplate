@@ -203,7 +203,7 @@ module.exports = ({req, wishlist, cart, header}) => {
                                                         <img loading="lazy" src="/img/faqs/ms3.webp" alt=""
                                                              class="faqMobileImage border border-1">
                                                         <img loading="lazy" src="/img/faqs/ms4.webp" alt=""
-                                                             class="faqMobileImage border border-1 ms-5">
+                                                             class="faqMobileImage border border-1 ms-3 ms-lg-5">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -572,7 +572,7 @@ module.exports = ({req, wishlist, cart, header}) => {
                                                         <img loading="lazy" src="/img/faqs/ms3.webp" alt=""
                                                              class="faqMobileImage border border-1">
                                                         <img loading="lazy" src="/img/faqs/ms4.webp" alt=""
-                                                             class="faqMobileImage border border-1 ms-5">
+                                                             class="faqMobileImage border border-1 ms-3 ms-lg-5">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -941,7 +941,7 @@ module.exports = ({req, wishlist, cart, header}) => {
                                                         <img loading="lazy" src="/img/faqs/ms3.webp" alt=""
                                                              class="faqMobileImage border border-1">
                                                         <img loading="lazy" src="/img/faqs/ms4.webp" alt=""
-                                                             class="faqMobileImage border border-1 ms-5">
+                                                             class="faqMobileImage border border-1 ms-3 ms-lg-5">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -1310,7 +1310,7 @@ module.exports = ({req, wishlist, cart, header}) => {
                                                         <img loading="lazy" src="/img/faqs/ms3.webp" alt=""
                                                              class="faqMobileImage border border-1">
                                                         <img loading="lazy" src="/img/faqs/ms4.webp" alt=""
-                                                             class="faqMobileImage border border-1 ms-5">
+                                                             class="faqMobileImage border border-1 ms-3 ms-lg-5">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -1679,7 +1679,7 @@ module.exports = ({req, wishlist, cart, header}) => {
                                                         <img loading="lazy" src="/img/faqs/ms3.webp" alt=""
                                                              class="faqMobileImage border border-1">
                                                         <img loading="lazy" src="/img/faqs/ms4.webp" alt=""
-                                                             class="faqMobileImage border border-1 ms-5">
+                                                             class="faqMobileImage border border-1 ms-3 ms-lg-5">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -2048,7 +2048,7 @@ module.exports = ({req, wishlist, cart, header}) => {
                                                         <img loading="lazy" src="/img/faqs/ms3.webp" alt=""
                                                              class="faqMobileImage border border-1">
                                                         <img loading="lazy" src="/img/faqs/ms4.webp" alt=""
-                                                             class="faqMobileImage border border-1 ms-5">
+                                                             class="faqMobileImage border border-1 ms-3 ms-lg-5">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -2417,7 +2417,7 @@ module.exports = ({req, wishlist, cart, header}) => {
                                                         <img loading="lazy" src="/img/faqs/ms3.webp" alt=""
                                                              class="faqMobileImage border border-1">
                                                         <img loading="lazy" src="/img/faqs/ms4.webp" alt=""
-                                                             class="faqMobileImage border border-1 ms-5">
+                                                             class="faqMobileImage border border-1 ms-3 ms-lg-5">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -2785,7 +2785,7 @@ module.exports = ({req, wishlist, cart, header}) => {
                                                         <img loading="lazy" src="/img/faqs/ms3.webp" alt=""
                                                              class="faqMobileImage border border-1">
                                                         <img loading="lazy" src="/img/faqs/ms4.webp" alt=""
-                                                             class="faqMobileImage border border-1 ms-5">
+                                                             class="faqMobileImage border border-1 ms-3 ms-lg-5">
                                                     </div>
                                                 </li>
                                                 <li>

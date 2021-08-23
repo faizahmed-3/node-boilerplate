@@ -1,8 +1,9 @@
+const mongoose = require('mongoose');
 const {getModals} = require('../middlewares/otherFunctions');
-const {Brand} = require('../models/admin/brands');
 const {Wishlist} = require('../models/wishlist');
 const {Cart} = require('../models/cart');
 const searchTemplate = require('../views/search');
+const externalTemplate = require('../views/external');
 const {Product} = require('../models/admin/products');
 const express = require('express');
 const router = express.Router();
@@ -66,7 +67,7 @@ router.get('/', async(req, res) => {
 
     let [wishlist, cart] = await getModals(req, Wishlist, Cart)
 
-    res.send(searchTemplate({req,  query: req.query.query, products, wishlist, cart, page, iterator, endingLink, numberOfPages, sort: req.session.sortBy}))
+    res.send(searchTemplate({req, products, wishlist, cart, page, iterator, endingLink, numberOfPages, sort: req.session.sortBy}))
 })
 
 router.get('/lth/', (req, res) => {
@@ -91,6 +92,20 @@ router.get('/alpha/', (req, res) => {
     req.session.sortBy = 'product_name'
 
     res.redirect('/search')
+})
+
+router.get('/ext/:id', async (req, res) => {
+
+    const valid = mongoose.isValidObjectId(req.params.id);
+    if (!valid) throw new Error('Invalid product ID')
+
+    const product = await Product.findById(req.params.id);
+    if (!product) throw new Error('Product not found');
+
+    let [wishlist, cart] = await getModals(req, Wishlist, Cart)
+
+    res.send(externalTemplate({req, product, wishlist, cart}))
+
 })
 
 module.exports = router;

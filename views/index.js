@@ -113,15 +113,14 @@ ${printProductModal(product, wishlist, cart)}
                 <i class="fas fa-user-shield"></i>
             </div>
             <p>Payments are only done upon delivery. Receive what you had actually ordered.
-                <span>*Applies for orders within Nairobi and it environs</span></p>
+                <span>*Applies for orders within Nairobi metropolitan</span></p>
         </div>
         <div class="col-md-6 col-lg-3 mt-2">
             <div class="why-subtitle">
                 <h5>Quick Deliveries </h5>
                 <i class="fas fa-shipping-fast"></i>
             </div>
-            <p>Same day deliveries for orders before 12.30pm and within 24 hours for orders after. <span>*Applies for orders within Nairobi and
-                its environs</span></p>
+            <p>Same day deliveries for orders before 12.30pm and within 24 hours for orders after. <span>*Applies for orders within Nairobi metropolitan</span></p>
         </div>
         <div class="col-md-6 col-lg-3 mt-2">
             <div class="why-subtitle">

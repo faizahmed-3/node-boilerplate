@@ -38,16 +38,6 @@ document.querySelector('#copyright').innerHTML = year;
 window.addEventListener('load', () => {
     let url = window.location.href;
 
-    if (url.includes('#_')){
-        let modalToOpen = url.substring(url.indexOf("#"));
-        if (document.querySelector(modalToOpen)){
-            if(window.location.href.indexOf(modalToOpen) !== -1) {
-                let myModal = new bootstrap.Modal(document.querySelector(modalToOpen), {})
-                myModal.show()
-            }
-        }
-    }
-
     if (url.includes('#wishlist')){
         let myModal = new bootstrap.Modal(document.querySelector('#wishlist'), {})
         myModal.show()
