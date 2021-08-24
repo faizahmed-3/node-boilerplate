@@ -201,7 +201,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
 
             <div class="mb-4 col form-group">
 
-                <div class="d-flex">
+                <div class="d-md-flex">
                     <label for="description" class="form-label richTitle">Description</label>
                     <ul class="tool-list">
                         <li>
@@ -243,7 +243,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
             </div>
 
             <div class="mb-4 col form-group">
-                <div class="d-flex">
+                <div class="d-md-flex">
                     <label for="inBox" class="form-label richTitle">What's in the box</label>
                     <ul class="tool-list">
                         <li>
@@ -284,7 +284,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
 
             <div class="mb-4 table-responsive-md">
                 <div class="subHeading">PRICING</div>
-                <table class="table table-bordered mt-3">
+                <table class="table table-bordered mt-3" id="addProductT">
                     <thead>
                     <tr class="table-primary">
                         <th scope="col" required>Quantity</th>
@@ -322,7 +322,7 @@ module.exports = ({product, error, categories, brands, specials}) => {
                 </div>
             </div>
 
-            <div class="my-3 d-flex justify-content-evenly">
+            <div class="my-3 d-md-flex justify-content-evenly">
                 <div>
                     <span id="visibility" class="mt-3">Visibility</span>
                     <label class="switch">

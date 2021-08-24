@@ -980,6 +980,22 @@
 
     }
   }
+
+  #add-product{
+    li{
+      margin: 2rem 0;
+    }
+
+    .orderProductEdit{
+      width: 100%;
+      font-size: 0.8rem;
+    }
+
+    .orderQuantityEdit{
+      width: 100%;
+      font-size: 0.8rem;
+    }
+  }
 }
 
 
@@ -1585,8 +1601,15 @@
 
   #admin {
     .mainPanel {
+      .navbar{
+        .navbar-brand{
+          font-size: 1.3rem;
+        }
+      }
+
       .order {
-        width: 92%;
+        width: 95%;
+        margin: 1rem 0.5rem 1rem 0.3rem;
 
         .card-body {
           margin-right: 0.7rem;
@@ -1611,6 +1634,16 @@
         .btn {
           width: 7rem;
           font-size: 0.7rem;
+        }
+
+        .ordersHeadingBig{
+          min-width: 25rem;
+        }
+
+        .performer{
+          .performerName{
+            min-width: 25rem;
+          }
         }
 
       }
@@ -1656,6 +1689,44 @@
 
     .faqLgImage{
       height: 100%;
+    }
+  }
+
+  #viewProducts{
+    margin: 1rem 0.5rem 1rem 0.3rem;
+
+    .ordersHeadingBig{
+      min-width: 25rem;
+    }
+
+    .product-name-heading{
+      min-width: 18rem;
+      font-size: 0.9rem;
+    }
+
+    .product-others, .tableHeader{
+      font-size: 0.9rem;
+    }
+
+    .tableHeaderBig{
+      font-size: 0.9rem;
+      min-width: 18rem;
+    }
+
+    tr{
+      font-size: 0.87rem;
+    }
+  }
+
+  #add-product{
+    .card-header{
+      font-size: 1.25rem;
+    }
+
+    .save{
+      width: 5rem;
+      font-size: 0.6rem;
+      margin-top: 1rem;
     }
   }
 

@@ -67,7 +67,9 @@ function printProductModal(product, wishlist, cart) {
 <!--                                <a href=""><i class="fab fa-instagram"></i></a>-->
 <!--                                <a href=""><i class="fab fa-twitter"></i></a>-->
                                 <a href="whatsapp://send?text=https://amazon-cellular.com/search/ext/${product._id}"><i class="fab fa-whatsapp"></i></a>
-                                <a href=""><i class="far fa-clipboard"></i>Copy to clipboard</a>
+                                <input type="hidden" value="https://amazon-cellular.com/search/ext/${product._id}">
+                                <div class="d-inline"><button class="c2cLink btn btn-outline-secondary"> copy product link <i class="far fa-clipboard c2c" ></i></button></div>
+                                
                             </div>
                         </div>
                         <div>
@@ -315,21 +317,21 @@ function wishlistButton(productID, wishlist) {
         const product = wishlist.products.id(productID);
         if (product) {
             return `
-                <form method="post" action="/wishlist/${productID}" style="color: black">
-                    <button type="submit" class="formBtn"><i class="bi bi-heart-fill actionSelected"></i></button>
+                <form method="post" action="/wishlist/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-heart-fill actionSelected" style="color: black"></i></button>
                 </form>
             `
         } else {
             return `
-                <form method="post" action="/wishlist/${productID}" style="color: black">
-                    <button type="submit" class="formBtn"><i class="bi bi-heart"></i></button>
+                <form method="post" action="/wishlist/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-heart" style="color: black"></i></button>
                 </form>
             `
         }
     } else {
         return `
-                <form method="post" action="/wishlist/${productID}" style="color: black">
-                    <button type="submit" class="formBtn"><i class="bi bi-heart"></i></button>
+                <form method="post" action="/wishlist/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-heart" style="color: black"></i></button>
                 </form>
             `
     }
@@ -340,21 +342,21 @@ function cartButton(productID, cart) {
         const product = cart.products.id(productID);
         if (product) {
             return `
-                <form method="post" action="/cart/${productID}" style="color: black">
-                    <button type="submit" class="formBtn"><i class="bi bi-cart-fill actionSelected"></i></button>
+                <form method="post" action="/cart/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-cart-fill actionSelected" style="color: black"></i></button>
                 </form>
             `
         } else {
             return `
-                <form method="post" action="/cart/${productID}" style="color: black">
-                    <button type="submit" class="formBtn"><i class="bi bi-cart3"></i></button>
+                <form method="post" action="/cart/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-cart3" style="color: black"></i></button>
                 </form>
             `
         }
     } else {
         return `
-                <form method="post" action="/cart/${productID}" style="color: black">
-                    <button type="submit" class="formBtn"><i class="bi bi-cart3"></i></button>
+                <form method="post" action="/cart/${productID}" >
+                    <button type="submit" class="formBtn"><i class="bi bi-cart3" style="color: black"></i></button>
                 </form>
             `
     }

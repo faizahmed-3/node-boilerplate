@@ -64,6 +64,9 @@ module.exports = ({title, products}) => {
         title: title,
         content: `
 <div id="viewProducts" class="card ">
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary mt-4 me-3" style="font-size: 0.8rem" onclick="location.href='/admin/products/new'">Add Product</button>
+    </div> 
     <div class="card-body table-responsive-md ">
         <table class="table table-hover table-bordered mt-2">
             <thead>

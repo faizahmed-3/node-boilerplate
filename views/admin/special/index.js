@@ -1,5 +1,5 @@
 const layout = require('../layout');
-const title = 'View Special Categories'
+const title = 'View Special'
 
 module.exports = ({specials}) => {
     const renderedSpecials = specials.map(
@@ -40,9 +40,9 @@ module.exports = ({specials}) => {
     return layout({
         title: title,
         content: `<div id="viewProducts" class="card ">
-        <div class="d-flex justify-content-end">
-    <button type="button" class="btn btn-primary mt-4 me-3" style="font-size: 0.8rem" onclick="location.href='/admin/special/new'">Add New Special Category</button>
-    </div> 
+<!--        <div class="d-flex justify-content-end">-->
+<!--    <button type="button" class="btn btn-primary mt-4 me-3" style="font-size: 0.8rem" onclick="location.href='/admin/special/new'">Add New Special Category</button>-->
+<!--    </div> -->
     <div class="card-body table-responsive-md">
         <table class="table table-hover table-bordered">
             <thead>

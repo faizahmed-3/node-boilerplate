@@ -277,6 +277,19 @@ if (filterButton){
 }
 
 
+// copy to clipboard
+const c2c = document.querySelectorAll('.c2cLink');
+if (c2c.length>0){
+    c2c.forEach(link => {
+        link.addEventListener('click', evt => {
+            const path = evt.path || (evt.composedPath && evt.composedPath());
+            navigator.clipboard.writeText(path[2].children[3].value);
+            path[1].innerHTML = `<button class="c2cLink btn btn-secondary"> copied product link <i class="fas fa-clipboard c2c" ></i> </button>`
+        })
+    })
+}
+
+
 
 
 

@@ -429,6 +429,9 @@ body .actionSelected {
   opacity: 0.7;
   cursor: pointer;
 }
+.product-view #share .c2cLink {
+  margin-bottom: 0.5rem;
+}
 .product-view #share .fa-facebook-f {
   background: #3B5998;
   color: white;
@@ -2265,6 +2268,18 @@ body .actionSelected {
     width: 7rem;
     font-size: 0.7rem;
   }
+
+  #add-product li {
+    margin: 2rem 0;
+  }
+  #add-product .orderProductEdit {
+    width: 100%;
+    font-size: 0.8rem;
+  }
+  #add-product .orderQuantityEdit {
+    width: 100%;
+    font-size: 0.8rem;
+  }
 }
 @media (max-width: 767.98px) {
   html {
@@ -2777,8 +2792,12 @@ body .actionSelected {
     margin: 1.2rem 0;
   }
 
+  #admin .mainPanel .navbar .navbar-brand {
+    font-size: 1.3rem;
+  }
   #admin .mainPanel .order {
-    width: 92%;
+    width: 95%;
+    margin: 1rem 0.5rem 1rem 0.3rem;
   }
   #admin .mainPanel .order .card-body {
     margin-right: 0.7rem;
@@ -2798,6 +2817,12 @@ body .actionSelected {
   #admin .mainPanel .order .btn {
     width: 7rem;
     font-size: 0.7rem;
+  }
+  #admin .mainPanel .order .ordersHeadingBig {
+    min-width: 25rem;
+  }
+  #admin .mainPanel .order .performer .performerName {
+    min-width: 25rem;
   }
   #admin .mainPanel #chartsRow .chart-container {
     padding: 0;
@@ -2828,6 +2853,36 @@ body .actionSelected {
   }
   #faq .faqLgImage {
     height: 100%;
+  }
+
+  #viewProducts {
+    margin: 1rem 0.5rem 1rem 0.3rem;
+  }
+  #viewProducts .ordersHeadingBig {
+    min-width: 25rem;
+  }
+  #viewProducts .product-name-heading {
+    min-width: 18rem;
+    font-size: 0.9rem;
+  }
+  #viewProducts .product-others, #viewProducts .tableHeader {
+    font-size: 0.9rem;
+  }
+  #viewProducts .tableHeaderBig {
+    font-size: 0.9rem;
+    min-width: 18rem;
+  }
+  #viewProducts tr {
+    font-size: 0.87rem;
+  }
+
+  #add-product .card-header {
+    font-size: 1.25rem;
+  }
+  #add-product .save {
+    width: 5rem;
+    font-size: 0.6rem;
+    margin-top: 1rem;
   }
 }
 

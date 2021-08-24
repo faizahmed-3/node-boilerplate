@@ -28,25 +28,25 @@ module.exports = ({input, error, exists}) => {
                 <div class="inputError">${getError(error, 'admin_name')}</div>
             </div>
             <div class="row">
-                <div class="mb-3 col-6 form-group">
+                <div class="mb-3 col-md-6 form-group">
                     <label for="email" class="form-label" required>Email</label>
                     <input name="email" type="email" class="form-control" id="email" aria-describedby="email" value="${getInput(input, 'email')}" required>
                     <div class="inputError">${getError(error, 'email')}</div>
                    ${existsCheck(exists)}
                 </div>
-                <div class="mb-3 col-6 form-group">
+                <div class="mb-3 col-md-6 form-group">
                     <label for="phone" class="form-label" required>Phone</label>
                     <input name="phone" type="number" class="form-control" id="phone" aria-describedby="phone" value="${getInput(input, 'phone')}" required>
                     <div class="inputError">${getError(error, 'phone')}</div>
                 </div> 
             </div>
             <div class="row">
-                <div class="mb-3 col-6 form-group">
+                <div class="mb-3 col-md-6 form-group">
                     <label for="password" class="form-label" required>Password</label>
                     <input name="password" type="password" class="form-control" id="password" aria-describedby="password" value="${getInput(input, 'password')}" required>
                     <div class="inputError">${getError(error, 'password')}</div>
                 </div>
-                <div class="mb-3 col-6 form-group">
+                <div class="mb-3 col-md-6 form-group">
                     <label for="password_confirmation" class="form-label" required>Password Confirmation</label>
                     <input name="password_confirmation" type="password" class="form-control" id="password_confirmation" aria-describedby="password_confirmation" value="${getInput(input, 'password_confirmation')}" required>
                     <div class="inputError">${getError(error, 'password_confirmation')}</div>

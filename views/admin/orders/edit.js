@@ -39,7 +39,7 @@ module.exports = ({order}) => {
             const renderedProducts = order.products.map(
                 product => {
                     return `
-                <li class="d-flex justify-content-evenly">
+                <li class="d-lg-flex justify-content-evenly">
                     <input type="hidden" name="productID" value="${product.productID}" >
                     <input type="text" class="form-control mb-2 orderProductEdit " name="product_name" value="${product.product_name}" readonly>
                     <input type="number" class="form-control mb-2 orderQuantityEdit orderPriceEdit" name="price" value="${product.price}" readonly><span class="mt-2">X</span>

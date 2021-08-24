@@ -7,11 +7,14 @@ module.exports = ({title, req, content}) => {
 <html lang="en">
 <head>
     <!-- Required meta tags -->
+    <title>${title} | Amazon Cellular Outfitters</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
-    <meta name="description" content="We sell quality accessories for phones, tablets, smart watches, cameras, cars and computers.">
-<!--    <meta property="og:image" content="/img/favicon.ico">-->
+    <meta name="description" content="An online store which sells quality accessories for phones and tablets (cases, screen protectors, audio, power), smart watches, cameras, cars and computers">
+    <meta name="keywords" content="kenya, e-commerce, online, cases, screen protectors, audio, earphones, earbuds, apple, iphone, power bank, smart watch, camera, accessories, car, computer, premium, quality">
+    <meta property="og:image" content="/img/logosq.jpg">
+    <meta name="author" content="Faiz Ahmed">
 
     <!--    Favicon -->
     <link rel="icon" href="/img/favicon.ico">
@@ -40,9 +43,6 @@ module.exports = ({title, req, content}) => {
 
     <!-- Maps   -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-
-
-    <title>${title} | Amazon Cellular</title>
 </head>
 <body>
 
