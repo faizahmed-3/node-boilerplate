@@ -13,7 +13,7 @@ module.exports = ({title, req, content}) => {
     <meta name="format-detection" content="telephone=no">
     <meta name="description" content="An online store which sells quality accessories for phones and tablets (cases, screen protectors, audio, power), smart watches, cameras, cars and computers">
     <meta name="keywords" content="kenya, e-commerce, online, cases, screen protectors, audio, earphones, earbuds, apple, iphone, power bank, smart watch, camera, accessories, car, computer, premium, quality">
-    <meta property="og:image" content="/img/logosq.jpg">
+    <meta property="og:image" content="/img/logosq.webp">
     <meta name="author" content="Faiz Ahmed">
 
     <!--    Favicon -->
@@ -154,9 +154,9 @@ ${content}
                                 class="bi bi-chat-dots-fill"></i> SMS</a></button>
                     </p>
                     <p>
-                        <i class="fab fa-facebook-f"></i>
-                        <i class="fab fa-instagram"></i>
-                        <i class="fab fa-whatsapp"></i>
+                        <a href="https://www.facebook.com/Amazon-Cellular-Outfitters-100448395706615/"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/amazon_cellular_outfitters/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/254705063256"><i class="fab fa-whatsapp"></i></a>
                     </p>
                 </div>
             </div>
